@@ -22,7 +22,7 @@ To switch to a specific branch in the repository, follow these steps:
    cd Goalie
    ```
 3. **Create a new Branch and switch to the branch**
-    ``bash
+    ```bash
    git checkout -b <branch-name/feature-name>
    ```
 
