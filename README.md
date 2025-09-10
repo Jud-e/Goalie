@@ -11,6 +11,7 @@ To switch to a specific branch in the repository, follow these steps:
    ```bash
    git clone https://github.com/Jud-e/Goalie.git
    ```
+   &emsp; or
 
    ```bash
    gh repo clone Jud-e/Goalie.git
