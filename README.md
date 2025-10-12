@@ -28,12 +28,7 @@ To switch to a specific branch in the repository, follow these steps:
    ```
 
 ### Steps to Work on Project Locally
-
-1. **Create and Switch to Your Branch**
-     ```bash
-     git checkout -b <branch-name/feature-name>
-     ```
-2. **Pull Latest Changes from Development**
+1. **Pull Latest Changes from Development**
    - Fetch the latest updates from the `Development` branch:
      ```bash
      git fetch origin Developement
@@ -42,6 +37,12 @@ To switch to a specific branch in the repository, follow these steps:
      ```bash
      git merge origin/Development
      ```
+
+2. **Create and Switch to Your Branch**
+     ```bash
+     git checkout -b <branch-name/feature-name>
+     ```
+
 
 3. **Resolve Any Conflicts**
    - If there are any merge conflicts, resolve them in your local environment and commit the changes.
