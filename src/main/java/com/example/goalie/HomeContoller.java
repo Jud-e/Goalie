@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HomeContoller {
     @RequestMapping("/")
     public String Home(){
-        return "Main";
+        return "home";
     }
 }
