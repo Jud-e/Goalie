@@ -3,11 +3,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @AllArgsConstructor
-public class HomeContoller {
+public class HomeController {
     @GetMapping("/")
     public String Home(){
         return "home";
@@ -30,5 +29,10 @@ public class HomeContoller {
     @GetMapping("/about")
     public String About(){
         return "about";
+    }
+
+    @GetMapping("/faq")
+    public String Faq(){
+        return "faq";
     }
 }

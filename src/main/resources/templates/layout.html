@@ -32,8 +32,8 @@
                     </div>
                     <div class="nav_list" data-aos="zoom-in">
                         <a th:href="@{/about}">About Us</a>
-                        <a>FAQ</a>
-                        <a>Contact Us</a>
+                        <a th:href="@{/faq}">FAQ</a>
+                        <a href="#footer">Contact Us</a>
                         <a th:href="@{/login}">Login</a>
                     </div>
                 </nav>
@@ -41,7 +41,7 @@
         </header>
     <main layout:fragment="content">
     </main>
-    <footer layout:fragment="footer">
+    <footer layout:fragment="footer" th:id="footer">
         <section class="main_section">
             <div class="footer_content">
                 <div class="footer_logo">
