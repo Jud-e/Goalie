@@ -289,3 +289,9 @@ footer {
 .loginForm button:hover {
     background-color: #0056b3;
 }
+
+/* About Us*/
+.mainAbout{
+    background-color: #6b792b;
+    height: 100vh;
+}
