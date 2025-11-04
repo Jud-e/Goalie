@@ -33,24 +33,17 @@ header {
     background: var(--background);
     box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1),
                  0 2px 4px -2px rgb(0 0 0 / 0.1);
-
-
 }
-
 nav {
 
     display:  flex;
     justify-content: space-between;
     /*flex-direction: row;*/
     height: 6rem;
-
-
 }
 .navlogo{
     display: flex;
     align-items: center;
-
-
 }
 .navlogo div {
     /*margin-top: auto;*/
@@ -59,22 +52,18 @@ nav {
     border-radius: 50%;
     /*background-color: darkorange;*/
     margin-right: 10px;
-
-
 }
 .navlogo img {
     width: 45px;
     height: 100%;
     object-fit: cover;
     border-radius: 50%;
-
 }
 .navlogo h1 {
     text-transform: uppercase;
 
 }
 .nav_list {
-
     display: flex;
     width: 65%;
     align-items: center;
@@ -85,7 +74,7 @@ nav {
     text-decoration: none;
     text-transform: uppercase;
     padding: 5px 10px 5px;
-
+    color: var(--text);
 }
 .nav_list a:hover {
     color: blue;
