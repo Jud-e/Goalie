@@ -13,6 +13,10 @@ public class HomeContoller {
         return "home";
     }
 
+    @GetMapping("/signup")
+    public String Signup(){
+        return "signup";
+    }
 
     @GetMapping("/login")
     public String Login(){
