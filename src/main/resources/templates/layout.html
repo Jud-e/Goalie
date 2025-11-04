@@ -20,42 +20,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
 </head>
-<body>
-    <header>
-        <section class="main_section">
-            <nav>
-                <div class="navlogo">
-
-                    <div data-aos="fade-right">
-                        <img  th:src="@{/images/logo.jpg}" alt="My Logo">
+    <body>
+        <header layout:fragment="header">
+            <section class="main_section">
+                <nav>
+                    <div class="navlogo">
+                        <div data-aos="fade-right">
+                            <img  th:src="@{/images/logo.jpg}" alt="My Logo">
+                        </div>
+                        <h1 data-aos="fade-down">Goalie</h1>
                     </div>
-                    <h1 data-aos="fade-down">Goalie</h1>
-
-                </div>
-                <div class="nav_list" data-aos="zoom-in">
-
-                        <a>About Us</a>
-                        <a>Tournaments</a>
+                    <div class="nav_list" data-aos="zoom-in">
+                        <a th:href="@{/about}">About Us</a>
                         <a>FAQ</a>
-                        <a>Conctact Us</a>
-                        <a>Login</a>
-
-
-                </div>
-
-            </nav>
-
-
-        </section>
-
-
-
-    </header>
+                        <a>Contact Us</a>
+                        <a th:href="@{/login}">Login</a>
+                    </div>
+                </nav>
+            </section>
+        </header>
     <main layout:fragment="content">
-
     </main>
-
-    <footer>
+    <footer layout:fragment="footer">
         <section class="main_section">
             <div class="footer_content">
                 <div class="footer_logo">
