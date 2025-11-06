@@ -13,12 +13,10 @@
         </div>
         <div th:class="formSection">
             <form th:class="loginForm" method="post" th:action="@{/login}">
-                <label th:for="username">Email:</label>
+                <label th:for="email">Email:</label>
+                <input th:type="text" th:id="email"><br>
+                <label th:for="username">Username:</label>
                 <input th:type="text" th:id="username"><br>
-                <label th:for="password">First Name:</label>
-                <input th:type="text" th:id="password"><br>
-                <label th:for="password">Last Name:</label>
-                <input th:type="text" th:id="password"><br>
                 <label th:for="password">Password:</label>
                 <input th:type="text" th:id="password"><br>
                 <label th:for="password">Confirm password:</label>
