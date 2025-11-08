@@ -1,11 +1,16 @@
 package com.example.goalie.controller;
+import com.example.goalie.model.User;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@AllArgsConstructor
+@RequestMapping
+@RequiredArgsConstructor
 public class HomeController {
     @GetMapping("/")
     public String Home(){
@@ -13,7 +18,8 @@ public class HomeController {
     }
 
     @GetMapping("/signup")
-    public String Signup(){
+    public String Signup(Model model){
+        model.addAttribute("user", new User());
         return "signup";
     }
 
@@ -33,7 +39,7 @@ public class HomeController {
 
     @GetMapping("/faq")
     public String Faq(){
-        return "faq";
+        return null;
     }
 
     @GetMapping("/profile_account")

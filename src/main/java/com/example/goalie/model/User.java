@@ -3,9 +3,11 @@ package com.example.goalie.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "users")
 @Data
 public class User {
     @Id
@@ -23,13 +25,11 @@ public class User {
     @JoinColumn(name = "tournament_id")
     private Tournament tournament;
 
-    @ManyToOne
-    @JoinColumn(name = "notification_id")
-    private Notification notification;
+    @OneToMany(mappedBy = "receiver")
+    private List<Notification> notification = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "message_id")
-    private Messaging message;
+    @OneToMany(mappedBy = "sender")
+    private List<Messaging> messages = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<PlayerTeam> playerTeams;

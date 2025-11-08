@@ -17,6 +17,7 @@ public class Messaging {
     private String content;
     private Timestamp timestamp;
 
-//    @OneToMany(mappedBy = "message",cascade = CascadeType.ALL)
-//    private List<Messaging> messages = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "sender_id")
+    private User sender;
 }

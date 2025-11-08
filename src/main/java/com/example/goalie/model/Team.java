@@ -14,10 +14,12 @@ public class Team {
     private Long id;
 
     private String name;
-//
-//    @OneToMany(mappedBy = "team")
-//    private List<PlayerTeam> playerTeams;
-//
-//    @OneToMany(mappedBy = "match")
-//    private List<Match> matches;
+
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "team_id")
+    private Team team;
+
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "tournament_id")
+    private Tournament tournament;
 }

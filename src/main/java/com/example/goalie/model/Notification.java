@@ -17,6 +17,7 @@ public class Notification {
     private String message;
     private Date date;
 
-//    @OneToMany(mappedBy = "notification",cascade = CascadeType.ALL)
-//    private List<Notification> notifications = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "notification_id")
+    private User receiver;
 }
