@@ -22,6 +22,7 @@ public class HomeController {
     @GetMapping("/")
     public String Home(){
         return "redirect:/signup";
+//        return "home";
     }
 //signup functions
     @GetMapping("/signup")
@@ -69,6 +70,10 @@ public class HomeController {
     model.addAttribute("user", user);
     return "home";
 }
+
+
+
+
 
     @GetMapping("/about")
     public String About(){
