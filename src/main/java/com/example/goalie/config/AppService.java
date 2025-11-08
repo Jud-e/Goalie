@@ -2,6 +2,7 @@ package com.example.goalie.config;
 
 import com.example.goalie.model.User;
 import com.example.goalie.repository.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,6 +34,12 @@ public class AppService {
         return userRepository.save(user);
     }
 
+    public User getUser(Long id){
+        return userRepository.findById(id).orElseThrow(()->new EntityNotFoundException("User not found"));
+    }
+    public void saveUser(User user){
+        userRepository.save(user);
+    }
     public User getUserByEmail(String email){
         return userRepository.findByEmail(email).orElse(null);
     }

@@ -7,6 +7,18 @@
     <title>Goalie</title>
 </head>
 <body>
+<header layout:fragment="header">
+    <section class="main_section">
+        <nav>
+            <div class="navlogo">
+                <div data-aos="fade-right">
+                    <img  th:src="@{/images/logo.jpg}" alt="My Logo">
+                </div>
+                <h1 data-aos="fade-down">Goalie</h1>
+            </div>
+        </nav>
+    </section>
+</header>
 <main layout:fragment="content">
     <section class="profile_account">
         <div class="main_section">
@@ -15,7 +27,7 @@
                 <div class="line"></div>
             </div>
             <div class="profile-form">
-                    <form method="post" >
+                    <form method="post" th:action="@{'/user/' + ${user.id}}", th:object="*{user}">
                         <div class="input-form">
                             <label >First Name: </label>
                             <input type="text">
@@ -70,16 +82,9 @@
                         <div class="input-form">
                             <button>Submit Profile</button>
                         </div>
-
-
-
                     </form>
-
-
-
             </div>
         </div>
-
     </section>
 </main>
 </body>
