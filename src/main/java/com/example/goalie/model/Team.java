@@ -14,10 +14,10 @@ public class Team {
     private Long id;
 
     private String name;
-
-    @OneToMany(mappedBy = "team")
-    private List<PlayerTeam> playerTeams;
-
-    @OneToMany(mappedBy = "match")
-    private List<Match> matches;
+//
+//    @OneToMany(mappedBy = "team")
+//    private List<PlayerTeam> playerTeams;
+//
+//    @OneToMany(mappedBy = "match")
+//    private List<Match> matches;
 }

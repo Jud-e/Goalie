@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Goalie</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <section class="profile_account">
+        <div class="main_section">
+            <div class="main_heading">
+                <h2 class=>Profile Account</h2>
+                <div class="line"></div>
+            </div>
+            <div class="profile-form">
+
+                    <form method="post" >
+                        <div class="input-form">
+                            <label >First Name: </label>
+                            <input type="text">
+                        </div>
+                        <div class="input-form">
+                            <label >Last Name: </label>
+                            <input type="text">
+                        </div>
+                        <div class="input-form">
+                            <label >Year Of Birth: </label>
+                            <input type="date">
+                        </div>
+                        <div class="input-form">
+                            <label >Preffered Position: </label>
+                            <select>
+                                <option>Goalkeeper</option>
+                                <option>Defender</option>
+                                <option>Midfielder</option>
+                                <option>Forward</option>
+                            </select>
+                        </div>
+                        <div class="input-form">
+                            <label >Secondary Position: </label>
+                            <select>
+                                <option>Goalkeeper</option>
+                                <option>Defender</option>
+                                <option>Midfielder</option>
+                                <option>Forward</option>
+                            </select>
+                        </div>
+                        <div class="input-form">
+                            <label >Skill Level: </label>
+                            <select>
+                                <option>Beginner</option>
+                                <option>Intermediate</option>
+                                <option>Advanced</option>
+                            </select>
+                        </div>
+                        <div class="input-form">
+                            <label >Dominant Foot: </label>
+                            <select>
+                                <option>Left</option>
+                                <option>Right</option>
+                                <option>Both</option>
+                            </select>
+                        </div>
+                        <div class="input-form">
+                            <label >Profile Picture: </label>
+                            <input type="file">
+                        </div>
+
+                        <div class="input-form">
+                            <button>Submit Profile</button>
+                        </div>
+
+
+
+                    </form>
+
+
+
+            </div>
+        </div>
+
+    </section>
+</main>
+</body>
+</html>

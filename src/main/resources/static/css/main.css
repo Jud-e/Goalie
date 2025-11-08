@@ -3,7 +3,7 @@
     --background: #0a0610;
     --primary: #a891d8;
     --secondary: #6b792b;
-    --accent: #49be51;
+    --accent: #96ea9b;
 }
 
 * {
@@ -79,6 +79,28 @@ nav {
 .nav_list a:hover {
     color: blue;
 }
+.profile-pic {
+    display: flex;
+    align-items: center;
+}
+.profile-pic div {
+    /*margin-top: auto;*/
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    /*background-color: darkorange;*/
+    margin-right: 10px;
+}
+.profile-pic div img {
+    width: 45px;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+.profile-pic h4 {
+    margin-left: 10px;
+}
+
 
 /*-------------------------Home page css ----------------------*/
 
@@ -118,7 +140,94 @@ nav {
     padding: 10px 10px;
 
 }
+/* --------------------------Profile Account -----------------------*/
 
+.profile_account {
+    color: #fff;
+    padding:0 32px 20px 0;
+    /*background-color: var(--primary);*/
+
+}
+.profile_account .main_section {
+    background: linear-gradient( 45deg, rgb(203, 227, 129) 30%, rgb(193, 234, 134) 12%, rgb(91, 211, 234) 60%);
+    padding:35px 32px 32px 0;
+    margin:30px auto 0;
+    border-radius: 8px;
+
+}
+.main_heading {
+    text-align: center;
+    margin-bottom: 24px;
+    /*margin-top: 24px;*/
+}
+.main_heading h2 {
+    font-size: 2rem;
+    color: #515050;
+    font-weight: 800;
+}
+.main_heading .line{
+    width: 12%;
+    height: 4px;
+    background-color: #0056b3;
+    margin: 0 auto 0;
+}
+.profile-form {
+    margin-bottom: 32px;
+    width: 100%;
+    /*align-items: center;*/
+    max-width: 600px;
+    padding: 20px;
+    margin: 40px auto;
+
+}
+.profile-form form > * + * {
+    margin-top: 1.5rem;
+}
+.profile-form form {
+    margin: 0 50px 0;
+    /*text-align: center;*/
+    align-items: center;
+}
+
+.profile-form .input-form label{
+    display: block;
+    color: #333;
+    font-weight: 500;
+    font-size: 1rem;
+}
+.profile-form .input-form input, .profile-form .input-form select {
+    margin-top: 10px;
+    display: block;
+
+    border: solid 2px #777676;
+    padding: 0 35px 0;
+    border-radius: 8px;
+    height: 35px;
+    box-shadow:  0 4px 6px -1px rgb(0 0 0 / 0.1),
+                0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+.profile-form .input-form input{
+    width: 87%;
+}
+.profile-form .input-form select {
+    width: 100%;
+}
+.profile-form .input-form button {
+    width: 100%;
+    padding: 15px 10px 10px 15px;
+    border-radius: 8px;
+    background: rgb(75, 172, 172);
+    border: transparent;
+    color: #f3e8e8;
+    font-weight: 600;
+    font-size: 1.6rem;
+    text-align: center;
+}
+.profile-form .input-form button:hover {
+    background: transparent;
+    border: 2px solid rgb(75, 172, 172);
+    color: #1c1c1c;
+}
 /*---------------------------Footer -----------------------------*/
 
 footer {

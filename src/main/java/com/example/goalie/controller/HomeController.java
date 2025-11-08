@@ -35,4 +35,9 @@ public class HomeController {
     public String Faq(){
         return "faq";
     }
+
+    @GetMapping("/profile_account")
+    public String ProfileAccount(){
+        return "profile_account";
+    }
 }
