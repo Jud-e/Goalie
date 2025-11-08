@@ -13,12 +13,16 @@
                     Splash image
                 </div>
                 <div th:class="formSection">
-                    <form th:class="loginForm" method="post" th:action="@{/login}">
+                    <form method="post"
+                          th:action="@{/login}"
+                          th:class="loginForm"
+                          th:object="${user}">
                         <label th:for="username">Username/E-mail:</label>
-                        <input th:type="text" th:id="username"><br>
+                        <input th:type="text" th:id="username" th:field="*{email}"><br>
                         <label th:for="password">Password:</label>
-                        <input th:type="text" th:id="password"><br>
-                        <button type="submit">Submit</button><br><br>
+                        <input th:type="text" th:id="password" th:field="*{password}"><br>
+                        <button type="submit">Submit</button>
+                        <br><br>
                         <a th:href="@{/signup}">If you don't have an account Sign up here!</a>
                     </form>
 
