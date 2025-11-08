@@ -1,4 +1,4 @@
-package com.example.goalie.config;
+package com.example.goalie.service;
 
 import com.example.goalie.model.User;
 import com.example.goalie.repository.*;
