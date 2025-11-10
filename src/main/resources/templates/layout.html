@@ -18,68 +18,68 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
 </head>
-    <body>
-        <header layout:fragment="header">
-            <section class="main_section">
-                <nav>
-                    <div class="navlogo">
-                        <div data-aos="fade-right">
-                            <img  th:src="@{/images/logo.jpg}" alt="My Logo">
-                        </div>
-                        <h1 data-aos="fade-down">Goalie</h1>
-                    </div>
-                    <div class="nav_list" data-aos="zoom-in">
-                        <a th:href="@{/about}">About Us</a>
-                        <a th:href="@{/faq}">FAQ</a>
-                        <a href="#footer">Contact Us</a>
-                        <a th:href="@{/login}">Login</a>
-<!--                        <a class="profile-pic" th:href="@{/profile_account}">-->
-<!--                            <div>-->
-<!--                                <img th:src="@{/images/profile.jpg}">-->
-<!--                            </div>-->
-<!--                            <h4 th:text="*{user.name}"></h4>-->
-<!--                        </a>-->
-                    </div>
-                </nav>
-            </section>
-        </header>
-    <main layout:fragment="content"></main>
-    <footer layout:fragment="footer" th:id="footer">
-        <section class="main_section">
-            <div class="footer_content">
-                <div class="footer_logo">
-                    <div data-aos="zoom-out">
-                        <img  th:src="@{/images/logo.jpg}" alt="My Logo">
-                        <h1>Goalie</h1>
-                    </div>
-                    <p data-aos="flip-left">
-                        Platform for building teams, organizing competitions and player monitoring
-                    </p>
-
+<body>
+<header layout:fragment="header">
+    <section class="main_section">
+        <nav>
+            <div class="navlogo">
+                <div data-aos="fade-right">
+                    <img  th:src="@{/images/logo.jpg}" alt="My Logo">
                 </div>
-                <div class="footer_section">
-                    <div class="quick_links" data-aos="fade-up">
-                        <h3>Quick Links</h3>
-                        <ul>
-                            <li><a th:href="@{/about}">About Us</a></li>
-                            <li><a>Tournaments</a></li>
-                            <li><a th:href="@{/faq}">FAQ</a></li>
-                            <li><a>Quick Demo</a></li>
-                            <li><a>Create Tournament</a></li>
-                            <li><a>LeaderBoard</a></li>
-                        </ul>
+                <h1 data-aos="fade-down">Goalie</h1>
+            </div>
+            <div class="nav_list" data-aos="zoom-in">
+                <a th:href="@{/about}">About Us</a>
+                <a th:href="@{/faq}">FAQ</a>
+                <a href="#footer">Contact Us</a>
+                <a th:href="@{/login}">Login</a>
+                <a class="profile-pic" th:href="@{/profile_account}">
+                    <div>
+                        <img th:src="@{/images/profile.jpg}">
                     </div>
-                    <div class="contact_us" data-aos="fade-left">
-                        <ul>
-                            <li><span>Address -------6437, baker St, NewWest</span></li>
-                            <li> <span>Email ------- goalie@example.com</span></li>
-                            <li><span>Phone ------- +1 (474) 474 4623</span></li>
-                        </ul>
-                    </div>
+                    <h4>username</h4>
+                </a>
+            </div>
+        </nav>
+    </section>
+</header>
+<main layout:fragment="content"></main>
+<footer layout:fragment="footer" th:id="footer">
+    <section class="main_section">
+        <div class="footer_content">
+            <div class="footer_logo">
+                <div data-aos="zoom-out">
+                    <img  th:src="@{/images/logo.jpg}" alt="My Logo">
+                    <h1>Goalie</h1>
+                </div>
+                <p data-aos="flip-left">
+                    Platform for building teams, organizing competitions and player monitoring
+                </p>
+
+            </div>
+            <div class="footer_section">
+                <div class="quick_links" data-aos="fade-up">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a th:href="@{/about}">About Us</a></li>
+                        <li><a>Tournaments</a></li>
+                        <li><a th:href="@{/faq}">FAQ</a></li>
+                        <li><a>Quick Demo</a></li>
+                        <li><a>Create Tournament</a></li>
+                        <li><a>LeaderBoard</a></li>
+                    </ul>
+                </div>
+                <div class="contact_us" data-aos="fade-left">
+                    <ul>
+                        <li><span>Address -------6437, baker St, NewWest</span></li>
+                        <li> <span>Email ------- goalie@example.com</span></li>
+                        <li><span>Phone ------- +1 (474) 474 4623</span></li>
+                    </ul>
                 </div>
             </div>
-        </section>
-    </footer>
-    <script th:src="@{/js/script.js}"></script>
+        </div>
+    </section>
+</footer>
+<script th:src="@{/js/script.js}"></script>
 </body>
 </html>

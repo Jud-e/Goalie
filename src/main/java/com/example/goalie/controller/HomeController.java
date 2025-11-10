@@ -2,9 +2,7 @@ package com.example.goalie.controller;
 import com.example.goalie.config.AppService;
 import com.example.goalie.model.User;
 import jakarta.servlet.http.HttpSession;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -87,6 +85,6 @@ public class HomeController {
 
     @GetMapping("/profile_account")
     public String ProfileAccount(){
-        return "account";
+        return "profile_account";
     }
 }
