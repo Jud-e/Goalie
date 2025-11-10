@@ -38,6 +38,6 @@ public class HomeController {
 
     @GetMapping("/profile_account")
     public String ProfileAccount(){
-        return "profile_account";
+        return "account";
     }
 }
