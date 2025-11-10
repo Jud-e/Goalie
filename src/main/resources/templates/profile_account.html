@@ -8,27 +8,106 @@
 </head>
 <body>
 <main layout:fragment="content">
-    <section class="profile_account">
-        <div class="main_section">
-            <div class="main_heading">
-                <h2 class=>Profile Account</h2>
-                <div class="line"></div>
-            </div>
-            <div class="profile-form">
-                    <form method="post" >
-                        <div class="input-form">
+    <section class="profile-account">
+        <div class="profile_section">
+            <div class="profile-container">
+                    <div class="btn-box">
+                        <button class="btn btn-1" id="regular">Regular Account</button>
+                        <button class="btn btn-2" id="premium">Premium Account</button>
+                    </div>
+                    <form class="form_box regular-form">
+                        <div class="form-title">
+                            <span>Regular Account Profile</span>
+                        </div>
+                        <div class="input_form">
+                            <div>
+                                <label >First Name: </label>
+                                <input type="text">
+                            </div>
+                            <div>
+                                <label >Last Name: </label>
+                                <input type="text">
+                            </div>
+                            <div>
+                                <label >Year Of Birth: </label>
+                                <input type="date">
+                            </div>
+                            <div>
+                                <label >Preffered Position: </label>
+                                <select>
+                                    <option>Goalkeeper</option>
+                                    <option>Defender</option>
+                                    <option>Midfielder</option>
+                                    <option>Forward</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label >Secondary Position: </label>
+                                <select>
+                                    <option>Goalkeeper</option>
+                                    <option>Defender</option>
+                                    <option>Midfielder</option>
+                                    <option>Forward</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label >Skill Level: </label>
+                                <select>
+                                    <option>Beginner</option>
+                                    <option>Intermediate</option>
+                                    <option>Advanced</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label >Dominant Foot: </label>
+                                <select>
+                                    <option>Left</option>
+                                    <option>Right</option>
+                                    <option>Both</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label >Profile Picture: </label>
+                                <div class="file">
+                                    <div class="input-file">
+                                        <input type="file">
+                                    </div>
+                                    <div class="input-file-content">
+                                        <div>
+                                            <i data-feather="user"></i>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="button">
+                            <button>
+                                Save Profile
+                            </button>
+                        </div>
+                    </form>
+
+<!--                Premium content-->
+                <form class="form_box premium-form">
+                    <div class="form-title">
+                        <span>Premium Account Profile</span>
+                    </div>
+                    <div class="input_form">
+                        <div>
                             <label >First Name: </label>
                             <input type="text">
                         </div>
-                        <div class="input-form">
+                        <div>
                             <label >Last Name: </label>
                             <input type="text">
                         </div>
-                        <div class="input-form">
+                        <div>
                             <label >Year Of Birth: </label>
                             <input type="date">
                         </div>
-                        <div class="input-form">
+                        <div>
                             <label >Preffered Position: </label>
                             <select>
                                 <option>Goalkeeper</option>
@@ -37,7 +116,7 @@
                                 <option>Forward</option>
                             </select>
                         </div>
-                        <div class="input-form">
+                        <div>
                             <label >Secondary Position: </label>
                             <select>
                                 <option>Goalkeeper</option>
@@ -46,7 +125,7 @@
                                 <option>Forward</option>
                             </select>
                         </div>
-                        <div class="input-form">
+                        <div>
                             <label >Skill Level: </label>
                             <select>
                                 <option>Beginner</option>
@@ -54,7 +133,7 @@
                                 <option>Advanced</option>
                             </select>
                         </div>
-                        <div class="input-form">
+                        <div>
                             <label >Dominant Foot: </label>
                             <select>
                                 <option>Left</option>
@@ -62,23 +141,60 @@
                                 <option>Both</option>
                             </select>
                         </div>
-                        <div class="input-form">
+                        <div>
                             <label >Profile Picture: </label>
-                            <input type="file">
+                            <div class="file">
+                                <div class="input-file">
+                                    <input type="file">
+                                </div>
+                                <div class="input-file-content">
+                                    <div>
+                                        <i data-feather="user"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="billing-section">
+
+                        <h2 class="billing-title">
+                            <i data-feather="credit-card" class="mr-2"></i> Billing Information
+                        </h2>
+                        <div class="card-info">
+                            <div>
+                                <label for="cardNumber" >Card Number</label>
+                                <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456">
+                            </div>
+                            <div>
+                                <label for="expiryDate" >Expiry Date</label>
+                                <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" >
+                            </div>
+                            <div>
+                                <label for="cvv">CVV</label>
+                                <input type="text" id="cvv" name="cvv" placeholder="123" >
+                            </div>
+                            <div >
+                                <label for="billingAddress">Billing Address</label>
+                                <input type="text" id="billingAddress" name="billingAddress" >
+                            </div>
                         </div>
 
-                        <div class="input-form">
-                            <button>Submit Profile</button>
-                        </div>
-
-
-
-                    </form>
-
+                    </div>
+                    <div class="button">
+                        <button>
+                            Save Profile
+                        </button>
+                    </div>
+                </form>
 
 
             </div>
         </div>
+
+
 
     </section>
 </main>
