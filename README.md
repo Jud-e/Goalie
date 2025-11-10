@@ -31,11 +31,11 @@ To switch to a specific branch in the repository, follow these steps:
 1. **Pull Latest Changes from Development**
    - Fetch the latest updates from the `Development` branch:
      ```bash
-     git fetch origin Developement
+     git fetch origin dev
      ```
    - Merge the latest changes from `Development` into your branch:
      ```bash
-     git merge origin/Development
+     git merge origin/dev
      ```
 
 2. **Create and Switch to Your Branch**
