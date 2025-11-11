@@ -18,7 +18,7 @@ public class HomeController {
     private final AppService service;
 
     @GetMapping("/")
-    public String Home(){
+    public String home(){
         return "redirect:/signup";
 //        return "home";
     }
@@ -67,7 +67,7 @@ public class HomeController {
         }
     model.addAttribute("user", user);
     return "home";
-}
+    }
 
 
 
@@ -86,5 +86,15 @@ public class HomeController {
     @GetMapping("/profile_account")
     public String ProfileAccount(){
         return "profile_account";
+    }
+
+    @GetMapping("/tournaments")
+    public String tournaments(){
+        return "tournaments";
+    }
+
+    @GetMapping("/create_tournament")
+    public String createTournament(){
+        return "create_tournament";
     }
 }
