@@ -4,6 +4,12 @@
     --primary: #a891d8;
     --secondary: #6b792b;
     --accent: #96ea9b;
+
+    /*--text: #d9f3dc;*/
+    /*--background: #051107;*/
+    /*--primary: #96dfa0;*/
+    /*--secondary: #3e2884;*/
+    /*--accent: #c35ccd;*/
 }
 
 * {
@@ -23,6 +29,10 @@ body {
     margin: 0 auto 0;
     padding: 0 1rem 0;
 }
+a {
+    text-decoration: none;
+}
+
 
 /* --------------------------Nav Bar -------------------------*/
 
@@ -59,8 +69,10 @@ nav {
     object-fit: cover;
     border-radius: 50%;
 }
-.navlogo h1 {
+.navlogo a {
     text-transform: uppercase;
+    font-size: 2.3rem;
+    color: #fff;
 
 }
 .nav_list {
@@ -399,11 +411,127 @@ nav {
 }
 
 
+/*=========================Tournament Section==========================*/
 
+.tournaments {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    background-color: #f6f1e7;
+}
+.tournament-main {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    max-width: 80rem;
+    position: relative;
+}
+.tournaments-title {
+    margin-bottom: 4rem;
+    text-align: center;
+}
+.tournaments-title h2 {
+    margin-bottom: 1rem;
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+    font-weight: 700;
+    color: #1F2937;
+}
+.tournaments-title div {
+    width: 10%;
+    height: 0.25rem;
+    background-color: #2563EB;
+    margin: 0 auto;
+
+
+}
+.create-links {
+    position: absolute;
+    padding: 0.8rem 1.5rem;
+    border-radius: 15px;
+    background-color: #2563EB;
+    right: 2%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+
+}
+.create-links a {
+    /*text-align: center;*/
+    font-size: 16px;
+    /*margin-bottom: 15px;*/
+    color: #f4f4f4;
+}
+.create-links i{
+    font-size: 12px;
+    /*margin-top: 10px;*/
+}
+
+.tournament-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.5rem;
+    margin-top: 150px;
+
+}
+.tournament {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.tournament-content {
+    flex: 1;
+}
+.tournament-content h1 {
+    font-size: 1.7rem;
+    /*color: #06243e;*/
+    margin: 10px 0;
+    line-height: 1.2rem;
+    font-weight: 600;
+    color: #36455c;
+}
+.tournament-content h3 {
+    color: #06243e;
+    margin: 5px 0;
+    font-weight: 500;
+    line-height: 30px;
+    font-size: 1.2rem;
+    display: grid;
+    grid-template-columns: 120px auto;
+}
+.tournament-content h3 span {
+    margin: 0 10px;
+    font-weight: 400;
+    font-size: 1rem;
+}
+.tournament-link{
+    margin-top: 15px;
+    /*align-items: center;*/
+
+
+}
+.tournament-link a {
+    padding: 0.75rem 2rem;
+    border-radius: 30px;
+
+    border: none;
+    /*border-color: #ffffff;*/
+    font-weight: 700;
+    /*color: #ffffff;*/
+    background: #06243e;
+    cursor: pointer;
+    transition: .2s;
+
+}
+.tournament-link a:hover {
+    background: white;
+    border: 2px solid #06243e;
+    color: rgba(14, 13, 13, 0.7);
+}
 /*---------------------------Footer -----------------------------*/
 
 footer {
-    /*background: #1f2937 ;*/
+    background: var(--background) ;
+
     padding:30px 0 30px;
 }
 .footer_content {
