@@ -414,8 +414,8 @@ nav {
 /*=========================Tournament Section==========================*/
 
 .tournaments {
-    padding-top: 5rem;
-    padding-bottom: 5rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
     background-color: #f6f1e7;
 }
 .tournament-main {
@@ -482,9 +482,10 @@ nav {
     flex: 1;
 }
 .tournament-content h1 {
-    font-size: 1.7rem;
+    font-size: 1.9rem;
     /*color: #06243e;*/
-    margin: 10px 0;
+    margin-top:  10px;
+    margin-bottom: 25px;
     line-height: 1.2rem;
     font-weight: 600;
     color: #36455c;
@@ -526,6 +527,97 @@ nav {
     background: white;
     border: 2px solid #06243e;
     color: rgba(14, 13, 13, 0.7);
+}
+/*========================Create Tournament=========================*/
+.create-tournament{
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    background-color: #f6f1e7;
+    /*border-radius: 30px;*/
+    /*margin: 0 auto;*/
+    /*display: flex;*/
+    /*align-items: center;*/
+    /*justify-content: center;*/
+}
+.create_tournament-container {
+    margin: 0 50px;
+    padding: 40px;
+}
+.create-tournament-title h1 {
+    font-size: 2em;
+    font-weight: 500;
+    color: #1a362e;
+    margin-bottom: 0.1em;
+
+}
+.schedule-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    padding: 0 30px;
+    transition: .3s;
+    margin:20px 0;
+}
+.schedule-box .input_form{
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    /*margin: 0 5px;*/
+}
+.schedule-box .input_form div {
+    margin: 0 5px;
+}
+.schedule-box .input_form label{
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    color: #374151;
+}
+.schedule-box .input_form input, .schedule-box .input_form select {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border-width: 1px;
+    border-color: #D1D5DB;
+    transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+}
+.schedule-box .input_form input {
+    width: 94%;
+}
+.schedule-box .input_form select {
+    width: 96%;
+}
+.schedule-box .button {
+    padding-top: 1rem;
+}
+.schedule-box .button {
+    width: 100%;
+
+}
+.schedule-box .button button {
+    width: 96%;
+    background-color: #2563EB;
+    color: #fff;
+    font-weight: 700;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    transform: scale(1);
+    margin: 0 5px;
+
+}
+.schedule-box .button button:hover {
+    background: transparent;
+    border: 2px solid rgb(75, 172, 172);
+    color: #1c1c1c;
 }
 /*---------------------------Footer -----------------------------*/
 
