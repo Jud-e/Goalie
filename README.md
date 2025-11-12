@@ -28,7 +28,7 @@ To switch to a specific branch in the repository, follow these steps:
    ```
 
 ### Steps to Work on Project Locally
-1. **Pull Latest Changes from Development**
+1. **Pull Latest Changes from dev branch**
    - Fetch the latest updates from the `dev` branch:
      ```bash
      git fetch origin dev
