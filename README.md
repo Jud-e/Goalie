@@ -29,13 +29,13 @@ To switch to a specific branch in the repository, follow these steps:
 
 ### Steps to Work on Project Locally
 1. **Pull Latest Changes from Development**
-   - Fetch the latest updates from the `Development` branch:
+   - Fetch the latest updates from the `dev` branch:
      ```bash
-     git fetch origin Developement
+     git fetch origin dev
      ```
-   - Merge the latest changes from `Development` into your branch:
+   - Merge the latest changes from `dev` into your branch:
      ```bash
-     git merge origin/Development
+     git merge origin/dev
      ```
 
 2. **Create and Switch to Your Branch**
@@ -50,7 +50,7 @@ To switch to a specific branch in the repository, follow these steps:
 4. **Push Updated Branch**
    - After ensuring everything is working, push your updated branch:
      ```bash
-     git push origin <ranch-name/feature-name>
+     git push origin <branch-name/feature-name>
      ```
 
 ### Additional Tips
