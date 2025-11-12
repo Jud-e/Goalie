@@ -97,4 +97,9 @@ public class HomeController {
     public String createTournament(){
         return "create_tournament";
     }
+
+    @GetMapping("view_matches")
+    public String viewMatches(){
+        return "view_matches";
+    }
 }
