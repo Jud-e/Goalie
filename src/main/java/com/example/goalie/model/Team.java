@@ -16,10 +16,14 @@ public class Team {
     private String name;
 
     @ManyToOne(optional = true)
-    @JoinColumn(name = "team_id")
-    private Team team;
-
-    @ManyToOne(optional = true)
     @JoinColumn(name = "tournament_id")
     private Tournament tournament;
+
+    @ManyToMany
+    @JoinTable(
+            name = "team_users",
+            joinColumns = @JoinColumn(name = "team_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id")
+    )
+    private List<User> players = new ArrayList<>();
 }

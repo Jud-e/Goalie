@@ -18,6 +18,6 @@ public class Notification {
     private Date date;
 
     @ManyToOne
-    @JoinColumn(name = "notification_id")
+    @JoinColumn(name = "receiver_id")
     private User receiver;
 }

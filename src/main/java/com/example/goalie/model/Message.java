@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Data
-public class Messaging {
+public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,4 +20,8 @@ public class Messaging {
     @ManyToOne
     @JoinColumn(name = "sender_id")
     private User sender;
+
+    @ManyToOne
+    @JoinColumn(name = "receiver_id")
+    private User receiver;
 }
