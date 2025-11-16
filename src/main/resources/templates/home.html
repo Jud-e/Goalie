@@ -20,6 +20,7 @@
                 <h1 data-aos="fade-down">Goalie</h1>
             </div>
             <div class="nav_list" data-aos="zoom-in">
+                <a th:href="@{/tournaments}">Tournaments</a>
                 <a th:href="@{/faq}">FAQ</a>
                 <a href="#footer">Contact Us</a>
                 <a class="profile-pic" th:href="@{/profile_account}">
@@ -51,20 +52,20 @@
                 </div>
             </div>
             <div class="home-details">
-                <a data-aos="flip-up">
+                <a>
                     <h1>Quick Demo</h1>
                     <p> demonstration on how to use our platform
                         how to create tournaments</p>
                 </a>
-                <a data-aos="flip-left">
+                <a th:href="@{/create_tournament}">
                     <h1>Create Tournaments</h1>
                     <p> Schedule a Tournament</p>
                 </a>
-                <a th:href="@{/home}" data-aos="flip-left">
+                <a th:href="@{/home}">
                     <h1>Tournaments</h1>
                     <p> view all active or upcoming tournaments</p>
                 </a>
-                <a data-aos="flip-up">
+                <a>
                     <h1>LeaderBoard</h1>
                     <p>Display rankings, scores or stats</p>
                 </a>

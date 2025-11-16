@@ -29,7 +29,7 @@ public class User {
     private List<Notification> notification = new ArrayList<>();
 
     @OneToMany(mappedBy = "sender")
-    private List<Messaging> messages = new ArrayList<>();
+    private List<Message> messages = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<PlayerTeam> playerTeams;

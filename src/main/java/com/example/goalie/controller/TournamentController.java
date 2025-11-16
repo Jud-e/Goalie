@@ -27,14 +27,14 @@ public class TournamentController {
     }
 
     // Show create tournament form
-    @GetMapping("/create")
+    @GetMapping("/create_tournament")
     public String showCreateForm(Model model) {
         model.addAttribute("tournament", new Tournament());
         return "create_tournament"; // create_tournament.html
     }
 
     // Handle tournament creation
-    @PostMapping("/create")
+    @PostMapping("/create_tournament")
     public String createTournament(@ModelAttribute Tournament tournament,
                                    HttpSession session) {
         User organizer = (User) session.getAttribute("loggedInUser");

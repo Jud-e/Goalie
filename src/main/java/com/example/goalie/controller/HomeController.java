@@ -88,18 +88,4 @@ public class HomeController {
         return "profile_account";
     }
 
-    @GetMapping("/tournaments")
-    public String tournaments(){
-        return "tournaments";
-    }
-
-    @GetMapping("/create_tournament")
-    public String createTournament(){
-        return "create_tournament";
-    }
-
-    @GetMapping("view_matches")
-    public String viewMatches(){
-        return "view_matches";
-    }
 }

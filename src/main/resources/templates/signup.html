@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+      xmlns:th="http://www.thymeleaf.org" >
+<!--xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">-->
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
     <title>Signup</title>
 </head>
 <body>
-    <main layout:fragment="content">
+    <main>
         <div th:class="formParent">
             <div th:class="splashImg">
             Splash image
@@ -26,7 +28,8 @@
                 </select><br/>
                 <label for="skill">Skill Level:</label>
                 <input type="text" th:field="*{skill}" id="skill"/><br/>
-                <button type="submit">Submit</button>
+                <button type="submit">Submit</button><br>
+                <a th:href="@{/login}">Have an account? Login here!</a>
             </form>
         </div>
     </div>

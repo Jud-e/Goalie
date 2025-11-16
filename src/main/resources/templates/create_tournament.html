@@ -1,54 +1,50 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}">
+      >
 <head>
     <meta charset="UTF-8">
     <title>Goalie</title>
 </head>
 <body>
-<main layout:fragment="content">
+<main>
     <section class="create-tournament">
         <div class="create_tournament-container">
             <div class="create-tournament-title" data-aos="fade-down">
                 <h1>Schedule a Tournament</h1>
                 <div></div>
             </div>
-
-            <form action="" class="schedule-box" data-aos="zoom-in">
+            <form method="post" class="schedule-box" th:action="@{/tournaments/create_tournament}" th:object="${tournament}">
                 <div class="input_form">
                     <div>
-                        <label >Tournament Name: </label>
-                        <input type="text">
-                    </div>
-
-                    <div>
-                        <label >Start Date: </label>
-                        <input type="date">
+                        <label>Tournament Name:</label>
+                        <input type="text" th:field="*{name}" required>
                     </div>
                     <div>
-                        <label >End Date: </label>
-                        <input type="date">
+                        <label>Start Date:</label>
+                        <input type="date" th:field="*{startDate}" required>
                     </div>
                     <div>
-                        <label >Tournament Status: </label>
-                        <select>
-                            <option>Out Going</option>
-                            <option>Finished</option>
+                        <label>End Date:</label>
+                        <input type="date" th:field="*{endDate}" required>
+                    </div>
+                    <div>
+                        <label>Tournament Status:</label>
+                        <select th:field="*{status}">
+                            <option value="Ongoing">Ongoing</option>
+                            <option value="Finished">Finished</option>
                         </select>
                     </div>
                     <div>
-                        <label >Location: </label>
-                        <input type="text">
+                        <label>Location:</label>
+                        <input type="text" th:field="*{location}" required>
                     </div>
-
                 </div>
                 <div class="button">
-                    <button>
-                        Save Tournament
-                    </button>
+                    <button type="submit">Save Tournament</button>
                 </div>
             </form>
+
 
         </div>
 
