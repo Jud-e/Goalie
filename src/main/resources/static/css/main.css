@@ -169,63 +169,59 @@ nav {
 /* --------------------------Profile Account -----------------------*/
 .profile-account {
     background: #e3e5e6;
-
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    /*min-height: 100vh;*/
     padding: 0 20px;
-
 }
-.profile-account .profile_section {
+.profile-account .profile-section {
     display: flex;
     width: 650px;
-    height: 930px;
     margin-top:30px;
     margin-bottom: 30px;
-    /*border: 3px solid rgba(255,255,255,0.3);*/
-    /*border-radius: 30px;*/
     overflow: hidden;
 }
 .profile-account .profile-container {
-    position: relative;
     border-radius: 30px;
     width: 100%;
     background-color: #ffffff;
     box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-
     overflow: hidden;
 }
-.profile-account .btn-box {
+.profile-account .profile-title-section {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     background: linear-gradient(to right, #3B82F6,#10B981);
     gap: 15px;
-    padding: 2.5rem;
-    /*margin-top:30px ;*/
+    padding: 2rem;
 }
-.profile-container .btn-box .btn {
-    padding: 10px 30px;
-    border-radius: 30px;
+.profile-title-section h1 {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 700;
+    gap: 0.8rem;
+
+}
+.profile-title-section i {
+    margin-right: 1rem;
+}
+.profile-title-section span {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
     font-weight: 500;
-    border: none;
-    background: rgba(255,255,255,0.2);
-    font-size: 18px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-    color:#fff;
-    transition: 0.2s;
-    cursor: pointer;
+    color: #4F46E5;
+    background-color: #ffffff
 }
-.profile-container .btn-box .btn-1 {
-    background: #21264D;
+.profile-account .profile-content {
+    padding: 2rem;
 }
-.profile-container .btn-box .btn-1:hover{
-    opacity: 0.6;
-}
-.form_box {
-    position: absolute;
-    transform: translateX(-50%);
+.profile-content-form {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -233,39 +229,18 @@ nav {
     padding: 0 30px;
     transition: .3s;
 }
-
-.regular-form {
-    left: 50%;
-}
-.premium-form {
-    left: -50%;
-}
-.premium-form .form-title {
-    margin-block: 40px 20px;
-}
-.form_box .form-title {
-    margin: 20px 0;
-}
-.form-title span {
-    font-size: 1.5rem;
-    line-height: 2rem;
-    font-weight: 700;
-    color:rgba(0,0,0,0.4) ;
-
-}
-
-.form_box .input_form {
+.profile-content-form .profile-input-form {
     display: grid;
     grid-template-columns: repeat(1, minmax(0, 1fr));
     gap: 1.5rem;
     width: 100%;
-    margin: 0 10px;
+    margin: 0 5px;
+}
+.profile-input-form div {
+    margin: 0 2px;
 
 }
-.form_box .input_form div {
-    margin: 0 10px;
-}
-.form_box .input_form label{
+.profile-input-form label {
     display: block;
     margin-bottom: 0.25rem;
     font-size: 0.875rem;
@@ -273,7 +248,7 @@ nav {
     font-weight: 500;
     color: #374151;
 }
-.form_box .input_form input, .form_box .input_form select {
+.profile-input-form input, .profile-input-form select {
     padding: 0.5rem 1rem;
     border-radius: 0.5rem;
     border-width: 1px;
@@ -282,22 +257,21 @@ nav {
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 300ms;
 }
-.form_box .input_form input {
-    width: 94%;
+.profile-input-form input{
+    width: 90%;
 }
-.form_box .input_form select {
-    width: 99%;
+.profile-input-form select {
+    width: 96%;
 }
-.form_box .input_form .file{
+.profile-input-form .file {
     display: flex;
     align-items: center;
     margin-left: 1rem
-
 }
-.form_box .input_form .input-file {
+.profile-input-form .input-file{
     flex: 1;
 }
-.form_box .input-file  input[type="file"] {
+.profile-input-form input[type="file"] {
     width: 100%;
     font-size: 0.875rem;
     color: #6B7280;
@@ -306,27 +280,26 @@ nav {
     box-shadow 150ms cubic-bezier(0.4, 0, 0.2, 1),
     transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
-.form_box .input-file  input[type="file"]::file-selector-button{
-        margin-right: 1rem;
-        padding: 0.5rem 1rem;
-        border: 0;
-        border-radius: 0.5rem;
-        background-color: #2563EB;
-        color: #fff;
-        font-size: 0.875rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-
+.profile-input-form input[type="file"]::file-selector-button {
+    margin-right: 1rem;
+    padding: 0.5rem 1rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background-color: #2563EB;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
-.form_box .input-file input[type="file"]::file-selector-button:hover {
+.profile-input-form .input-file input[type="file"]::file-selector-button:hover {
     background-color: #1D4ED8;
 }
 
-.form_box  .input-file-content{
+.profile-input-form  .input-file-content{
     shrink: 0;
 }
-.form_box .input-file-content div {
+.profile-input-form .input-file-content div {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -335,17 +308,44 @@ nav {
     height: 4rem;
     background-color: #a2bdf3;
 }
-.form_box  .input-file-content i {
+.profile-input-form  .input-file-content i {
     color: #3a63dc;
 
 }
-
-.billing-section {
+.profile-content-form .premium-toggle {
+    margin-top: 1.5rem;
     margin-bottom: 2rem;
-    margin-top: 2rem;
     width: 100%;
 }
-.billing-section .billing-title{
+.profile-content-form .premium-toggle div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.profile-content-form .premium-toggle input {
+    border-radius: 0.25rem;
+    border-color: #D1D5DB;
+    width: 1.25rem;
+    height: 1.25rem;
+    color: #4F46E5;
+    margin-right: 2rem;
+
+}
+.profile-content-form .premium-toggle label {
+
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+    font-weight: 500;
+    color: #374151;
+}
+.profile-content-form .billing-section {
+    margin-bottom: 2rem;
+    margin-top: 0.5rem;
+    width: 100%;
+    display: none;
+
+}
+.billing-section .billing-title {
     display: flex;
     margin-bottom: 1rem;
     align-items: center;
@@ -356,16 +356,12 @@ nav {
     margin-left: 15px;
 }
 .billing-section .card-info {
-
     display: grid;
     grid-template-columns: repeat(1, minmax(0, 1fr));
     gap: 1.5rem;
     width: 100%;
     margin: 0 10px;
 }
-/*.card-info div {*/
-/*    width: 100%;*/
-/*}*/
 .card-info label {
     display: block;
     margin-bottom: 0.25rem;
@@ -382,14 +378,14 @@ nav {
     border-color: #D1D5DB;
     width: 90%;
 }
-.form_box .button {
+.profile-content-form .button {
     padding-top: 1rem;
 }
-.form_box .button {
+.profile-content-form .button {
     width: 100%;
 
 }
-.form_box .button button {
+.profile-content-form .button button {
     width: 95%;
     background-color: #2563EB;
     color: #fff;
@@ -404,14 +400,12 @@ nav {
     margin: 0 8px;
 
 }
-.form_box .button button:hover {
+.profile-content-form .button button:hover {
     background: transparent;
     border: 2px solid rgb(75, 172, 172);
     color: #1c1c1c;
 }
-
-
-/*=========================Tournament Section==========================*/
+    /*=========================Tournament Section==========================*/
 
 .tournaments {
     padding-top: 5rem;
