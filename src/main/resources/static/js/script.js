@@ -21,41 +21,14 @@ VANTA.GLOBE({
     size: 0.8
 });
 
+const billingSection = document.getElementById("billingSection")
+const premiumToggle = document.getElementById("premiumToggle")
 
-const  regularBtn = document.getElementById("regular")
-
-const  premiumBtn = document.getElementById("premium")
-
-const  regularForm = document.querySelector(".regular-form")
-
-const  premiumForm = document.querySelector(".premium-form")
-const  profileSection = document.querySelector(".profile_section")
-
-
-regularBtn.addEventListener('click', ()=>{
-    regularBtn.style.backgroundColor = "#21264D";
-    premiumBtn.style.backgroundColor = "rgba(255,255,255,0.2)"
-
-    regularForm.style.left = "50%"
-    premiumForm.style.left = "-50%"
-
-    regularForm.style.opacity = 1;
-    premiumForm.style.opacity = 0;
-
-    profileSection.style.height = "930px"
-
-})
-
-premiumBtn.addEventListener('click', ()=>{
-    premiumBtn.style.backgroundColor = "#21264D";
-    regularBtn.style.backgroundColor = "rgba(255,255,255,0.2)"
-
-    regularForm.style.left = "150%"
-    premiumForm.style.left = "50%"
-
-    regularForm.style.opacity = 0;
-    premiumForm.style.opacity = 1;
-
-    profileSection.style.height = "1350px"
+premiumToggle.addEventListener("change", (event) => {
+    if(event.target.checked){
+        billingSection.style.display = "block"
+    }else {
+        billingSection.style.display = "none"
+    }
 
 })

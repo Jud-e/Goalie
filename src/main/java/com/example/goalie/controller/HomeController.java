@@ -1,6 +1,10 @@
 package com.example.goalie.controller;
 import com.example.goalie.config.AppService;
+import com.example.goalie.goalieEnum.DominantFoot;
+import com.example.goalie.goalieEnum.Position;
+import com.example.goalie.goalieEnum.SkillLevel;
 import com.example.goalie.model.User;
+import com.example.goalie.model.UserProfile;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -83,8 +87,16 @@ public class HomeController {
         return null;
     }
 
+//    @GetMapping("/profile_account")
+//    public String ProfileAccount(){
+//        return "profile_account";
+//    }
     @GetMapping("/profile_account")
-    public String ProfileAccount(){
+    public String Profile(Model model){
+        model.addAttribute("userProfile", new UserProfile());
+        model.addAttribute("positions", Position.values());
+        model.addAttribute("skills", SkillLevel.values());
+        model.addAttribute("domfoots", DominantFoot.values());
         return "profile_account";
     }
 

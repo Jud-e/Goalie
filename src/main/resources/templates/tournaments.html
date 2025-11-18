@@ -32,14 +32,22 @@
 <!--                private String status;-->
 <!--                private String location;-->
 
-                <div class="tournament">
+<!--                // Show all tournaments-->
+<!--                @GetMapping-->
+<!--                public String listTournaments(Model model) {-->
+<!--                List<Tournament> tournaments = service.getAllTournaments();-->
+<!--                model.addAttribute("tournaments", tournaments);-->
+<!--                return "tournaments"; // tournaments.html-->
+<!--                }-->
+
+                <div class="tournament" th:each="t : ${tournaments}">
                     <div class="tournament-content">
 
-                        <h1>Vancouver youth tournament</h1>
-                        <h3>Start Date: <span>2021-1-2</span></h3>
-                        <h3>End Date: <span>2021-1-2</span></h3>
-                        <h3>Status: <span>OnGoing</span></h3>
-                        <h3>Location: <span>Rogers Arena</span></h3>
+                        <h1 th:text="${t.name}">Vancouver youth tournament</h1>
+                        <h3>Start Date: <span th:text="${t.startDate}">2021-1-2</span></h3>
+                        <h3>End Date: <span th:text="${t.endDate}">2021-1-2</span></h3>
+                        <h3>Status: <span th:text="${t.status}">OnGoing</span></h3>
+                        <h3>Location: <span th:text="${t.location}">Rogers Arena</span></h3>
 
                     </div>
                     <div class="tournament-link">
@@ -58,7 +66,7 @@
 
                     </div>
                     <div class="tournament-link">
-                        <a th:href="@{/view_matches}">tournaments Detail</a>
+                        <a th:href="@{/tournaments}">tournaments Detail</a>
                     </div>
 
                 </div>
