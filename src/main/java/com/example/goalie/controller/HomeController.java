@@ -1,15 +1,15 @@
 package com.example.goalie.controller;
 import com.example.goalie.config.AppService;
+import com.example.goalie.model.Tournament;
 import com.example.goalie.model.User;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @Controller
 @RequestMapping
@@ -84,8 +84,29 @@ public class HomeController {
     }
 
     @GetMapping("/profile_account")
-    public String ProfileAccount(){
+    public String profileAccount(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/login"; // or show an error
+        }
+        model.addAttribute("user", user);
         return "profile_account";
     }
+
+    @PostMapping("/edit_profile")
+    public String editProfile(@ModelAttribute("user") User updatedUser, HttpSession session, BindingResult br){
+        if (br.hasErrors()){
+            return "profile_account";
+        }
+        User userExisting = (User) session.getAttribute("loggedInUser");
+        userExisting.setName(updatedUser.getName());
+        userExisting.setEmail(updatedUser.getEmail());
+        service.saveUser(userExisting);
+        // update session
+        session.setAttribute("loggedInUser", userExisting);
+
+        return "redirect:/home";
+    }
+
 
 }

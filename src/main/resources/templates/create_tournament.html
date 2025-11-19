@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      >
+      layout:decorate="~{layout}">
+<!--<link rel="stylesheet" th:href="@{/css/main.css}">-->
 <head>
     <meta charset="UTF-8">
     <title>Goalie</title>
 </head>
 <body>
-<main>
+<main layout:fragment="content">
     <section class="create-tournament">
         <div class="create_tournament-container">
             <div class="create-tournament-title" data-aos="fade-down">
                 <h1>Schedule a Tournament</h1>
                 <div></div>
             </div>
-            <form method="post" class="schedule-box" th:action="@{/tournaments/create_tournament}" th:object="${tournament}">
+            <form method="post"
+                  class="schedule-box"
+                  th:action="@{/tournaments/create}"
+                  th:object="${tournament}">
                 <div class="input_form">
                     <div>
                         <label>Tournament Name:</label>

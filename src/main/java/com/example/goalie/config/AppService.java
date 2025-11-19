@@ -35,7 +35,9 @@ public class AppService {
         user.setSubscription(false);
         return userRepository.save(user);
     }
-
+    public void saveUser(User user){
+        userRepository.save(user);
+    }
     public User getUserByEmail(String email){
         return userRepository.findByEmail(email).orElse(null);
     }
