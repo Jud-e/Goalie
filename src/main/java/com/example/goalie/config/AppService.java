@@ -16,12 +16,13 @@ public class AppService {
     private final NotificationRepository notificationRepository;
     private final MessagingRepository messagingRepository;
     private final MatchRepository matchRepository;
+    private final UserProfileRepository userProfileRepository;
 
     public AppService(UserRepository userRepository,
                       TournamentRepository tournamentRepository,TeamRepository teamRepository,
                       PlayerTeamRepository playerTeamRepository,NotificationRepository notificationRepository,
                       MessagingRepository messagingRepository,
-                      MatchRepository matchRepository) {
+                      MatchRepository matchRepository, UserProfileRepository userProfileRepository) {
         this.userRepository = userRepository;
         this.tournamentRepository = tournamentRepository;
         this.teamRepository = teamRepository;
@@ -29,6 +30,7 @@ public class AppService {
         this.notificationRepository = notificationRepository;
         this.messagingRepository = messagingRepository;
         this.matchRepository = matchRepository;
+        this.userProfileRepository = userProfileRepository;
     }
 //For users
     public User createUser(User user){
@@ -115,5 +117,8 @@ public class AppService {
     public Match createMatch(Match match){
         return matchRepository.save(match);
     }
+
+
+    // ================== User Profile ===============
 
 }
