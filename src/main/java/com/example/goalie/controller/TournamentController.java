@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -39,7 +40,6 @@ public class TournamentController {
                                    HttpSession session) {
         User organizer = (User) session.getAttribute("loggedInUser");
         if (organizer == null) return "redirect:/login";
-
         tournament.setStatus("Upcoming");
         service.createTournament(tournament, organizer);
         return "redirect:/tournaments"; // back to tournament list

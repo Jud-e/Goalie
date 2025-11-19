@@ -175,13 +175,13 @@ nav {
     /*min-height: 100vh;*/
     padding: 0 20px;
 }
-.profile-account .profile-section {
-    display: flex;
-    width: 650px;
-    margin-top:30px;
-    margin-bottom: 30px;
-    overflow: hidden;
-}
+/*.profile-account .profile-section {*/
+/*    display: flex;*/
+/*    width: 650px;*/
+/*    margin-top:30px;*/
+/*    margin-bottom: 30px;*/
+/*    overflow: hidden;*/
+/*}*/
 .profile-account .profile-container {
     border-radius: 30px;
     width: 100%;
