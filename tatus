@@ -1,0 +1,50 @@
+[33m220fa62[m[33m ([m[1;31morigin/dev[m[33m)[m Don't run the team viewing yet. It's not working yet
+[33m533b136[m updates
+[33mff5cf92[m Merge remote-tracking branch 'origin/dev' into dev
+[33m4eed51d[m updates
+[33m850a0db[m Merge pull request #19 from Jud-e/profileUser
+[33m88dfe13[m[33m ([m[1;31morigin/profileUser[m[33m)[m added user profile
+[33mb0794c1[m updates
+[33m48a38c4[m Added Controllers and Updated AppService
+[33mda6997a[m Merge pull request #18 from Jud-e/styling
+[33m14d7984[m better styling
+[33m3d1d1cf[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Update README.md
+[33m53dd629[m Update README.md
+[33m9cbd51b[m Merge pull request #17 from Jud-e/match
+[33me3ed24c[m create teams fixtures
+[33m2ff2cbf[m Merge pull request #16 from Jud-e/tournamentstemp
+[33mdcb831b[m tournament form
+[33m0f37c23[m Merge pull request #15 from Jud-e/tournamentstemp
+[33md13ffbd[m tournament template view
+[33m964a3c7[m[33m ([m[1;31morigin/feat/team-template[m[33m)[m Created team template, still a work in progress
+[33m662ffe9[m Update README.md
+[33md8ebaaf[m Merge pull request #13 from Jud-e/profileAccount
+[33m476fe56[m junk cleaning
+[33mee7f384[m Merge pull request #12 from Jud-e/profileAccount
+[33m4d5ee04[m premium and regular account form box and fixed conflicts issues with dev branch
+[33m27fb7e7[m premium and regular account form box
+[33m28cb702[m[33m ([m[1;31morigin/controller[m[33m)[m Creating a new branch to work on controllers. Don't fetch or pull from this one to avoid errors
+[33m56a0f37[m Creating a new branch to work on controllers. Don't fetch or pull from this one to avoid errors
+[33macc7eb4[m Update home controller
+[33m6cf9aa8[m HomeController updates and Appservice creation
+[33m9594e96[m model and repositories
+[33mb1a2716[m Merge pull request #10 from Jud-e/profileAccount
+[33m901f87b[m account profile
+[33m20d55eb[m Merge remote-tracking branch 'origin/dev' into dev
+[33mfab1cdc[m model and repositories
+[33m46dfcec[m login and signup
+[33m8275723[m login and signup
+[33m05d7062[m login and signup
+[33m62d379b[m login and signup
+[33m225cbd6[m login
+[33m95906a2[m Merge pull request #8 from Jud-e/dev
+[33m6e7ab5b[m Merge pull request #7 from Jud-e/main
+[33mff525e4[m login
+[33mf9d68ac[m added motion and footer
+[33m93575de[m[33m ([m[1;31morigin/themeDialect[m[33m)[m added thymeleaf dialect
+[33m183858d[m navbar and hero section
+[33maef63dd[m Merge pull request #6 from Jud-e/navBar
+[33m16cd3be[m First Html Render
+[33mc76cb9c[m Update README.md
+[33me577921[m Create README.md
+[33m7433223[m Replace old repo with Spring MVC + H2 setup
