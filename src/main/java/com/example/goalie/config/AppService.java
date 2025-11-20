@@ -2,6 +2,7 @@ package com.example.goalie.config;
 
 import com.example.goalie.model.*;
 import com.example.goalie.repository.*;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -53,6 +54,7 @@ public class AppService {
         return tournamentRepository.findAll();
     }
 
+
     public Tournament getTournamentById(Long id){
         return tournamentRepository.findById(id).orElse(null);
     }
@@ -72,6 +74,9 @@ public class AppService {
 
     public Team createTeam(Team team){
         return teamRepository.save(team);
+    }
+    public List<Team> getTeamsByTournament(Tournament tournament){
+        return teamRepository.findByTournament(tournament);
     }
 
     // ================= Notifications =================

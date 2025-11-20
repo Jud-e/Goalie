@@ -20,28 +20,42 @@ public class TeamController {
 
     // List all teams
     @GetMapping
-    public String listTeams(Model model) {
-        List<Team> teams = service.getAllTeams();
+    public String viewTeams(@RequestParam Long tournamentId, Model model){
+        System.out.println("Received Tournament ID: " + tournamentId); // <-- Check this number
+
+        Tournament tournament = service.getTournamentById(tournamentId);
+
+        // 2. Check the result before it crashes
+        System.out.println("Tournament Object Retrieved: " + tournament);
+
+        if (tournament == null) {
+            // Redirect to a safe page (e.g., the tournament list)
+            // You could also add a message here using RedirectAttributes
+            return "redirect:/tournaments";
+        }
+        List<Team> teams = service.getTeamsByTournament(tournament);
+        model.addAttribute("tournament", tournament);
         model.addAttribute("teams", teams);
-        return "teams"; // teams.html
+        return "viewTeams";
     }
 
     // Show create team form
     @GetMapping("/create")
-    public String showCreateTeamForm(Model model) {
+    public String showCreateTeamForm(@RequestParam Long tournamentId, Model model){
+        Tournament tournament = service.getTournamentById(tournamentId);
         model.addAttribute("team", new Team());
-        model.addAttribute("tournaments", service.getAllTournaments());
-        return "create_team"; // create_team.html
+        model.addAttribute("tournament", tournament);
+        return "createTeam";
     }
 
     // Handle team creation
     @PostMapping("/create")
     public String createTeam(@ModelAttribute Team team,
-                             @RequestParam Long tournamentId) {
+                             @RequestParam Long tournamentId){
         Tournament tournament = service.getTournamentById(tournamentId);
         team.setTournament(tournament);
         service.createTeam(team);
-        return "redirect:/teams";
+        return "redirect:/teams?tournamentId=" + tournamentId;
     }
 
     // View team details

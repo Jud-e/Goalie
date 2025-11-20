@@ -4,39 +4,44 @@
       layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Goalie</title>
+    <title>Goalie - Tournaments</title>
 </head>
 <body>
-    <main layout:fragment="content">
-        <section class="tournaments">
-            <div class="main-section tournament-main">
-                <div class="tournaments-title" data-aos="fade-down">
+<main layout:fragment="content">
+    <section class="tournaments">
+        <div class="main-section tournament-main">
+            <div class="tournaments-title" data-aos="fade-down">
                 <h2>Tournaments</h2>
                 <div></div>
             </div>
+
             <div class="create-links" data-aos="fade-left">
-                <a th:href="@{tournaments/create}">Create Tournament
-                </a>
+                <a th:href="@{/tournaments/create}">Create Tournament</a>
                 <i data-feather="plus" class="mr-2"></i>
             </div>
+
             <div class="tournament-container" data-aos="flip-left">
                 <div th:if="${#lists.isEmpty(tournaments)}">
                     <h2 style="color: #0a0610">No tournaments available</h2>
                 </div>
+
                 <div class="tournament" th:each="t : ${tournaments}">
                     <div class="tournament-content">
-                        <h1 th:text="${t.name}"></h1>
-                        <h3>Start Date: <span th:text="${t.startDate}"></span></h3>
-                        <h3>End Date: <span th:text="${t.endDate}"></span></h3>
-                        <h3>Status: <span th:text="${t.status}"></span></h3>
-                        <h3>Location: <span th:text="${t.location}"></span></h3>
+                        <h1 th:text="${t.name}">Tournament Name</h1>
+                        <h3>Start Date: <span th:text="${t.startDate}">Start Date</span></h3>
+                        <h3>End Date: <span th:text="${t.endDate}">End Date</span></h3>
+                        <h3>Status: <span th:text="${t.status}">Status</span></h3>
+                        <h3>Location: <span th:text="${t.location}">Location</span></h3>
                     </div>
-                    <div class="tournament-link">
-                        <a th:href="@{/view_matches}">tournaments Detail</a>
+
+                    <div class="tournament-links">
+                        <a th:href="@{/view_matches(tournamentId=${t.id})}">Tournament Detail</a>
+                        <br/>
+                        <a th:href="@{/teams(tournamentId=${t.id})}">Team Details</a>
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
     </section>
 </main>
 </body>
