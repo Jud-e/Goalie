@@ -79,7 +79,6 @@ public class AppService {
 
     public List<Tournament> filterTournaments(
             String status,
-            String sport,
             String location,
             LocalDate startDate,
             LocalDate endDate
@@ -92,12 +91,10 @@ public class AppService {
                 // Invalid status, ignore
             }
         }
-        String sportFilter = (sport != null && !sport.trim().isEmpty()) ? sport.trim() : null;
         String locationFilter = (location != null && !location.trim().isEmpty()) ? location.trim() : null;
 
         return tournamentRepository.filterTournaments(
                 statusEnum,
-                sportFilter,
                 locationFilter,
                 startDate,
                 endDate

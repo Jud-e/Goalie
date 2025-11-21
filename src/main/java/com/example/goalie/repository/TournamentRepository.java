@@ -24,7 +24,6 @@ public interface TournamentRepository extends JpaRepository<Tournament, Long> {
             "(:endDate IS NULL OR t.endDate <= :endDate)")
     List<Tournament> filterTournaments(
             @Param("status") Tournament.TournamentStatus status,
-            @Param("sport") String sport,
             @Param("location") String location,
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate

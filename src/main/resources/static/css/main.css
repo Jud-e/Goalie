@@ -433,7 +433,7 @@ nav {
 .tournaments-title div {
     width: 10%;
     height: 0.25rem;
-    background-color: #2563EB;
+    background-color: var(--primary);
     margin: 0 auto;
 
 
@@ -442,7 +442,8 @@ nav {
     position: absolute;
     padding: 30px;
     border-radius: 15px;
-    background-color: #2563EB;
+    background-color: var(--primary);
+    color: var(--text);
     right: 2%;
     align-items: center;
     display: flex;
@@ -455,10 +456,12 @@ nav {
     font-size: 16px;
     /*margin-bottom: 15px;*/
     color: #f4f4f4;
+    background-color: var(--primary);
 
 }
 .create-links i{
     font-size: 12px;
+    background-color: var(--primary);
     /*margin-top: 10px;*/
 }
 
@@ -580,7 +583,7 @@ nav {
 .search-button {
     padding: 0.75rem 1.5rem;
     background: var(--primary);
-    color: var(--background);
+    color: var(--text);
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -675,13 +678,13 @@ nav {
 
 .clear-button {
     background: transparent;
-    color: var(--text);
+    color: var(--primary);
     border: 2px solid var(--primary);
 }
 
 .clear-button:hover {
     background: var(--primary);
-    color: var(--background);
+    color: var(--text);
 }
 
 .results-info {
@@ -729,7 +732,7 @@ nav {
 
 .tournament-header h3 {
     font-size: 1.5rem;
-    color: var(--text);
+    color: var(--primary);
     flex: 1;
     margin: 0;
 }
@@ -775,7 +778,7 @@ nav {
 }
 
 .tournament-description {
-    color: rgba(233, 227, 245, 0.8);
+    color: var(--primary);
     line-height: 1.6;
     margin: 0;
     flex: 1;
@@ -794,7 +797,7 @@ nav {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    color: var(--text);
+    color: var(--primary);
     font-size: 0.9rem;
 }
 

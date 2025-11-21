@@ -26,7 +26,7 @@
                                 type="text"
                                 id="searchInput"
                                 name="search"
-                                placeholder="Search tournaments by name, description, location, or sport..."
+                                placeholder="Search tournaments by name, description, location..."
                                 th:value="${currentSearch}"
                                 class="search-input"
                         >
@@ -124,10 +124,10 @@
                                 <span th:text="${tournament.location}"></span>
                             </div>
 
-                            <div class="detail-item">
-                                <i data-feather="activity"></i>
-                                <span th:text="${tournament.sport}"></span>
-                            </div>
+<!--                            <div class="detail-item">-->
+<!--                                <i data-feather="activity"></i>-->
+<!--                                <span th:text="${tournament.sport}"></span>-->
+<!--                            </div>-->
 
                             <div class="detail-item" th:if="${tournament.maxParticipants != null}">
                                 <i data-feather="users"></i>

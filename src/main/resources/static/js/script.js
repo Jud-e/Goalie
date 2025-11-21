@@ -36,7 +36,6 @@ premiumToggle.addEventListener("change", (event) => {
 function clearFilters() {
     document.getElementById('searchInput').value = '';
     document.getElementById('statusFilter').value = '';
-    document.getElementById('sportFilter').value = '';
     document.getElementById('locationFilter').value = '';
     document.getElementById('startDateFilter').value = '';
     document.getElementById('endDateFilter').value = '';

@@ -44,6 +44,14 @@ public class Tournament {
             return null; // or throw exception if you want strict handling
         }
     }
+    @Transient // tells JPA not to store this in the DB
+    public Integer getMaxParticipants() {
+        return numOfTeams != null ? numOfTeams * 11 : 0;
+    }
+    @Transient
+    public int getCurrentParticipants() {
+        return participants != null ? participants.size() : 0;
+    }
 
     @OneToMany(mappedBy = "tournament",cascade = CascadeType.ALL)
     private List<User> participants = new ArrayList<>();

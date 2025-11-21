@@ -25,6 +25,10 @@
                         <input type="text" th:field="*{name}" required>
                     </div>
                     <div>
+                        <label>Description:</label>
+                        <input type="text" th:field="*{description}" required>
+                    </div>
+                    <div>
                         <label>Start Date:</label>
                         <input type="date" th:field="*{startDate}" required>
                     </div>
@@ -32,14 +36,22 @@
                         <label>End Date:</label>
                         <input type="date" th:field="*{endDate}" required>
                     </div>
+<!--                    <div>-->
+<!--                        <label>Tournament Status:</label>-->
+<!--                        <select th:field="*{status}">-->
+<!--                            <option value="Ongoing">Ongoing</option>-->
+<!--                            <option value="Finished">Finished</option>-->
+<!--                        </select>-->
+<!--                    </div>-->
                     <div>
-                        <label>Tournament Status:</label>
-                        <select th:field="*{status}">
-                            <option value="Ongoing">Ongoing</option>
-                            <option value="Finished">Finished</option>
-                        </select>
-                    </div>
-                    <div>
+                        <div>
+                            <label>Tournament Size:</label>
+                            <select th:field="*{numOfTeams}">
+                                <option value="4">4</option>
+                                <option value="8">8</option>
+                                <option value="16">16</option>
+                            </select>
+                        </div>
                         <label>Location:</label>
                         <input type="text" th:field="*{location}" required>
                     </div>
