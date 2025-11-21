@@ -5,6 +5,7 @@ import com.example.goalie.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -34,6 +35,11 @@ public class AppService {
     }
 //For users
     public User createUser(User user){
+        // Check if email already exists
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
+            // Option 1: throw an exception
+            throw new IllegalArgumentException("A user with this email already exists");
+        }
         user.setSubscription(false);
         return userRepository.save(user);
     }
@@ -43,7 +49,9 @@ public class AppService {
     public User getUserByEmail(String email){
         return userRepository.findByEmail(email).orElse(null);
     }
-
+    public boolean emailExists(String email) {
+        return userRepository.findByEmail(email).isPresent();
+    }
     public User getUserById(Long id){
         return userRepository.findById(id).orElse(null);
     }
@@ -59,9 +67,81 @@ public class AppService {
     }
 
     public Tournament createTournament(Tournament tournament, User organizer){
-        tournament.setStatus("Upcoming");
         return tournamentRepository.save(tournament);
     }
+
+    public List<Tournament> searchTournaments(String searchTerm) {
+        if (searchTerm == null || searchTerm.trim().isEmpty()) {
+            return getAllTournaments();
+        }
+        return tournamentRepository.searchTournaments(searchTerm.trim());
+    }
+
+    public List<Tournament> filterTournaments(
+            String status,
+            String sport,
+            String location,
+            LocalDate startDate,
+            LocalDate endDate
+    ) {
+        Tournament.TournamentStatus statusEnum = null;
+        if (status != null && !status.trim().isEmpty()) {
+            try {
+                statusEnum = Tournament.TournamentStatus.fromString(status);
+            } catch (IllegalArgumentException e) {
+                // Invalid status, ignore
+            }
+        }
+        String sportFilter = (sport != null && !sport.trim().isEmpty()) ? sport.trim() : null;
+        String locationFilter = (location != null && !location.trim().isEmpty()) ? location.trim() : null;
+
+        return tournamentRepository.filterTournaments(
+                statusEnum,
+                sportFilter,
+                locationFilter,
+                startDate,
+                endDate
+        );
+    }
+    public List<Tournament> searchAndFilterTournaments(
+            String searchTerm,
+            String status,
+            String location,
+            LocalDate startDate,
+            LocalDate endDate
+    ) {
+        Tournament.TournamentStatus statusEnum = null;
+        if (status != null && !status.trim().isEmpty()) {
+            try {
+                statusEnum = Tournament.TournamentStatus.fromString(status);
+            } catch (IllegalArgumentException e) {
+                // Invalid status, ignore
+            }
+        }
+
+        String searchFilter = (searchTerm != null && !searchTerm.trim().isEmpty()) ? searchTerm.trim() : null;
+        String locationFilter = (location != null && !location.trim().isEmpty()) ? location.trim() : null;
+
+        return tournamentRepository.searchAndFilterTournaments(
+                searchFilter,
+                statusEnum,
+                locationFilter,
+                startDate,
+                endDate
+        );
+    }
+    public Tournament saveTournament(Tournament tournament) {
+        return tournamentRepository.save(tournament);
+    }
+    public List<String> getAllLocations() {
+        return tournamentRepository.findAll().stream()
+                .map(Tournament::getLocation)
+                .filter(loc -> loc != null && !loc.trim().isEmpty())
+                .distinct()
+                .sorted()
+                .toList();
+    }
+
     // ================= Team =================
     public List<Team> getAllTeams(){
         return teamRepository.findAll();

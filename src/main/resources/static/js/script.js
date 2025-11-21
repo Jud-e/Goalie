@@ -32,3 +32,30 @@ premiumToggle.addEventListener("change", (event) => {
     }
 
 })
+
+function clearFilters() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('statusFilter').value = '';
+    document.getElementById('sportFilter').value = '';
+    document.getElementById('locationFilter').value = '';
+    document.getElementById('startDateFilter').value = '';
+    document.getElementById('endDateFilter').value = '';
+    window.location.href = '/tournaments';
+}
+
+// Auto-submit on filter change
+document.addEventListener('DOMContentLoaded', function() {
+    const filterSelects = document.querySelectorAll('.filter-select, .filter-date');
+    filterSelects.forEach(select => {
+        select.addEventListener('change', function() {
+            document.getElementById('searchFilterForm').submit();
+        });
+    });
+});
+
+// Re-initialize feather icons after page load
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof feather !== 'undefined') {
+        feather.replace();
+    }
+});

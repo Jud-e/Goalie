@@ -16,20 +16,25 @@
         <div th:class="formSection">
             <form th:class="loginForm" method="post" th:action="@{/signup}" th:object="${user}">
                 <label th:for="email">Email:</label>
-                <input th:type="email" th:id="email" th:field="*{email}"><br>
+                <input th:type="email" th:id="email" th:field="*{email}">
+                <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"></p><br>
                 <label th:for="username">Username:</label>
                 <input th:type="text" th:id="username" th:field="*{name}"><br>
                 <label th:for="password">Password:</label>
-                <input th:type="password" th:id="password" th:field="*{password}"><br>
-                <label for="role">Role:</label>
-                <select th:field="*{role}" id="role">
-                    <option value="player">Player</option>
-                    <option value="admin">Admin</option>
-                </select><br/>
-                <label for="skill">Skill Level:</label>
-                <input type="text" th:field="*{skill}" id="skill"/><br/>
+                <input th:type="password" th:id="password" th:field="*{password}">
+                <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message"></p><br>
+<!--                <label for="role">Role:</label>-->
+<!--                <select th:field="*{role}" id="role">-->
+<!--                    <option value="player">Player</option>-->
+<!--                    <option value="admin">Admin</option>-->
+<!--                </select><br/>-->
+<!--                <label for="skill">Skill Level:</label>-->
+<!--                <input type="text" th:field="*{skill}" id="skill"/><br/>-->
                 <button type="submit">Submit</button><br>
                 <a th:href="@{/login}">Have an account? Login here!</a>
+                <div th:if="${error}" class="error-message">
+                    <p th:text="${error}"></p>
+                </div>
             </form>
         </div>
     </div>

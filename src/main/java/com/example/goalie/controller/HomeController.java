@@ -30,6 +30,9 @@ public class HomeController {
     }
     @PostMapping("/signup")
     public String signupSubmit(@ModelAttribute("user")  User user, BindingResult br){
+        if (service.emailExists(user.getEmail())) {
+            br.rejectValue("email", "error.user", "A user with this email already exists");
+        }
         if (br.hasErrors()){
             return "signup";
         }
