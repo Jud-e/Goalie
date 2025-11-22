@@ -103,50 +103,111 @@ public class HomeController {
     }
 //homepage
     @GetMapping("/home")
-    public String home(HttpSession session, Model model) {
+    public String home(HttpSession session, Model model, @RequestParam(required = false) String payment) {
         User user = (User) session.getAttribute("loggedInUser");
         if(user == null) {
             return "redirect:/login";
         }
         
-        // Get current mode from session, default to "user"
-        String currentMode = (String) session.getAttribute("userMode");
-        if (currentMode == null) {
-            currentMode = "user";
-            session.setAttribute("userMode", currentMode);
+        // Get current plan from user subscription status
+        String currentPlan = user.isSubscription() ? "premium" : "basic";
+        session.setAttribute("currentPlan", currentPlan);
+        
+        // Check if payment form should be shown
+        Boolean showPaymentForm = (Boolean) session.getAttribute("showPaymentForm");
+        if (showPaymentForm != null && showPaymentForm) {
+            session.removeAttribute("showPaymentForm");
+        } else {
+            showPaymentForm = false;
         }
         
         // Get user statistics
         int tournamentCount = service.getAllTournaments().size();
         
-        // Check if player profile exists (for first-time player mode setup)
+        // Check if player profile exists (for first-time premium setup)
         boolean hasPlayerProfile = service.hasPlayerProfile(user);
         boolean showPlayerSetup = false;
         
-        if ("player".equals(currentMode) && !hasPlayerProfile) {
+        if ("premium".equals(currentPlan) && !hasPlayerProfile) {
             showPlayerSetup = true;
         }
         
+        // Payment success/error messages
+        if ("success".equals(payment)) {
+            model.addAttribute("paymentSuccess", "Payment successful! Welcome to Premium!");
+        } else if ("error".equals(payment)) {
+            model.addAttribute("paymentError", "Payment failed. Please try again.");
+        }
+        
         model.addAttribute("user", user);
-        model.addAttribute("currentMode", currentMode);
+        model.addAttribute("currentPlan", currentPlan);
+        model.addAttribute("isPremium", user.isSubscription());
         model.addAttribute("tournamentCount", tournamentCount);
         model.addAttribute("showPlayerSetup", showPlayerSetup);
+        model.addAttribute("showPaymentForm", showPaymentForm != null ? showPaymentForm : false);
         return "home";
     }
     
-    // Switch user mode
-    @PostMapping("/switch-mode")
-    public String switchMode(@RequestParam String mode, HttpSession session) {
+    // Switch plan or show payment form
+    @PostMapping("/switch-plan")
+    public String switchPlan(@RequestParam String plan, HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
         if(user == null) {
             return "redirect:/login";
         }
         
-        if ("user".equals(mode) || "player".equals(mode)) {
-            session.setAttribute("userMode", mode);
+        if ("basic".equals(plan)) {
+            // Basic plan is always available
+            session.setAttribute("currentPlan", "basic");
+            return "redirect:/home";
+        } else if ("premium".equals(plan)) {
+            // Check if user already has premium
+            if (user.isSubscription()) {
+                session.setAttribute("currentPlan", "premium");
+                return "redirect:/home";
+            } else {
+                // Show payment form by setting session attribute
+                session.setAttribute("showPaymentForm", true);
+                return "redirect:/home";
+            }
         }
         
         return "redirect:/home";
+    }
+    
+    // Process premium payment
+    @PostMapping("/upgrade-premium")
+    public String upgradePremium(@RequestParam String cardNumber,
+                                 @RequestParam String cardHolder,
+                                 @RequestParam String expiryDate,
+                                 @RequestParam String cvv,
+                                 HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if(user == null) {
+            return "redirect:/login";
+        }
+        
+        // TODO: Integrate with actual payment gateway (Stripe, PayPal, etc.)
+        // For now, we'll simulate successful payment
+        
+        // Validate payment details (basic validation)
+        if (cardNumber == null || cardNumber.trim().isEmpty() ||
+            cardHolder == null || cardHolder.trim().isEmpty() ||
+            expiryDate == null || expiryDate.trim().isEmpty() ||
+            cvv == null || cvv.trim().isEmpty()) {
+            return "redirect:/home?payment=error";
+        }
+        
+        // Simulate payment processing
+        // In production, this would call a payment gateway API
+        user.setSubscription(true);
+        service.saveUser(user);
+        
+        // Update session
+        session.setAttribute("loggedInUser", user);
+        session.setAttribute("currentPlan", "premium");
+        
+        return "redirect:/home?payment=success";
     }
     
     // Save player profile setup
