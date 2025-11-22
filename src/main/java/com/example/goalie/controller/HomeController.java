@@ -108,8 +108,37 @@ public class HomeController {
         if(user == null) {
             return "redirect:/login";
         }
-    model.addAttribute("user", user);
-    return "home";
+        
+        // Get current mode from session, default to "user"
+        String currentMode = (String) session.getAttribute("userMode");
+        if (currentMode == null) {
+            currentMode = "user";
+            session.setAttribute("userMode", currentMode);
+        }
+        
+        // Get user statistics
+        int tournamentCount = service.getAllTournaments().size();
+        // You can add more stats here as needed
+        
+        model.addAttribute("user", user);
+        model.addAttribute("currentMode", currentMode);
+        model.addAttribute("tournamentCount", tournamentCount);
+        return "home";
+    }
+    
+    // Switch user mode
+    @PostMapping("/switch-mode")
+    public String switchMode(@RequestParam String mode, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if(user == null) {
+            return "redirect:/login";
+        }
+        
+        if ("user".equals(mode) || "player".equals(mode)) {
+            session.setAttribute("userMode", mode);
+        }
+        
+        return "redirect:/home";
     }
 
 
