@@ -4,36 +4,93 @@
       layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Goalie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams - Goalie</title>
 </head>
 <body>
 <main layout:fragment="content">
-    <section class="tournaments">
-        <div class="main-section tournament-main">
-            <div class="tournaments-title" data-aos="fade-down">
-                <h2>Teams for <span th:text="${tournament.name}"></span></h2>
-                <div></div>
+    <section class="teams-section">
+        <div class="teams-container">
+            <!-- Header -->
+            <div class="teams-header">
+                <div class="back-link">
+                    <a th:href="@{/tournaments}" class="back-btn">
+                        <span>←</span> Back to Tournaments
+                    </a>
+                </div>
+                <div class="header-content">
+                    <div>
+                        <h1>Tournament Teams</h1>
+                        <p class="tournament-name">
+                            <span th:text="${tournament.name}">Tournament Name</span>
+                        </p>
+                    </div>
+                    <a th:href="@{/teams/create(tournamentId=${tournament.id})}" class="create-team-header-btn">
+                        <span>+</span> Create Team
+                    </a>
+                </div>
             </div>
-            <div class="create-links" data-aos="fade-left">
-                <a th:href="@{/teams/create(tournamentId=${tournament.id})}">Create Team<i data-feather="plus" class="mr-2"></i></a>
 
+            <!-- Success Message -->
+            <div th:if="${success}" class="success-message global-success">
+                <p th:text="${success}"></p>
             </div>
-            <div class="tournament-container" data-aos="flip-left">
-                <div th:if="${#lists.isEmpty(teams)}">
-                    <h2 style="color: #0a0610">No teams created</h2>
-                </div>
-                <div class="tournament" th:each="t : ${teams}">
-                    <div class="tournament-content">
-                        <h1 th:text="${t.name}"></h1>
-                        <h3>Start Date: <span th:text="${t.startDate}"></span></h3>
-                        <h3>End Date: <span th:text="${t.endDate}"></span></h3>
-                        <h3>Status: <span th:text="${t.status}"></span></h3>
-                        <h3>Location: <span th:text="${t.location}"></span></h3>
+
+            <!-- Error Message -->
+            <div th:if="${error}" class="error-message global-error">
+                <p th:text="${error}"></p>
+            </div>
+
+            <!-- Teams Grid -->
+            <div class="teams-grid" th:if="${!#lists.isEmpty(teams)}">
+                <div th:each="team : ${teams}" class="team-card">
+                    <div class="team-card-header">
+                        <h3 th:text="${team.name}">Team Name</h3>
+                        <span class="team-badge">
+                            <span th:text="${#lists.size(team.players)}">0</span> Players
+                        </span>
                     </div>
-                    <div class="tournament-link">
-                        <a th:href="@{/view_matches}">tournaments Detail</a>
+                    
+                    <div class="team-card-body">
+                        <div class="team-info-item">
+                            <span class="info-icon">🏆</span>
+                            <div class="info-content">
+                                <span class="info-label">Tournament</span>
+                                <span class="info-value" th:text="${team.tournament.name}">Tournament Name</span>
+                            </div>
+                        </div>
+
+                        <div class="team-members-section" th:if="${!#lists.isEmpty(team.players)}">
+                            <h4>Team Members</h4>
+                            <div class="members-list">
+                                <div th:each="player : ${team.players}" class="member-item">
+                                    <span class="member-avatar">👤</span>
+                                    <span class="member-name" th:text="${player.name}">Player Name</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="empty-members" th:if="${#lists.isEmpty(team.players)}">
+                            <p>No players added yet</p>
+                        </div>
+                    </div>
+
+                    <div class="team-card-actions">
+                        <a th:href="@{/teams/{id}(id=${team.id})}" class="team-action-btn view-btn">
+                            View Details
+                        </a>
                     </div>
                 </div>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" th:if="${#lists.isEmpty(teams)}">
+                <div class="empty-icon">👥</div>
+                <h2>No Teams Yet</h2>
+                <p>Be the first to create a team for this tournament!</p>
+                <a th:href="@{/teams/create(tournamentId=${tournament.id})}" class="btn-primary">
+                    <span>+</span> Create First Team
+                </a>
             </div>
         </div>
     </section>

@@ -57,8 +57,13 @@ public class TournamentController {
 
     // 2️⃣ Show create tournament form
     @GetMapping("/create")
-    public String showCreateForm(Model model) {
+    public String showCreateForm(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/login";
+        }
         model.addAttribute("tournament", new Tournament());
+        model.addAttribute("user", user);
         return "create_tournament"; // templates/create_tournament.html
     }
 

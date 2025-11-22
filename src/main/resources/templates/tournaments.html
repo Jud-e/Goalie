@@ -134,6 +134,15 @@
                                 <span th:text="${tournament.currentParticipants != null ? tournament.currentParticipants : 0} + '/' + ${tournament.maxParticipants} + ' participants'"></span>
                             </div>
                         </div>
+                        
+                        <div class="tournament-actions">
+                            <a th:href="@{/teams/create(tournamentId=${tournament.id})}" class="tournament-action-btn create-team-btn">
+                                <i data-feather="users"></i> Create Team
+                            </a>
+                            <a th:href="@{/teams(tournamentId=${tournament.id})}" class="tournament-action-btn view-teams-btn">
+                                <i data-feather="eye"></i> View Teams
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
