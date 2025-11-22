@@ -55,8 +55,30 @@ public class AppService {
     public User getUserById(Long id){
         return userRepository.findById(id).orElse(null);
     }
+    public boolean isUserInAnyTeam(User user, Tournament tournament) {
+        if (user == null || tournament == null) {
+            return false;
+        }
+        List<Team> teams = getTeamsByTournament(tournament);
+        if (teams == null) {
+            return false;
+        }
+        for (Team team : teams) {
+            if (team.getPlayers() != null) {
+                for (User player : team.getPlayers()) {
+                    if (player != null && player.getId().equals(user.getId())) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
 
-//For Tournaments
+    //For Tournaments
     public List<Tournament> getAllTournaments(){
         return tournamentRepository.findAll();
     }
@@ -145,19 +167,112 @@ public class AppService {
     }
 
     public Team getTeamById(Long id){
-        return teamRepository.findById(id).orElse(null);
+        Team team = teamRepository.findById(id).orElse(null);
+        if (team != null) {
+            loadTeamPlayers(team);
+        }        return team;
     }
-
     public Team createTeam(Team team){
+        // Ensure players list is initialized
+        if (team.getPlayers() == null) {
+            team.setPlayers(new java.util.ArrayList<>());
+        }
         return teamRepository.save(team);
     }
     public List<Team> getTeamsByTournament(Tournament tournament){
-        return teamRepository.findByTournament(tournament);
+        List<Team> teams = teamRepository.findByTournament(tournament);
+        // Load players for each team from PlayerTeam
+        for (Team team : teams) {
+            loadTeamPlayers(team);
+        }
+        return teams;
+    }
+    // Load players for a team from PlayerTeam entity
+    private void loadTeamPlayers(Team team) {
+        if (team == null) return;
+        List<PlayerTeam> playerTeams = playerTeamRepository.findByTeam(team);
+        if (team.getPlayers() == null) {
+            team.setPlayers(new java.util.ArrayList<>());
+        } else {
+            team.getPlayers().clear();
+        }
+        for (PlayerTeam pt : playerTeams) {
+            if (pt.getUser() != null && !team.getPlayers().contains(pt.getUser())) {
+                team.getPlayers().add(pt.getUser());
+            }
+        }
+    }
+    // Check if user is premium (subscription = true means premium)
+    public boolean isPremiumUser(User user) {
+        return user != null && user.isSubscription();
+    }
+    // Check if user is already in a team for a tournament
+    public boolean isUserInTeamForTournament(User user, Tournament tournament) {
+        if (user == null || tournament == null) return false;
+        List<PlayerTeam> playerTeams = playerTeamRepository.findByUserAndTournament(user, tournament);
+        return !playerTeams.isEmpty();
+    }
+    // Get the team user is in for a tournament
+    public Team getUserTeamForTournament(User user, Tournament tournament) {
+        List<PlayerTeam> playerTeams = playerTeamRepository.findByUserAndTournament(user, tournament);
+        if (playerTeams.isEmpty()) return null;
+        return playerTeams.get(0).getTeam();
+    }
+    // Join a specific team (for premium users)
+    public boolean joinTeam(User user, Team team) {
+        if (user == null || team == null) return false;
+// Check if user is already in this team
+        if (playerTeamRepository.findByUserAndTeam(user, team).isPresent()) {
+            return false; // Already in team
+        }
+        // Check if user is already in another team for the same tournament
+        if (team.getTournament() != null && isUserInTeamForTournament(user, team.getTournament())) {
+            return false; // Already in a team for this tournament
+        }
+        // Create PlayerTeam relationship
+        PlayerTeam playerTeam = new PlayerTeam();
+        playerTeam.setUser(user);
+        playerTeam.setTeam(team);
+        playerTeamRepository.save(playerTeam);
+        // Also add to Team's players list if using ManyToMany
+        if (team.getPlayers() == null) {
+            team.setPlayers(new java.util.ArrayList<>());
+        }
+        if (!team.getPlayers().contains(user)) {
+            team.getPlayers().add(user);
+            teamRepository.save(team);
+        }
+        return true;    }
+    // Join a random team (for regular users)
+    public boolean joinRandomTeam(User user, Tournament tournament) {
+        if (user == null || tournament == null) return false;
+        // Check if user is already in a team for this tournament
+        if (isUserInTeamForTournament(user, tournament)) {
+            return false; // Already in a team
+        }
+        // Get all teams for the tournament
+        List<Team> teams = getTeamsByTournament(tournament);
+        if (teams.isEmpty()) {
+            return false; // No teams available
+        }
+        // Filter teams that user is not already in and shuffle
+        java.util.Collections.shuffle(teams);
+        // Try to join the first available team
+        for (Team team : teams) {
+            if (joinTeam(user, team)) {
+                return true; // Successfully joined
+            }
+        }
+        return false; // Could not join any team
     }
 
     // ================= Notifications =================
     public List<Notification> getNotificationsByUser(User user){
         return notificationRepository.findByReceiver(user);
+    }
+
+    public Notification getNotificationById(Long id){
+        return notificationRepository.findById(id).orElse(null);
     }
 
     public Notification createNotification(User receiver, String message){
@@ -168,6 +283,15 @@ public class AppService {
         return notificationRepository.save(notification);
     }
 
+    public void deleteNotification(Long id){
+        notificationRepository.deleteById(id);
+    }
+
+    public void deleteAllNotificationsForUser(User user){
+        List<Notification> notifications = notificationRepository.findByReceiver(user);
+        notificationRepository.deleteAll(notifications);
+    }
+
     // ================= Messaging =================
     public List<Message> getMessagesForUser(User user){
         return messagingRepository.findBySenderOrReceiver(user, user);
@@ -175,6 +299,9 @@ public class AppService {
 
     public List<Message> getConversation(User user1, User user2){
         return messagingRepository.findConversation(user1, user2);
+    }
+    public Message getMessageById(Long id){
+        return messagingRepository.findById(id).orElse(null);
     }
 
     public Message sendMessage(User sender, User receiver, String content){
@@ -186,6 +313,9 @@ public class AppService {
         return messagingRepository.save(message);
     }
 
+    public void deleteMessage(Long id){
+        messagingRepository.deleteById(id);
+    }
     // ================= Match =================
     public List<Match> getAllMatches(){
         return matchRepository.findAll();

@@ -15,26 +15,66 @@
                 <div></div>
             </div>
 
+            <!-- Success/Error Messages -->
+            <div th:if="${success}" style="background-color: #d4edda; color: #155724; padding: 10px; margin: 10px 0; border-radius: 5px;">                <p th:text="${success}"></p>            </div>            <div th:if="${error}" style="background-color: #f8d7da; color: #721c24; padding: 10px; margin: 10px 0; border-radius: 5px;">                <p th:text="${error}"></p>            </div>
             <form method="post"
                   class="schedule-box"
                   th:action="@{/teams/create}"
                   th:object="${team}">
                 <!-- Hidden field to pass tournamentId -->
                 <input type="hidden" name="tournamentId" th:value="${tournament.id}" />
-
                 <div class="input_form">
                     <div>
-                        <label>Team Name:</label>
-                        <input type="text" th:field="*{name}" required/>
-                    </div>
+                        <label>Team Name: <span style="color: red;">*</span></label>                        <input type="text" th:field="*{name}" required placeholder="Enter team name" maxlength="100"/>                        <small style="color: #666;">Team name must be unique for this tournament</small>                    </div>
                 </div>
 
                 <div class="button">
-                    <button type="submit">Save Team</button>
-                </div>
+                    <button type="submit">Create Team</button>                    <a th:href="@{/teams(tournamentId=${tournament.id})}" style="margin-left: 10px; text-decoration: none; padding: 8px 16px; background-color: #6c757d; color: white; border-radius: 5px;">Cancel</a>                </div>
             </form>
         </div>
     </section>
 </main>
 </body>
 </html>
+
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org"-->
+<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--      layout:decorate="~{layout}">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Goalie - Create Team</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<main layout:fragment="content">-->
+<!--    <section class="create-tournament">-->
+<!--        <div class="create_tournament-container-container">-->
+<!--            <div class="create-tournament-title" data-aos="fade-down">-->
+<!--                <h1>Create a Team for <span th:text="${tournament.name}">Tournament Name</span></h1>-->
+<!--                <div></div>-->
+<!--            </div>-->
+
+<!--            <form method="post"-->
+<!--                  class="schedule-box"-->
+<!--                  th:action="@{/teams/create}"-->
+<!--                  th:object="${team}">-->
+<!--                &lt;!&ndash; Hidden field to pass tournamentId &ndash;&gt;-->
+<!--                <input type="hidden" name="tournamentId" th:value="${tournament.id}" />-->
+
+<!--                <div class="input_form">-->
+<!--                    <div>-->
+<!--                        <label>Team Name:</label>-->
+<!--                        <input type="text" th:field="*{name}" required/>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                <div class="button">-->
+<!--                    <button type="submit">Save Team</button>-->
+<!--                </div>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </section>-->
+<!--</main>-->
+<!--</body>-->
+<!--</html>-->

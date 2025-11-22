@@ -7,24 +7,70 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @Controller
+@RequestMapping("/notifications")
 @RequiredArgsConstructor
 public class NotificationController {
 
     private final AppService service;
 
     // List notifications for logged-in user
-    @GetMapping("/notifications")
+    @GetMapping
     public String viewNotifications(HttpSession session, Model model) {
         User user = (User) session.getAttribute("loggedInUser");
-        if (user == null) return "redirect:/login";
+        if (user == null) {
+            return "redirect:/login";
+        }
 
         List<Notification> notifications = service.getNotificationsByUser(user);
         model.addAttribute("notifications", notifications);
-        return "notifications"; // notifications.html
+        model.addAttribute("user", user);
+        return "notifications";
+    }
+
+    // Delete a notification
+    @PostMapping("/delete/{id}")
+    public String deleteNotification(@PathVariable Long id,
+                                     HttpSession session,
+                                     RedirectAttributes redirectAttributes) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        Notification notification = service.getNotificationById(id);
+        if (notification == null) {
+            redirectAttributes.addFlashAttribute("error", "Notification not found");
+            return "redirect:/notifications";
+        }
+
+        // Verify the notification belongs to the user
+        if (!notification.getReceiver().getId().equals(user.getId())) {
+            redirectAttributes.addFlashAttribute("error", "You don't have permission to delete this notification");
+            return "redirect:/notifications";
+        }
+
+        service.deleteNotification(id);
+        redirectAttributes.addFlashAttribute("success", "Notification deleted successfully");
+        return "redirect:/notifications";
+    }
+
+    // Delete all notifications for user
+    @PostMapping("/delete-all")
+    public String deleteAllNotifications(HttpSession session,
+                                         RedirectAttributes redirectAttributes) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if (user == null) {
+            return "redirect:/login";
+        }
+
+        service.deleteAllNotificationsForUser(user);
+        redirectAttributes.addFlashAttribute("success", "All notifications deleted successfully");
+        return "redirect:/notifications";
     }
 }
