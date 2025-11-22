@@ -13,7 +13,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PlayerTeamRepository extends JpaRepository<PlayerTeam, PlayerTeamId> {
-    // Find all teams a user is part of     List<PlayerTeam> findByUser(User user);    
-    // Check if user is in a specific team     Optional<PlayerTeam> findByUserAndTeam(User user, Team team);    
-    // Find if user is in any team for a tournament     @Query("SELECT pt FROM PlayerTeam pt WHERE pt.user = :user AND pt.team.tournament = :tournament")    List<PlayerTeam> findByUserAndTournament(@Param("user") User user, @Param("tournament") Tournament tournament);    
-    // Get all players in a team     List<PlayerTeam> findByTeam(Team team);}
+    // Find all teams a user is part of
+    List<PlayerTeam> findByUser(User user);
+    // Check if user is in a specific team
+    Optional<PlayerTeam> findByUserAndTeam(User user, Team team);
+    // Find if user is in any team for a tournament
+    @Query("SELECT pt FROM PlayerTeam pt WHERE pt.user = :user AND pt.team.tournament = :tournament")
+    List<PlayerTeam> findByUserAndTournament(@Param("user") User user, @Param("tournament") Tournament tournament);
+    // Get all players in a team
+    List<PlayerTeam> findByTeam(Team team);
+}

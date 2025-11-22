@@ -133,6 +133,7 @@
                                 <i data-feather="users"></i>
                                 <span th:text="${tournament.currentParticipants != null ? tournament.currentParticipants : 0} + '/' + ${tournament.maxParticipants} + ' participants'"></span>
                             </div>
+                            <a th:href="@{/teams(tournamentId=${t.id})}">Team Details</a>
                         </div>
                     </div>
                 </div>

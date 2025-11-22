@@ -18,24 +18,126 @@ public class HomeController {
     private final AppService service;
 
     @GetMapping("/")
-    public String home(HttpSession session){        // Auto-login with premium user if not already logged in         User loggedInUser = (User) session.getAttribute("loggedInUser");        if (loggedInUser == null) {            // Auto-login with premium user (uc@test.com)             User autoUser = service.getUserByEmail("uc@test.com");            if (autoUser != null) {                session.setAttribute("loggedInUser", autoUser);                return "redirect:/home";            } else {                // Fallback to signup if test user doesn't exist                 return "redirect:/signup";            }        }        return "redirect:/home";    }//signup functions
+    public String home(HttpSession session){
+        // Auto-login with premium user if not already logged in
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            // Auto-login with premium user (uc@test.com)
+            User autoUser = service.getUserByEmail("uc@test.com");
+            if (autoUser != null) {
+                session.setAttribute("loggedInUser", autoUser);
+                return "redirect:/home";
+            } else {
+                // Fallback to signup if test user doesn't exist
+                return "redirect:/signup";
+            }
+        }
+        return "redirect:/home";
+    }//signup functions
     @GetMapping("/signup")
-    public String showSignup(Model model, HttpSession session){        // Auto-login and redirect if not logged in         User loggedInUser = (User) session.getAttribute("loggedInUser");        if (loggedInUser == null) {            User autoUser = service.getUserByEmail("uc@test.com");            if (autoUser != null) {                session.setAttribute("loggedInUser", autoUser);                return "redirect:/home";            }        } else {            return "redirect:/home";        }        model.addAttribute("user", new User());        return "signup";    }    @PostMapping("/signup")
-    public String signupSubmit(@ModelAttribute("user")  User user, BindingResult br, Model model){        // Validate required fields         if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {            br.rejectValue("email", "error.user", "Email is required");        }        
-        if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {            br.rejectValue("password", "error.user", "Password is required");        }        
-        if (user.getName() == null || user.getName().trim().isEmpty()) {            br.rejectValue("name", "error.user", "Name is required");        }        
-        // Check if email already exists         if (user.getEmail() != null && !user.getEmail().trim().isEmpty() && service.emailExists(user.getEmail())) {            br.rejectValue("email", "error.user", "A user with this email already exists");        }        
-        if (br.hasErrors()){            return "signup";        }        
-        try {            user.setSubscription(false);            user.setTournament(null);//        user.setPassword(passwordEncoder.encode(user.getPassword()));            service.createUser(user);            return "redirect:/login";        } catch (IllegalArgumentException e) {            model.addAttribute("error", e.getMessage());            return "signup";        }    }//login functions
+    public String showSignup(Model model, HttpSession session){
+        // Auto-login and redirect if not logged in
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            User autoUser = service.getUserByEmail("uc@test.com");
+            if (autoUser != null) {
+                session.setAttribute("loggedInUser", autoUser);
+                return "redirect:/home";
+            }
+        } else {
+            return "redirect:/home";
+        }
+        model.addAttribute("user", new User());
+        return "signup";
+    }
+    @PostMapping("/signup")
+    public String signupSubmit(@ModelAttribute("user")  User user, BindingResult br, Model model){
+        // Validate required fields
+        if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
+            br.rejectValue("email", "error.user", "Email is required");
+        }
+        if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+            br.rejectValue("password", "error.user", "Password is required");
+        }
+        if (user.getName() == null || user.getName().trim().isEmpty()) {
+            br.rejectValue("name", "error.user", "Name is required");
+        }
+        // Check if email already exists
+        if (user.getEmail() != null && !user.getEmail().trim().isEmpty() && service.emailExists(user.getEmail())) {
+            br.rejectValue("email", "error.user", "A user with this email already exists");
+        }
+        if (br.hasErrors()){
+            return "signup";
+        }
+        try {
+            user.setSubscription(false);
+            user.setTournament(null);
+            // user.setPassword(passwordEncoder.encode(user.getPassword()));
+            service.createUser(user);
+            return "redirect:/login";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("error", e.getMessage());
+            return "signup";
+        }
+    }
+    //login functions
     @GetMapping("/login")
-    public String showLogin(Model model, HttpSession session){        // Auto-login and redirect if not logged in         User loggedInUser = (User) session.getAttribute("loggedInUser");        if (loggedInUser == null) {            User autoUser = service.getUserByEmail("uc@test.com");            if (autoUser != null) {                session.setAttribute("loggedInUser", autoUser);                return "redirect:/home";            }        } else {            return "redirect:/home";        }        model.addAttribute("user", new User());        return "login";    }
+    public String showLogin(Model model, HttpSession session){
+        // Auto-login and redirect if not logged in
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            User autoUser = service.getUserByEmail("uc@test.com");
+            if (autoUser != null) {
+                session.setAttribute("loggedInUser", autoUser);
+                return "redirect:/home";
+            }
+        } else {
+            return "redirect:/home";
+        }
+        model.addAttribute("user", new User());
+        return "login";
+    }
     @PostMapping("/login")
-    public String loginSubmit(@ModelAttribute("user")  User user, Model model, HttpSession session){        // Validate input         if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {            model.addAttribute("error", "Email is required");            model.addAttribute("user", new User());            return "login";        }        
-        if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {            model.addAttribute("error", "Password is required");            model.addAttribute("user", new User());            return "login";        }        
-        User userExisting = service.getUserByEmail(user.getEmail());        
-        // Check if user exists and password matches         if (userExisting != null && userExisting.getPassword() != null && userExisting.getPassword().equals(user.getPassword())){            session.setAttribute("loggedInUser",userExisting);            return "redirect:/home";        }        else {            model.addAttribute("error", "Invalid email or password");            model.addAttribute("user", new User());            return "login";        }    }//homepage
+    public String loginSubmit(@ModelAttribute("user")  User user, Model model, HttpSession session){
+        // Validate input
+        if (user.getEmail() == null || user.getEmail().trim().isEmpty()) {
+            model.addAttribute("error", "Email is required");
+            model.addAttribute("user", new User());
+            return "login";
+        }
+        if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
+            model.addAttribute("error", "Password is required");
+            model.addAttribute("user", new User());
+            return "login";
+        }
+        User userExisting = service.getUserByEmail(user.getEmail());
+        // Check if user exists and password matches
+        if (userExisting != null && userExisting.getPassword() != null && userExisting.getPassword().equals(user.getPassword())){
+            session.setAttribute("loggedInUser",userExisting);
+            return "redirect:/home";
+        }
+        else {
+            model.addAttribute("error", "Invalid email or password");
+            model.addAttribute("user", new User());
+            return "login";
+        }
+    }//homepage
     @GetMapping("/home")
-    public String home(HttpSession session, Model model) {        User user = (User) session.getAttribute("loggedInUser");        if(user == null) {            // Auto-login with premium user if not logged in             User autoUser = service.getUserByEmail("uc@test.com");            if (autoUser != null) {                session.setAttribute("loggedInUser", autoUser);                user = autoUser;            } else {                return "redirect:/login";            }        }        model.addAttribute("user", user);        return "home";    }
+    public String home(HttpSession session, Model model) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if(user == null) {
+            // Auto-login with premium user if not logged in
+            User autoUser = service.getUserByEmail("uc@test.com");
+            if (autoUser != null) {
+                session.setAttribute("loggedInUser", autoUser);
+                user = autoUser;}
+            else {
+                return "redirect:/login";
+            }
+        }
+        model.addAttribute("user", user);
+        return "home";
+    }
 
 
 
