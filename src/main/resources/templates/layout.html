@@ -24,12 +24,13 @@
         <nav>
             <div class="navlogo">
                 <div data-aos="fade-right">
-                    <img  th:src="@{/images/logo.jpg}" alt="My Logo">
+                    <img th:src="@{/images/logo.jpg}" alt="Goalie Logo">
                 </div>
-                <a data-aos="fade-down">Goalie</a>
+                <a th:href="@{/home}" data-aos="fade-down">Goalie</a>
             </div>
             <div class="nav_list" data-aos="zoom-in">
                 <a th:href="@{/tournaments}">Tournaments</a>
+                <a th:href="@{/faq}">FAQ</a>
                 <a href="#footer">Contact Us</a>
                 <a class="profile-pic" th:href="@{/profile_account}">
                     <div>

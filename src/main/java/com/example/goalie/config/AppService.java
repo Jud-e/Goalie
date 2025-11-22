@@ -2,6 +2,7 @@ package com.example.goalie.config;
 
 import com.example.goalie.model.*;
 import com.example.goalie.repository.*;
+import com.example.goalie.goalieEnum.*;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -201,5 +202,62 @@ public class AppService {
 
 
     // ================== User Profile ===============
+    public boolean hasPlayerProfile(User user) {
+        return userProfileRepository.findAll().stream()
+                .anyMatch(profile -> profile.getUser() != null && profile.getUser().getId().equals(user.getId()));
+    }
+    
+    public UserProfile getPlayerProfile(User user) {
+        return userProfileRepository.findAll().stream()
+                .filter(profile -> profile.getUser() != null && profile.getUser().getId().equals(user.getId()))
+                .findFirst()
+                .orElse(null);
+    }
+    
+    public UserProfile createOrUpdatePlayerProfile(User user, String playerNickname, Integer skillRating,
+                                                   String preferredPosition, String dominantFoot, String bio) {
+        UserProfile profile = getPlayerProfile(user);
+        
+        if (profile == null) {
+            profile = new UserProfile();
+            profile.setUser(user);
+        }
+        
+        profile.setPlayerNickname(playerNickname);
+        profile.setSkillRating(skillRating);
+        
+        // Map skill rating to SkillLevel enum
+        if (skillRating != null) {
+            if (skillRating <= 2) {
+                profile.setSkillLevel(SkillLevel.BEGINNER);
+            } else if (skillRating <= 4) {
+                profile.setSkillLevel(SkillLevel.INTERMEDIATE);
+            } else {
+                profile.setSkillLevel(SkillLevel.ADVANCED);
+            }
+        }
+        
+        if (preferredPosition != null && !preferredPosition.isEmpty()) {
+            try {
+                profile.setPreferredPosition(Position.valueOf(preferredPosition.toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                // Invalid position, ignore
+            }
+        }
+        
+        if (dominantFoot != null && !dominantFoot.isEmpty()) {
+            try {
+                profile.setDominantFoot(DominantFoot.valueOf(dominantFoot.toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                // Invalid foot, ignore
+            }
+        }
+        
+        if (bio != null) {
+            profile.setBio(bio);
+        }
+        
+        return userProfileRepository.save(profile);
+    }
 
 }

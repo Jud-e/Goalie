@@ -15,7 +15,7 @@
                 <div data-aos="fade-right">
                     <img th:src="@{/images/logo.jpg}" alt="Goalie Logo">
                 </div>
-                <h1 data-aos="fade-down">Goalie</h1>
+                <a th:href="@{/home}" data-aos="fade-down">Goalie</a>
             </div>
             <div class="nav_list" data-aos="zoom-in">
                 <a th:href="@{/tournaments}">Tournaments</a>
@@ -113,10 +113,10 @@
                     <p>Browse all active and upcoming tournaments</p>
                     <span class="card-arrow">→</span>
                 </a>
-                <a href="#" class="action-card manage-teams">
+                <a th:href="@{/tournaments}" class="action-card create-team">
                     <div class="card-icon">👥</div>
-                    <h3>Manage Teams</h3>
-                    <p>Create and manage teams for your tournaments</p>
+                    <h3>Create Team</h3>
+                    <p>Create teams for your tournaments</p>
                     <span class="card-arrow">→</span>
                 </a>
                 <a href="#" class="action-card analytics">
@@ -137,10 +137,16 @@
                     <p>Browse and join available tournaments</p>
                     <span class="card-arrow">→</span>
                 </a>
+                <a th:href="@{/tournaments/create}" class="action-card create-tournament">
+                    <div class="card-icon">➕</div>
+                    <h3>Create Tournament</h3>
+                    <p>Organize and schedule your own tournament</p>
+                    <span class="card-arrow">→</span>
+                </a>
                 <a th:href="@{/tournaments}" class="action-card create-team">
                     <div class="card-icon">👥</div>
                     <h3>Create Team</h3>
-                    <p>Join a tournament and form your team</p>
+                    <p>Select a tournament and create your team</p>
                     <span class="card-arrow">→</span>
                 </a>
                 <a href="#" class="action-card my-teams">
@@ -178,5 +184,104 @@
         </div>
     </section>
 </main>
+
+<!-- Player Setup Modal -->
+<div th:if="${showPlayerSetup}" id="playerSetupModal" class="modal-overlay">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2>Welcome to Player Mode! 🎮</h2>
+            <p>Let's set up your player profile to get started</p>
+        </div>
+        <form id="playerProfileForm" method="post" th:action="@{/setup-player-profile}" class="modal-form">
+            <div class="form-group">
+                <label for="playerNickname">Player Nickname *</label>
+                <input type="text" id="playerNickname" name="playerNickname" 
+                       placeholder="Enter your player nickname" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Skill Level *</label>
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="skillRating" value="5" required>
+                    <label for="star5" class="star">★</label>
+                    <input type="radio" id="star4" name="skillRating" value="4">
+                    <label for="star4" class="star">★</label>
+                    <input type="radio" id="star3" name="skillRating" value="3">
+                    <label for="star3" class="star">★</label>
+                    <input type="radio" id="star2" name="skillRating" value="2">
+                    <label for="star2" class="star">★</label>
+                    <input type="radio" id="star1" name="skillRating" value="1">
+                    <label for="star1" class="star">★</label>
+                </div>
+                <span class="rating-text">Select your skill level</span>
+            </div>
+            
+            <div class="form-group">
+                <label for="preferredPosition">Preferred Position</label>
+                <select id="preferredPosition" name="preferredPosition" class="form-select">
+                    <option value="">Select position</option>
+                    <option value="GOALKEEPER">Goalkeeper</option>
+                    <option value="DEFENDER">Defender</option>
+                    <option value="MIDFIELDER">Midfielder</option>
+                    <option value="FORWARD">Forward</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="dominantFoot">Dominant Foot</label>
+                <select id="dominantFoot" name="dominantFoot" class="form-select">
+                    <option value="">Select foot</option>
+                    <option value="LEFT">Left</option>
+                    <option value="RIGHT">Right</option>
+                    <option value="BOTH">Both</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="bio">Bio (Optional)</label>
+                <textarea id="bio" name="bio" rows="3" 
+                          placeholder="Tell us about yourself as a player..."></textarea>
+            </div>
+            
+            <div class="modal-actions">
+                <button type="submit" class="btn-primary">Complete Setup</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Star Rating Interaction
+    document.addEventListener('DOMContentLoaded', function() {
+        const stars = document.querySelectorAll('.star-rating input[type="radio"]');
+        const ratingText = document.querySelector('.rating-text');
+        const ratingLabels = {
+            1: 'Beginner',
+            2: 'Novice',
+            3: 'Intermediate',
+            4: 'Advanced',
+            5: 'Expert'
+        };
+        
+        stars.forEach(star => {
+            star.addEventListener('change', function() {
+                const value = parseInt(this.value);
+                const ratingText = document.querySelector('.rating-text');
+                if (ratingText) {
+                    ratingText.textContent = ratingLabels[value] || 'Select your skill level';
+                    ratingText.style.color = 'var(--accent)';
+                }
+            });
+        });
+        
+        // Show modal with animation
+        const modal = document.getElementById('playerSetupModal');
+        if (modal) {
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 100);
+        }
+    });
+</script>
 </body>
 </html>

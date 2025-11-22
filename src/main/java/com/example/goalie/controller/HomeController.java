@@ -118,11 +118,19 @@ public class HomeController {
         
         // Get user statistics
         int tournamentCount = service.getAllTournaments().size();
-        // You can add more stats here as needed
+        
+        // Check if player profile exists (for first-time player mode setup)
+        boolean hasPlayerProfile = service.hasPlayerProfile(user);
+        boolean showPlayerSetup = false;
+        
+        if ("player".equals(currentMode) && !hasPlayerProfile) {
+            showPlayerSetup = true;
+        }
         
         model.addAttribute("user", user);
         model.addAttribute("currentMode", currentMode);
         model.addAttribute("tournamentCount", tournamentCount);
+        model.addAttribute("showPlayerSetup", showPlayerSetup);
         return "home";
     }
     
@@ -137,6 +145,25 @@ public class HomeController {
         if ("user".equals(mode) || "player".equals(mode)) {
             session.setAttribute("userMode", mode);
         }
+        
+        return "redirect:/home";
+    }
+    
+    // Save player profile setup
+    @PostMapping("/setup-player-profile")
+    public String setupPlayerProfile(@RequestParam String playerNickname,
+                                     @RequestParam Integer skillRating,
+                                     @RequestParam(required = false) String preferredPosition,
+                                     @RequestParam(required = false) String dominantFoot,
+                                     @RequestParam(required = false) String bio,
+                                     HttpSession session) {
+        User user = (User) session.getAttribute("loggedInUser");
+        if(user == null) {
+            return "redirect:/login";
+        }
+        
+        service.createOrUpdatePlayerProfile(user, playerNickname, skillRating, 
+                                           preferredPosition, dominantFoot, bio);
         
         return "redirect:/home";
     }
