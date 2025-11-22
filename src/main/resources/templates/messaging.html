@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messaging - Goalie</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: #f4f5f7;
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            background: #1f1f2e;
+            height: 100vh;
+            padding-top: 20px;
+            color: #ccc;
+        }
+        .sidebar a {
+            display: block;
+            padding: 12px 20px;
+            color: #ccc;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background-color: #34344a;
+            color: #fff;
+        }
+        .conversation-list {
+            height: 80vh;
+            overflow-y: auto;
+            border-right: 1px solid #ddd;
+        }
+        .message-area {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            overflow-y: auto;
+        }
+        .message-bubble {
+            padding: 10px 15px;
+            border-radius: 15px;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+        .sent {
+            background-color: #0d6efd;
+            color: #fff;
+        }
+        .received {
+            background-color: #e4e6eb;
+            color: #000;
+        }
+        .send-box {
+            display: flex;
+            margin-top: 10px;
+        }
+        .send-box input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+        }
+        .send-box button {
+            margin-left: 10px;
+            border-radius: 20px;
+        }
+        .note {
+            font-size: 0.85rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- Simplified Sidebar -->
+        <div class="col-2 sidebar">
+            <h4 class="text-center text-white mb-4">MESSAGING</h4>
+            <a href="#">Conversations</a>
+            <a href="#">Profile</a>
+            <a href="#">Logout</a>
+        </div>
+
+        <!-- Main Section -->
+        <div class="col-10 d-flex">
+
+            <!-- Conversation List -->
+            <div class="col-4 conversation-list bg-white p-3">
+                <h5>Conversations</h5>
+                <div class="note">Free users: limited messages | Premium users: unlimited messaging</div>
+                <ul class="list-unstyled">
+                    <li class="p-2 mb-2 bg-light rounded">John Doe</li>
+                    <li class="p-2 mb-2 bg-light rounded">Jane Smith</li>
+                    <li class="p-2 mb-2 bg-light rounded">Michael Lee</li>
+                    <li class="p-2 mb-2 bg-light rounded">Sarah Connor</li>
+                    <li class="p-2 mb-2 bg-light rounded">Alice Johnson</li>
+                    <li class="p-2 mb-2 bg-light rounded">Bob Martin</li>
+                </ul>
+            </div>
+
+            <!-- Message Area -->
+            <div class="col-8 bg-white p-3 d-flex flex-column message-area">
+
+                <div class="d-flex flex-column">
+                    <div class="d-flex mb-2">
+                        <div class="message-bubble received">Hey! Are you joining the tournament this weekend?</div>
+                    </div>
+                    <div class="d-flex mb-2 justify-content-end">
+                        <div class="message-bubble sent">Yes! I’m on the Red Falcons team. You?</div>
+                    </div>
+                    <div class="d-flex mb-2">
+                        <div class="message-bubble received">Blue Tigers. Let’s coordinate practice sessions.</div>
+                    </div>
+                    <div class="d-flex mb-2 justify-content-end">
+                        <div class="message-bubble sent">Sounds good! I’ll message you the times.</div>
+                    </div>
+                    <div class="d-flex mb-2">
+                        <div class="message-bubble received">Perfect, see you on the field!</div>
+                    </div>
+                </div>
+
+                <!-- Send Message Box -->
+                <div class="send-box mt-3 d-flex">
+                    <input type="text" class="form-control" placeholder="Type a message...">
+                    <button class="btn btn-primary ms-2">Send</button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
