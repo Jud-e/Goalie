@@ -30,9 +30,9 @@ public interface TournamentRepository extends JpaRepository<Tournament, Long> {
     );
     @Query("""
 SELECT t FROM Tournament t
-WHERE 
+WHERE
     (
-        :searchTerm IS NULL OR 
+        :searchTerm IS NULL OR
         LOWER(t.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
         LOWER(t.description) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
         LOWER(t.location) LIKE LOWER(CONCAT('%', :searchTerm, '%'))
