@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -328,6 +330,70 @@ public class AppService {
     public Match createMatch(Match match){
         return matchRepository.save(match);
     }
+
+    // ------------ Random Match Making --------
+
+    public void generateRandomMatches(Long id){
+        Tournament tournament = tournamentRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Tournament not found."));
+
+        List<Team> teams = teamRepository.findByTournament(tournament);
+
+        Collections.shuffle(teams);
+
+        List<Match> matches = new ArrayList<>();
+
+        for (int i = 0; i < teams.size(); i+=2) {
+            if(i + 1 < teams.size()) {
+                Match match = createMatch(tournament, teams.get(i), teams.get(i+1));
+                matches.add(match);
+            }
+        }
+
+        matchRepository.saveAll(matches);
+
+//
+    }
+
+
+
+    public List<Match> getMatchesByTournament(Tournament tournament){
+
+        List<Match> matches = matchRepository.findMatchByTournament(tournament);
+
+        if (matches.isEmpty()) {
+            List<Team> teams = teamRepository.findByTournament(tournament);
+            if(teams.size() >= 4) {
+                generateRandomMatches(tournament.getId());
+            }
+        }
+        return matches;
+    }
+
+    private Match createMatch(Tournament tournament, Team team1, Team team2) {
+        Match match = new Match();
+        match.setTournament(tournament);
+        match.setTeam1(team1);
+        match.setTeam2(team2);
+
+        return match;
+    }
+
+
+    public  void deleteMatch(Long id){
+        matchRepository.deleteById(id);
+    }
+    public void deleteAllMatches(Long id){
+        matchRepository.deleteMatchesByTournamentId(id);
+    }
+
+
+
+
+
+
+
+    // ================== User Profile ===============
 
 
     // ================== User Profile ===============
