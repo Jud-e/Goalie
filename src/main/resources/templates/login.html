@@ -1,10 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" >
+<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">-->
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" th:href="@{/css/main.css}">
+        <title>Login</title>
+    </head>
+    <body>
+        <main>
+            <div th:class="formParent">
+                <div th:class="splashImg">
+                    Splash image
+                </div>
+                <div th:class="formSection">
+                    <form method="post"
+                          th:action="@{/login}"
+                          th:class="loginForm"
+                          th:object="${user}">
+                        <label th:for="username">Username/E-mail:</label>
+                        <input th:type="text" th:id="username" th:field="*{email}"><br>
+                        <label th:for="password">Password:</label>
+                        <input th:type="text" th:id="password" th:field="*{password}"><br>
+                        <button type="submit">Submit</button>
+                        <br><br>
+                        <a th:href="@{/signup}">If you don't have an account Sign up here!</a>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </body>
 </html>

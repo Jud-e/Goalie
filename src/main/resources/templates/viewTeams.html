@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Goalie</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <section class="tournaments">
+        <div class="main-section tournament-main">
+            <div class="tournaments-title" data-aos="fade-down">
+                <h2>Teams for <span th:text="${tournament.name}"></span></h2>
+                <div></div>
+            </div>
+            <div class="create-links" data-aos="fade-left">
+                <a th:href="@{/teams/create(tournamentId=${tournament.id})}">Create Team<i data-feather="plus" class="mr-2"></i></a>
+            </div>
+
+            <!-- Success/Error Messages -->
+            <div th:if="${success}" style="background-color: #d4edda; color: #155724; padding: 10px; margin: 10px 0; border-radius: 5px;">
+                <p th:text="${success}"></p>
+            </div>
+            <div th:if="${error}" style="background-color: #f8d7da; color: #721c24; padding: 10px; margin: 10px 0; border-radius: 5px;">
+                <p th:text="${error}"></p>
+            </div>
+            <!-- Join Random Team Button for Regular Users -->
+            <div th:if="${user != null and !isUserInTeam and !user.subscription}" style="margin: 20px 0;" data-aos="fade-up">
+                <form th:action="@{/teams/join-random}" method="post" style="display: inline;">
+                    <input type="hidden" name="tournamentId" th:value="${tournament.id}" />
+                    <button type="submit" style="background-color: #007bff; color: white;
+                    padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                        Join Random Team
+                    </button>
+                </form>
+                <p style="color: #666; margin-top: 5px;">As a regular user, you will be randomly assigned to a team.</p>
+            </div>
+            <div class="tournament-container" data-aos="flip-left">
+                <div th:if="${#lists.isEmpty(teams)}">
+                    <h2 style="color: #0a0610">No teams created</h2>
+                </div>
+                <div class="tournament" th:each="t : ${teams}">
+                    <div class="tournament-content">
+                        <h1 th:text="${t.name}"></h1>
+                        <h3>Team Members: <span th:text="${t.players != null ? #lists.size(t.players) : 0}"></span></h3>
+                        <div th:if="${t.players != null and !#lists.isEmpty(t.players)}">
+                            <h4>Players:</h4>
+                            <ul>
+                                <li th:each="player : ${t.players}" th:text="${player.name}"></li>
+                            </ul>
+                        </div>
+                        <div th:if="${t.players == null or #lists.isEmpty(t.players)}">
+                            <p>No players yet</p>
+                        </div>
+                    </div>
+                    <div class="tournament-link">
+                        <!-- Join Team Button for Premium Users -->
+                        <form th:if="${user != null and !isUserInTeam and user.subscription}"
+                              th:action="@{/teams/join}" method="post" style="display: inline;">
+                            <input type="hidden" name="teamId" th:value="${t.id}" />
+                            <input type="hidden" name="tournamentId" th:value="${tournament.id}" />
+                            <button type="submit" style="background-color: #28a745; color: white;
+                                padding: 8px 16px; border: none; border-radius: 5px; cursor: pointer;">
+                                    Join Team
+                            </button>
+                        </form>
+                        <span th:if="${user != null and isUserInTeam}" style="color: green;
+                            font-weight: bold;">Already in a team</span>
+                        <span th:if="${user == null}" style="color: #666;">Login to join a team</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>
+
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org"-->
+<!--      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"-->
+<!--      layout:decorate="~{layout}">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Goalie</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<main layout:fragment="content">-->
+<!--    <section class="tournaments">-->
+<!--        <div class="main-section tournament-main">-->
+<!--            <div class="tournaments-title" data-aos="fade-down">-->
+<!--                <h2>Teams for <span th:text="${tournament.name}"></span></h2>-->
+<!--                <div></div>-->
+<!--            </div>-->
+<!--            <div class="create-links" data-aos="fade-left">-->
+<!--                <a th:href="@{/teams/create(tournamentId=${tournament.id})}">Create Team<i data-feather="plus" class="mr-2"></i></a>-->
+
+<!--            </div>-->
+<!--            <div class="tournament-container" data-aos="flip-left">-->
+<!--                <div th:if="${#lists.isEmpty(teams)}">-->
+<!--                    <h2 style="color: #0a0610">No teams created</h2>-->
+<!--                </div>-->
+<!--                <div class="tournament" th:each="t : ${teams}">-->
+<!--                    <div class="tournament-content">-->
+<!--                        <h1 th:text="${t.name}"></h1>-->
+<!--                        <h3>Start Date: <span th:text="${t.startDate}"></span></h3>-->
+<!--                        <h3>End Date: <span th:text="${t.endDate}"></span></h3>-->
+<!--                        <h3>Status: <span th:text="${t.status}"></span></h3>-->
+<!--                        <h3>Location: <span th:text="${t.location}"></span></h3>-->
+<!--                    </div>-->
+<!--                    <div class="tournament-link">-->
+<!--                        <a th:href="@{/view_matches}">tournaments Detail</a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
+<!--</main>-->
+<!--</body>-->
+<!--</html>-->
