@@ -3,12 +3,11 @@ package com.example.goalie.config;
 import com.example.goalie.model.*;
 import com.example.goalie.repository.*;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.expression.Sets;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class AppService {
@@ -363,8 +362,14 @@ public class AppService {
 
         if (matches.isEmpty()) {
             List<Team> teams = teamRepository.findByTournament(tournament);
-            if(teams.size() >= 4) {
+            int numberOfTeams = teams.size();
+
+            Set<Integer> teamSizes = Set.of(4,8,16,32);
+
+            if (teamSizes.contains(numberOfTeams)) {
                 generateRandomMatches(tournament.getId());
+                matches = matchRepository.findMatchByTournament(tournament);
+
             }
         }
         return matches;
