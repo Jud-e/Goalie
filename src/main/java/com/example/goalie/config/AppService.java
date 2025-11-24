@@ -381,6 +381,13 @@ public class AppService {
         match.setTeam1(team1);
         match.setTeam2(team2);
 
+        if(tournament.getStartDate() != null) {
+            match.setMatchDate(tournament.getStartDate().plusDays(new Random().nextInt(7)));
+        } else {
+            match.setMatchDate(LocalDate.now());
+        }
+
+
         return match;
     }
 
