@@ -440,7 +440,7 @@ nav {
 }
 .create-links {
     position: absolute;
-    padding: 30px;
+    padding: 5px;
     border-radius: 15px;
     background-color: var(--primary);
     color: var(--text);
@@ -454,15 +454,19 @@ nav {
 .create-links a {
     /*text-align: center;*/
     font-size: 16px;
+    padding: 10px 20px;
     /*margin-bottom: 15px;*/
     color: #f4f4f4;
     background-color: var(--primary);
+    text-align: center;
 
 }
 .create-links i{
     font-size: 12px;
     background-color: var(--primary);
     /*margin-top: 10px;*/
+    margin-top: 20px;
+    margin-left: 10px;
 }
 
 .tournament-container {
@@ -471,6 +475,30 @@ nav {
     row-gap: 1.5rem;
     margin-top: 150px;
 
+}
+/*    tournament schedule link */
+.tournament-schedule-link {
+    /*color: #374151;*/
+    /*background: #374151;*/
+    /*width: 300px;*/
+
+    padding: 8px;
+}
+.tournament-schedule-link a{
+    color:#f4f4f4;
+    padding: 12px 18px;
+    font-size: 1rem;
+    background: #374151;
+    border-radius: 30px;
+    transition: ease .3s;
+
+}
+
+.tournament-schedule-link a:hover {
+    /*box-shadow: 2px 2px 3px #374151;*/
+    border: 2px solid #06243e;
+    background: transparent;
+    color: #000;
 }
 .tournament {
     width: 100%;

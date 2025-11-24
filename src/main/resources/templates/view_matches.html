@@ -18,16 +18,9 @@
             <div class="matches-view-area">
                 <div class="matches-team-section" data-aos="flip-left">
                     <h3>Teams in The Tournament</h3>
-                    <div class="team-list">
-                        <div>Team A</div>
-                        <div>Team A</div>
-                        <div>Team A</div>
-                        <div>Team A</div>
-                        <div>Team A</div>
-                        <div>Team A</div>
-                        <div>Team A</div>
-                        <div>Team A</div>
-                        <div>Team A</div>
+                    <div class="team-list" th:each="team : ${teams}">
+                        <div th:text="${team.name}">Team A</div>
+
 
                     </div>
                 </div>
@@ -35,62 +28,15 @@
                 <div class="matches-fixtures" data-aos="flip-down">
                     <h3>Play Fixtures</h3>
                     <div class="fixture-list">
-                        <div class="fixture">
+                        <div class="fixture" th:each="match: ${matches}">
                             <h4>2012-05-12 9.30</h4>
                             <div>
-                                <div class="team">Team A</div>
-                                <span>-</span>
-                                <div class="team">Team B</div>
+                                <div class="team" th:text="${match.team1?.name ?: 'TBD'}"></div>
+                                <span th:text="${match.getScoreDisplay()}"></span>
+                                <div class="team" th:text="${match.team2.name}"></div>
                             </div>
                         </div>
-                        <div class="fixture">
-                            <h4>2012-05-12 9.30</h4>
-                            <div>
-                                <div class="team">Team A</div>
-                                <span>-</span>
-                                <div class="team">Team B</div>
-                            </div>
-                        </div>
-                        <div class="fixture">
-                            <h4>2012-05-12 9.30</h4>
-                            <div>
-                                <div class="team">Team A</div>
-                                <span>-</span>
-                                <div class="team">Team B</div>
-                            </div>
-                        </div>
-                        <div class="fixture">
-                            <h4>2012-05-12 9.30</h4>
-                            <div>
-                                <div class="team">Team A</div>
-                                <span>-</span>
-                                <div class="team">Team B</div>
-                            </div>
-                        </div>
-                        <div class="fixture">
-                            <h4>2012-05-12 9.30</h4>
-                            <div>
-                                <div class="team">Team A</div>
-                                <span>-</span>
-                                <div class="team">Team B</div>
-                            </div>
-                        </div>
-                        <div class="fixture">
-                            <h4>2012-05-12 9.30</h4>
-                            <div>
-                                <div class="team">Team A</div>
-                                <span>-</span>
-                                <div class="team">Team B</div>
-                            </div>
-                        </div>
-                        <div class="fixture">
-                            <h4>2012-05-12 9.30</h4>
-                            <div>
-                                <div class="team">Team A</div>
-                                <span>-</span>
-                                <div class="team">Team B</div>
-                            </div>
-                        </div>
+
 
 
                     </div>
