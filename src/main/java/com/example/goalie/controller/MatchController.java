@@ -31,6 +31,7 @@ public class MatchController {
         model.addAttribute("matches", matches);
         model.addAttribute("tournament", tournament);
         model.addAttribute("teams", teams);
+        model.addAttribute("allowedSizes", List.of(4,8,16,32));
 
         return "view_matches";
 

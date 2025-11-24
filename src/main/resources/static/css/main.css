@@ -441,11 +441,12 @@ nav {
 }
 .create-links {
     position: absolute;
-    padding: 5px;
+    /*padding: 5px;*/
     border-radius: 15px;
-    background-color: var(--primary);
+    /*background-color: var(--primary);*/
     color: var(--text);
     right: 2%;
+    top: 4%;
     align-items: center;
     display: flex;
     justify-content: center;
@@ -459,6 +460,7 @@ nav {
     /*margin-bottom: 15px;*/
     color: #f4f4f4;
     background-color: var(--primary);
+    border-radius: 15px;
     text-align: center;
 
 }
@@ -1007,13 +1009,16 @@ nav {
 .matches-fixtures {
     border-left: 1px solid #ccc;
     padding-left: 40px;
-    flex-basis: 40%;
+    flex-basis: 50%;
 }
 .matches-fixtures h3 {
     text-align: center;
     margin: 25px auto;
     text-decoration: underline;
     font-size: 1.9rem;
+}
+.matches-fixtures p {
+    font-size: 1.5rem;
 }
 .fixture {
     /*display: flex;*/
