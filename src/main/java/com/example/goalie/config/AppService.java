@@ -5,17 +5,20 @@ import com.example.goalie.goalieEnum.Position;
 import com.example.goalie.goalieEnum.SkillLevel;
 import com.example.goalie.model.*;
 import com.example.goalie.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
-public class AppService {
+public class AppService implements UserDetailsService {
     private final UserRepository userRepository;
     private final TournamentRepository tournamentRepository;
     private final TeamRepository teamRepository;
@@ -24,12 +27,19 @@ public class AppService {
     private final MessagingRepository messagingRepository;
     private final MatchRepository matchRepository;
     private final UserProfileRepository userProfileRepository;
+    private final PasswordResetTokenRepository tokenRepository;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     public AppService(UserRepository userRepository,
-                      TournamentRepository tournamentRepository,TeamRepository teamRepository,
-                      PlayerTeamRepository playerTeamRepository,NotificationRepository notificationRepository,
+                      TournamentRepository tournamentRepository,
+                      TeamRepository teamRepository,
+                      PlayerTeamRepository playerTeamRepository,
+                      NotificationRepository notificationRepository,
                       MessagingRepository messagingRepository,
-                      MatchRepository matchRepository, UserProfileRepository userProfileRepository) {
+                      MatchRepository matchRepository,
+                      UserProfileRepository userProfileRepository,
+                      PasswordResetTokenRepository passwordResetTokenRepository) {
         this.userRepository = userRepository;
         this.tournamentRepository = tournamentRepository;
         this.teamRepository = teamRepository;
@@ -38,6 +48,19 @@ public class AppService {
         this.messagingRepository = messagingRepository;
         this.matchRepository = matchRepository;
         this.userProfileRepository = userProfileRepository;
+        this.tokenRepository = passwordResetTokenRepository;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getEmail())
+                .password(user.getPassword()) // hashed password
+                .roles("USER") // you can map roles from User if you have them
+                .build();
     }
 //For users
     public User createUser(User user){
@@ -83,6 +106,34 @@ public class AppService {
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
+
+    public String createPasswordResetToken(User user) {
+        tokenRepository.deleteByUserId(user.getId());
+
+        PasswordResetToken token = new PasswordResetToken();
+        token.setUser(user);
+        token.setToken(UUID.randomUUID().toString());
+        token.setExpiryDate(LocalDateTime.now().plusMinutes(30));
+        tokenRepository.save(token);
+        return token.getToken();
+    }
+
+    public boolean validatePasswordResetToken(String token) {
+        PasswordResetToken prt = tokenRepository.findByToken(token).orElse(null);
+        return prt != null && prt.getExpiryDate().isAfter(LocalDateTime.now());
+    }
+
+    public User getUserByPasswordResetToken(String token) {
+        PasswordResetToken prt = tokenRepository.findByToken(token).orElse(null);
+        return prt != null ? prt.getUser() : null;
+    }
+
+    public void updatePassword(User user, String newRawPassword) {
+        user.setPassword(passwordEncoder.encode(newRawPassword));
+        userRepository.save(user);
+        tokenRepository.deleteByUserId(user.getId());
+    }
+
 
     //For Tournaments
     public List<Tournament> getAllTournaments(){
