@@ -28,19 +28,20 @@ public interface TournamentRepository extends JpaRepository<Tournament, Long> {
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate
     );
+
     @Query("""
-SELECT t FROM Tournament t
-WHERE 
-    (
-        :searchTerm IS NULL OR 
-        LOWER(t.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
-        LOWER(t.description) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
-        LOWER(t.location) LIKE LOWER(CONCAT('%', :searchTerm, '%'))
-    )
-    AND (:status IS NULL OR t.status = :status)
-    AND (:location IS NULL OR LOWER(t.location) LIKE LOWER(CONCAT('%', :location, '%')))
-    AND (:startDate IS NULL OR t.startDate >= :startDate)
-    AND (:endDate IS NULL OR t.endDate <= :endDate)
+        SELECT t FROM Tournament t
+        WHERE 
+            (
+                :searchTerm IS NULL OR 
+                LOWER(t.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
+                LOWER(t.description) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR
+                LOWER(t.location) LIKE LOWER(CONCAT('%', :searchTerm, '%'))
+            )
+            AND (:status IS NULL OR t.status = :status)
+            AND (:location IS NULL OR LOWER(t.location) LIKE LOWER(CONCAT('%', :location, '%')))
+            AND (:startDate IS NULL OR t.startDate >= :startDate)
+            AND (:endDate IS NULL OR t.endDate <= :endDate)
 """)
 
     List<Tournament> searchAndFilterTournaments(

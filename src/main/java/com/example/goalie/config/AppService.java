@@ -6,9 +6,9 @@ import com.example.goalie.goalieEnum.SkillLevel;
 import com.example.goalie.model.*;
 import com.example.goalie.repository.*;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -155,6 +155,26 @@ public class AppService {
                 endDate
         );
     }
+
+    public void updateTournamentStatus(Tournament tournament) {
+        LocalDate today = LocalDate.now();
+
+        if (tournament.getEndDate() != null && tournament.getEndDate().isBefore(today)) {
+            // End date has passed → tournament is completed
+            tournament.setStatus(Tournament.TournamentStatus.COMPLETED);
+        } else if (tournament.getStartDate() != null && tournament.getStartDate().isAfter(today)) {
+            // Start date is in the future → upcoming
+            tournament.setStatus(Tournament.TournamentStatus.UPCOMING);
+        } else if (tournament.getStartDate() != null &&
+                !tournament.getStartDate().isAfter(today) &&
+                (tournament.getEndDate() == null || !tournament.getEndDate().isBefore(today))) {
+            // Tournament is ongoing → active
+            tournament.setStatus(Tournament.TournamentStatus.ACTIVE);
+        }
+        // Save changes
+        tournamentRepository.save(tournament);
+    }
+
     public Tournament saveTournament(Tournament tournament) {
         return tournamentRepository.save(tournament);
     }
@@ -166,6 +186,23 @@ public class AppService {
                 .sorted()
                 .toList();
     }
+    public void deleteTournament(Tournament tournament) {
+        List<Team> teams = teamRepository.findByTournament(tournament);
+        for (Team team : teams) {
+            playerTeamRepository.deleteAll(
+                    playerTeamRepository.findByTeam(team)
+            );
+        }
+        List<Match> matches = matchRepository.findByTournament(tournament);
+        if (!matches.isEmpty()) {
+            matchRepository.deleteAll(matches);
+        }
+        if (!teams.isEmpty()) {
+            teamRepository.deleteAll(teams);
+        }
+        tournamentRepository.delete(tournament);
+    }
+
 
     // ================= Team =================
     public List<Team> getAllTeams(){
@@ -323,7 +360,6 @@ public class AppService {
         messagingRepository.deleteById(id);
     }
     // ================= Match =================
-    // ================= Match =================
     public List<Match> getAllMatches(){
         return matchRepository.findAll();
     }
@@ -356,11 +392,7 @@ public class AppService {
         }
 
         matchRepository.saveAll(matches);
-
-//
     }
-
-
 
     public List<Match> getMatchesByTournament(Tournament tournament){
 
@@ -375,7 +407,6 @@ public class AppService {
             if (teamSizes.contains(numberOfTeams)) {
                 generateRandomMatches(tournament.getId());
                 matches = matchRepository.findMatchByTournament(tournament);
-
             }
         }
         return matches;

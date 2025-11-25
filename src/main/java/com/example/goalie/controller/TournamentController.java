@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -27,8 +26,11 @@ public class TournamentController {
                                   @RequestParam(required = false) String status,
                                   @RequestParam(required = false) String location,
                                   @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                                  @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,Model model) {
-        List<Tournament> tournaments = service.getAllTournaments();
+                                  @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+                                  Model model) {
+
+        List<Tournament> tournaments;
+
         boolean hasFilters = (search != null && !search.trim().isEmpty()) ||
                 (status != null && !status.trim().isEmpty()) ||
                 (location != null && !location.trim().isEmpty()) ||
@@ -36,12 +38,13 @@ public class TournamentController {
                 endDate != null;
 
         if (hasFilters) {
-            tournaments = service.searchAndFilterTournaments(
-                    search, status, location, startDate, endDate
-            );
+            tournaments = service.searchAndFilterTournaments(search, status, location, startDate, endDate);
         } else {
             tournaments = service.getAllTournaments();
         }
+
+        // ✅ Update status for each tournament
+        tournaments.forEach(service::updateTournamentStatus);
 
         model.addAttribute("tournaments", tournaments);
         model.addAttribute("locations", service.getAllLocations());
@@ -51,7 +54,7 @@ public class TournamentController {
         model.addAttribute("currentLocation", location != null ? location : "");
         model.addAttribute("currentStartDate", startDate != null ? startDate.toString() : "");
         model.addAttribute("currentEndDate", endDate != null ? endDate.toString() : "");
-        model.addAttribute("tournaments", tournaments);
+
         return "tournaments"; // templates/tournaments.html
     }
 
@@ -68,8 +71,10 @@ public class TournamentController {
                                    HttpSession session) {
         User organizer = (User) session.getAttribute("loggedInUser");
         if (organizer == null) return "redirect:/login";
-       tournament.setStatus(Tournament.TournamentStatus.UPCOMING);
+
+        tournament.setStatus(Tournament.TournamentStatus.UPCOMING);
         service.createTournament(tournament, organizer);
+
         return "redirect:/tournaments"; // back to tournament list
     }
 
@@ -77,7 +82,21 @@ public class TournamentController {
     @GetMapping("/{id}")
     public String viewTournament(@PathVariable Long id, Model model) {
         Tournament tournament = service.getTournamentById(id);
+        if (tournament != null) {
+            // ✅ Update status based on current date
+            service.updateTournamentStatus(tournament);
+        }
         model.addAttribute("tournament", tournament);
         return "view_tournament"; // templates/view_tournament.html
+    }
+
+    // 5️⃣ Delete tournament
+    @PostMapping("/{id}/delete")
+    public String deleteTournament(@PathVariable Long id) {
+        Tournament tournament = service.getTournamentById(id);
+        if (tournament != null) {
+            service.deleteTournament(tournament);
+        }
+        return "redirect:/tournaments";
     }
 }
