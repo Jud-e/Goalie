@@ -37,4 +37,12 @@ public class MatchController {
 
     }
 
+    @GetMapping("/edit/{id}")
+    public String showEditMatchForm(@PathVariable Long id, Model model) {
+
+        Match match = service.getMatchById(id);
+        model.addAttribute("match", match);
+        return "edit_match";
+    }
+
 }

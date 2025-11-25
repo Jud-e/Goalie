@@ -344,7 +344,7 @@ public class AppService {
 
         for (int i = 0; i < teams.size(); i+=2) {
             if(i + 1 < teams.size()) {
-                Match match = createMatch(tournament, teams.get(i), teams.get(i+1));
+                Match match = createMatches(tournament, teams.get(i), teams.get(i+1));
                 matches.add(match);
             }
         }
@@ -375,7 +375,7 @@ public class AppService {
         return matches;
     }
 
-    private Match createMatch(Tournament tournament, Team team1, Team team2) {
+    private Match createMatches(Tournament tournament, Team team1, Team team2) {
         Match match = new Match();
         match.setTournament(tournament);
         match.setTeam1(team1);
