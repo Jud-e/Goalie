@@ -1,6 +1,7 @@
 package com.example.goalie.controller;
 
 import com.example.goalie.config.AppService;
+import com.example.goalie.model.PlayerTeam;
 import com.example.goalie.model.Team;
 import com.example.goalie.model.Tournament;
 import com.example.goalie.model.User;
@@ -24,7 +25,7 @@ public class TeamController {
     @GetMapping
     public String viewTeams(@RequestParam Long tournamentId,
                             @RequestParam(required = false) String success,
-                            Model model) {
+                            Model model, Principal principal) {
 
         Tournament tournament = service.getTournamentById(tournamentId);
         if (tournament == null) {
@@ -32,12 +33,15 @@ public class TeamController {
         }
 
         List<Team> teams = service.getTeamsByTournament(tournament);
+        User loggedInUser = service.getUserByEmail(principal.getName());
+        model.addAttribute("user", loggedInUser);
         model.addAttribute("tournament", tournament);
         model.addAttribute("teams", teams);
 
         if (success != null && !success.isEmpty()) {
             model.addAttribute("success", success);
         }
+
 
         return "viewTeams";
     }
@@ -47,13 +51,10 @@ public class TeamController {
     public String showCreateTeamForm(@RequestParam Long tournamentId,
                                      Model model,
                                      Principal principal) {
-
         if (principal == null) {
             return "redirect:/login";
         }
-
         User user = service.getUserByEmail(principal.getName());
-
         Tournament tournament = service.getTournamentById(tournamentId);
         if (tournament == null) {
             return "redirect:/tournaments";
@@ -78,6 +79,7 @@ public class TeamController {
 
         User user = service.getUserByEmail(principal.getName());
         Tournament tournament = service.getTournamentById(tournamentId);
+
         if (tournament == null) {
             return "redirect:/tournaments";
         }
@@ -91,7 +93,7 @@ public class TeamController {
             return "createTeam";
         }
 
-        // Check for duplicate team name
+        // Check for duplicate team name in this tournament
         List<Team> existingTeams = service.getTeamsByTournament(tournament);
         boolean nameExists = existingTeams.stream()
                 .anyMatch(t -> t.getName() != null &&
@@ -105,26 +107,31 @@ public class TeamController {
             return "createTeam";
         }
 
-        // Set tournament and add creator as first player
+        // Set tournament for the team
         team.setTournament(tournament);
+
+        // Ensure players list is initialized
         if (team.getPlayers() == null) {
             team.setPlayers(new ArrayList<>());
         }
-        if (!team.getPlayers().contains(user)) {
-            team.getPlayers().add(user);
-        }
 
-        try {
-            service.createTeam(team);
-            return "redirect:/teams?tournamentId=" + tournamentId + "&success=Team created successfully";
-        } catch (Exception e) {
-            model.addAttribute("error", "Failed to create team. Please try again.");
-            model.addAttribute("team", team);
-            model.addAttribute("tournament", tournament);
-            model.addAttribute("user", user);
-            return "createTeam";
-        }
+        // Save the team first
+        Team savedTeam = service.createTeam(team);
+
+        // Create PlayerTeam link to add creator to the team
+        PlayerTeam playerTeam = new PlayerTeam();
+        playerTeam.setTeam(savedTeam);
+        playerTeam.setUser(user);
+        service.addUserToTeam(playerTeam);
+
+        // Update the team entity to include the user
+        savedTeam.getPlayers().add(user);
+        service.createTeam(savedTeam); // persist the updated players list
+
+        return "redirect:/teams?tournamentId=" + tournamentId + "&success=Team created successfully";
     }
+
+
 
     // View team details
     @GetMapping("/{id}")

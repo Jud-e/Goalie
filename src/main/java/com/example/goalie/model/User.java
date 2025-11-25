@@ -29,8 +29,22 @@ public class User {
     private List<Notification> notification = new ArrayList<>();
 
     @OneToMany(mappedBy = "sender")
-    private List<Message> messages = new ArrayList<>();
+    private List<TeamMessage> messages = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
     private List<PlayerTeam> playerTeams;
+
+    @ManyToMany(mappedBy = "players")
+    private List<Team> teams = new ArrayList<>();
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User other)) return false;
+        return id != null && id.equals(other.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
 }

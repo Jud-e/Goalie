@@ -3,6 +3,10 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teams - Goalie</title>
@@ -86,12 +90,14 @@
                             <p>No players added yet</p>
                         </div>
                     </div>
+<!--   This is supposed to be the button that leads to the messaging. What I was implementing was a group chat text between team members-->
+                    <a th:if="${user != null and team.players != null and #lists.contains(team.players, user)}"
+                       th:href="@{/teams/chat/{id}(id=${team.id})}"
+                       class="chat-icon submitBtn"
+                       title="View Team Chat">
+                        <i class="fa fa-comments"></i>
+                    </a>
 
-<!--                    <div class="team-card-actions">-->
-<!--                        <a th:href="@{/teams/{id}(id=${team.id})}" class="team-action-btn view-btn">-->
-<!--                            View Details-->
-<!--                        </a>-->
-<!--                    </div>-->
                 </div>
             </div>
             <div class="empty-state" th:if="!${#lists.isEmpty(teams)}">

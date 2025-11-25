@@ -13,7 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -24,7 +23,7 @@ public class AppService implements UserDetailsService {
     private final TeamRepository teamRepository;
     private final PlayerTeamRepository playerTeamRepository;
     private final NotificationRepository notificationRepository;
-    private final MessagingRepository messagingRepository;
+    private final TeamMessageRepository teamMessageRepository;
     private final MatchRepository matchRepository;
     private final UserProfileRepository userProfileRepository;
     private final PasswordResetTokenRepository tokenRepository;
@@ -35,8 +34,7 @@ public class AppService implements UserDetailsService {
                       TournamentRepository tournamentRepository,
                       TeamRepository teamRepository,
                       PlayerTeamRepository playerTeamRepository,
-                      NotificationRepository notificationRepository,
-                      MessagingRepository messagingRepository,
+                      NotificationRepository notificationRepository, TeamMessageRepository teamMessageRepository,
                       MatchRepository matchRepository,
                       UserProfileRepository userProfileRepository,
                       PasswordResetTokenRepository passwordResetTokenRepository) {
@@ -45,7 +43,7 @@ public class AppService implements UserDetailsService {
         this.teamRepository = teamRepository;
         this.playerTeamRepository = playerTeamRepository;
         this.notificationRepository = notificationRepository;
-        this.messagingRepository = messagingRepository;
+        this.teamMessageRepository = teamMessageRepository;
         this.matchRepository = matchRepository;
         this.userProfileRepository = userProfileRepository;
         this.tokenRepository = passwordResetTokenRepository;
@@ -360,6 +358,11 @@ public class AppService implements UserDetailsService {
         return false; // Could not join any team
     }
 
+
+    public PlayerTeam addUserToTeam(PlayerTeam playerTeam) {
+        return playerTeamRepository.save(playerTeam);
+    }
+
     // ================= Notifications =================
     public List<Notification> getNotificationsByUser(User user){
         return notificationRepository.findByReceiver(user);
@@ -387,29 +390,19 @@ public class AppService implements UserDetailsService {
     }
 
     // ================= Messaging =================
-    public List<Message> getMessagesForUser(User user){
-        return messagingRepository.findBySenderOrReceiver(user, user);
-    }
 
-    public List<Message> getConversation(User user1, User user2){
-        return messagingRepository.findConversation(user1, user2);
-    }
-    public Message getMessageById(Long id){
-        return messagingRepository.findById(id).orElse(null);
-    }
+        public void sendMessage(Team team, User sender, String content) {
+            TeamMessage msg = new TeamMessage();
+            msg.setTeam(team);
+            msg.setSender(sender);
+            msg.setContent(content);
+            teamMessageRepository.save(msg);
+        }
 
-    public Message sendMessage(User sender, User receiver, String content){
-        Message message = new Message();
-        message.setSender(sender);
-        message.setReceiver(receiver);
-        message.setContent(content);
-        message.setTimestamp(new Timestamp(System.currentTimeMillis()));
-        return messagingRepository.save(message);
-    }
+        public List<TeamMessage> getTeamMessages(Team team) {
+            return teamMessageRepository.findByTeamOrderByTimestampAsc(team);
+        }
 
-    public void deleteMessage(Long id){
-        messagingRepository.deleteById(id);
-    }
     // ================= Match =================
     public List<Match> getAllMatches(){
         return matchRepository.findAll();
