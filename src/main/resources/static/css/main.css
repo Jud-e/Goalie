@@ -2504,8 +2504,24 @@ nav {
     padding: 0.5rem 1rem;
     border-radius: 8px;
 }
+.back-btn2 {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #0a0610;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+}
 
 .back-btn:hover {
+    background: rgba(150, 234, 155, 0.1);
+    color: var(--accent);
+    transform: translateX(-5px);
+}
+.back-btn2:hover {
     background: rgba(150, 234, 155, 0.1);
     color: var(--accent);
     transform: translateX(-5px);
