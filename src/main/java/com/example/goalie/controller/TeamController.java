@@ -11,8 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/teams")
@@ -21,7 +21,6 @@ public class TeamController {
 
     private final AppService service;
 
-    // List all teams for a tournament
     @GetMapping
     public String viewTeams(@RequestParam Long tournamentId,
                             @RequestParam(required = false) String success,
@@ -34,17 +33,31 @@ public class TeamController {
 
         List<Team> teams = service.getTeamsByTournament(tournament);
         User loggedInUser = service.getUserByEmail(principal.getName());
+
+//        // Map team ID -> set of player IDs
+//        Map<Long, Set<Long>> teamMemberIds = new HashMap<>();
+//        for (Team team : teams) {
+//            Set<Long> ids = team.getPlayers().stream()
+//                    .map(User::getId)
+//                    .collect(Collectors.toSet());
+//            teamMemberIds.put(team.getId(), ids);
+//        }
+        boolean isUserInTeam = teams.stream()
+                .anyMatch(team -> team.getPlayers().contains(loggedInUser));
+
         model.addAttribute("user", loggedInUser);
+//        model.addAttribute("userId", loggedInUser.getId()); // so template can use it
         model.addAttribute("tournament", tournament);
         model.addAttribute("teams", teams);
+//        model.addAttribute("teamMemberIds", teamMemberIds);
+        model.addAttribute("isUserInTeam", isUserInTeam);
 
         if (success != null && !success.isEmpty()) {
             model.addAttribute("success", success);
         }
-
-
         return "viewTeams";
     }
+
 
     // Show create team form
     @GetMapping("/create")
@@ -72,18 +85,15 @@ public class TeamController {
                              @RequestParam Long tournamentId,
                              Principal principal,
                              Model model) {
-
         if (principal == null) {
             return "redirect:/login";
         }
-
         User user = service.getUserByEmail(principal.getName());
         Tournament tournament = service.getTournamentById(tournamentId);
 
         if (tournament == null) {
             return "redirect:/tournaments";
         }
-
         // Validate team name
         if (team.getName() == null || team.getName().trim().isEmpty()) {
             model.addAttribute("error", "Team name is required");
@@ -92,7 +102,6 @@ public class TeamController {
             model.addAttribute("user", user);
             return "createTeam";
         }
-
         // Check for duplicate team name in this tournament
         List<Team> existingTeams = service.getTeamsByTournament(tournament);
         boolean nameExists = existingTeams.stream()
@@ -106,28 +115,15 @@ public class TeamController {
             model.addAttribute("user", user);
             return "createTeam";
         }
-
         // Set tournament for the team
         team.setTournament(tournament);
-
-        // Ensure players list is initialized
-        if (team.getPlayers() == null) {
-            team.setPlayers(new ArrayList<>());
-        }
-
-        // Save the team first
+        // Save the team
         Team savedTeam = service.createTeam(team);
-
-        // Create PlayerTeam link to add creator to the team
+        // Automatically join creator to this team
         PlayerTeam playerTeam = new PlayerTeam();
         playerTeam.setTeam(savedTeam);
         playerTeam.setUser(user);
-        service.addUserToTeam(playerTeam);
-
-        // Update the team entity to include the user
-        savedTeam.getPlayers().add(user);
-        service.createTeam(savedTeam); // persist the updated players list
-
+        service.addUserToTeam(playerTeam); // Only this is necessary
         return "redirect:/teams?tournamentId=" + tournamentId + "&success=Team created successfully";
     }
 

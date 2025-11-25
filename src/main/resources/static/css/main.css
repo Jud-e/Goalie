@@ -3406,29 +3406,36 @@ footer {
         font-size: 0.95rem;
     }
 }
+/* Chat icon button inside team card */
 .chat-icon {
-    position: fixed;       /* floats on screen */
-    bottom: 20px;          /* distance from bottom */
-    right: 20px;           /* distance from right */
-    width: 60px;
-    height: 60px;
+    position: absolute;       /* position relative to the nearest positioned parent */
+    top: 10px;                /* distance from the top of the card */
+    right: 10px;              /* distance from the right edge */
+    width: 40px;              /* small circle width */
+    height: 40px;             /* small circle height */
+    border-radius: 50%;       /* makes it perfectly circular */
     background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
     color: white;
-    border-radius: 50%;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     text-decoration: none;
-    font-size: 1.5rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    font-size: 1.2rem;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     transition: all 0.3s ease;
-    z-index: 1000;
+    z-index: 10;              /* stay above other elements */
 }
 
 .chat-icon:hover {
     transform: scale(1.1);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
 }
+
+/* Make sure the parent container is positioned relatively */
+.team-card {
+    position: relative;       /* ensures the chat-icon is positioned inside the card */
+}
+
 
 
 /* About Us*/

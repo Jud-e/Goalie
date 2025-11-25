@@ -19,11 +19,7 @@ public class Team {
     @JoinColumn(name = "tournament_id")
     private Tournament tournament;
 
-    @ManyToMany
-    @JoinTable(
-            name = "team_users",
-            joinColumns = @JoinColumn(name = "team_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
+    @ManyToMany(mappedBy = "teams")
     private List<User> players = new ArrayList<>();
+
 }

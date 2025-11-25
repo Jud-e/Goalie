@@ -5,6 +5,7 @@ import com.example.goalie.goalieEnum.Position;
 import com.example.goalie.goalieEnum.SkillLevel;
 import com.example.goalie.model.*;
 import com.example.goalie.repository.*;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
+@Transactional(readOnly = true)
 public class AppService implements UserDetailsService {
     private final UserRepository userRepository;
     private final TournamentRepository tournamentRepository;
@@ -264,6 +266,7 @@ public class AppService implements UserDetailsService {
             loadTeamPlayers(team);
         }        return team;
     }
+    @Transactional
     public Team createTeam(Team team){
         // Ensure players list is initialized
         if (team.getPlayers() == null) {
@@ -311,6 +314,7 @@ public class AppService implements UserDetailsService {
         return playerTeams.get(0).getTeam();
     }
     // Join a specific team (for premium users)
+    @Transactional
     public boolean joinTeam(User user, Team team) {
         if (user == null || team == null) return false;
 // Check if user is already in this team

@@ -31,11 +31,15 @@ public class User {
     @OneToMany(mappedBy = "sender")
     private List<TeamMessage> messages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<PlayerTeam> playerTeams;
-
-    @ManyToMany(mappedBy = "players")
+    @ManyToMany
+    @JoinTable(
+            name = "team_users",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "team_id")
+    )
     private List<Team> teams = new ArrayList<>();
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

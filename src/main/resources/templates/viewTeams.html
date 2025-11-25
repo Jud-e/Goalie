@@ -47,7 +47,7 @@
             </div>
 
             <!-- Join Random Team Button for Regular Users -->
-            <div th:if="${user != null and !isUserInTeam and !user.subscription}" style="margin: 20px 0;" data-aos="fade-up">
+            <div th:if="${user != null and !user.subscription and !isUserInTeam}" style="margin: 20px 0;" data-aos="fade-up">
                 <form th:action="@{/teams/join-random}" method="post" style="display: inline;">
                     <input type="hidden" name="tournamentId" th:value="${tournament.id}" />
                     <button type="submit" class="create-team-header-btn">
@@ -80,8 +80,10 @@
                             <h4>Team Members</h4>
                             <div class="members-list">
                                 <div th:each="player : ${team.players}" class="member-item">
+                                    <th:block th:if="${player != null}">
                                     <span class="member-avatar">👤</span>
                                     <span class="member-name" th:text="${player.name}">Player Name</span>
+                                    </th:block>
                                 </div>
                             </div>
                         </div>
@@ -91,9 +93,9 @@
                         </div>
                     </div>
 <!--   This is supposed to be the button that leads to the messaging. What I was implementing was a group chat text between team members-->
-                    <a th:if="${user != null and team.players != null and #lists.contains(team.players, user)}"
+                    <a th:if="${team.players.contains(user)}"
                        th:href="@{/teams/chat/{id}(id=${team.id})}"
-                       class="chat-icon submitBtn"
+                       class="chat-icon"
                        title="View Team Chat">
                         <i class="fa fa-comments"></i>
                     </a>
