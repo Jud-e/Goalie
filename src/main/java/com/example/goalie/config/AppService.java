@@ -12,16 +12,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-<<<<<<< HEAD
-import org.thymeleaf.expression.Sets;
-
-import java.sql.Timestamp;
-import java.time.LocalDate;
-=======
 import java.time.LocalDate;
 
 import java.time.LocalDateTime;
->>>>>>> origin/dev2
 import java.util.*;
 
 @Service
@@ -69,7 +62,7 @@ public class AppService implements UserDetailsService {
                 .roles("USER") // you can map roles from User if you have them
                 .build();
     }
-//For users
+    //For users
     public User createUser(User user){
         // Check if email already exists
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
@@ -402,17 +395,17 @@ public class AppService implements UserDetailsService {
 
     // ================= Messaging =================
 
-        public void sendMessage(Team team, User sender, String content) {
-            TeamMessage msg = new TeamMessage();
-            msg.setTeam(team);
-            msg.setSender(sender);
-            msg.setContent(content);
-            teamMessageRepository.save(msg);
-        }
+    public void sendMessage(Team team, User sender, String content) {
+        TeamMessage msg = new TeamMessage();
+        msg.setTeam(team);
+        msg.setSender(sender);
+        msg.setContent(content);
+        teamMessageRepository.save(msg);
+    }
 
-        public List<TeamMessage> getTeamMessages(Team team) {
-            return teamMessageRepository.findByTeamOrderByTimestampAsc(team);
-        }
+    public List<TeamMessage> getTeamMessages(Team team) {
+        return teamMessageRepository.findByTeamOrderByTimestampAsc(team);
+    }
 
     // ================= Match =================
     public List<Match> getAllMatches(){
@@ -441,27 +434,14 @@ public class AppService implements UserDetailsService {
 
         for (int i = 0; i < teams.size(); i+=2) {
             if(i + 1 < teams.size()) {
-<<<<<<< HEAD
-                Match match = createMatches(tournament, teams.get(i), teams.get(i+1));
-=======
                 Match match = createMatch(tournament, teams.get(i), teams.get(i+1));
->>>>>>> origin/dev2
                 matches.add(match);
             }
         }
 
         matchRepository.saveAll(matches);
-<<<<<<< HEAD
-
-//
     }
 
-
-
-=======
-    }
-
->>>>>>> origin/dev2
     public List<Match> getMatchesByTournament(Tournament tournament){
 
         List<Match> matches = matchRepository.findMatchByTournament(tournament);
@@ -475,35 +455,17 @@ public class AppService implements UserDetailsService {
             if (teamSizes.contains(numberOfTeams)) {
                 generateRandomMatches(tournament.getId());
                 matches = matchRepository.findMatchByTournament(tournament);
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/dev2
             }
         }
         return matches;
     }
 
-<<<<<<< HEAD
-    private Match createMatches(Tournament tournament, Team team1, Team team2) {
-=======
     private Match createMatch(Tournament tournament, Team team1, Team team2) {
->>>>>>> origin/dev2
         Match match = new Match();
         match.setTournament(tournament);
         match.setTeam1(team1);
         match.setTeam2(team2);
 
-<<<<<<< HEAD
-        if(tournament.getStartDate() != null) {
-            match.setMatchDate(tournament.getStartDate().plusDays(new Random().nextInt(7)));
-        } else {
-            match.setMatchDate(LocalDate.now());
-        }
-
-
-=======
->>>>>>> origin/dev2
         return match;
     }
 
@@ -516,16 +478,6 @@ public class AppService implements UserDetailsService {
     }
 
 
-<<<<<<< HEAD
-
-
-
-
-
-    // ================== User Profile ===============
-
-=======
->>>>>>> origin/dev2
 
     // ================== User Profile ===============
     public boolean hasPlayerProfile(User user) {
