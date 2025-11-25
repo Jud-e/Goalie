@@ -18,14 +18,22 @@ public class UserProfile {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    private String playerNickname;
     private String firstName;
     private String lastName;
     private LocalDate birthDate;
     private Position preferredPosition;
     private Position secondaryPosition;
+    private Integer skillRating; // 1-5 star rating
     private SkillLevel skillLevel;
     private DominantFoot dominantFoot;
     private String profilePicture;
     private AccountType accountType;
+    private String bio;
+    private String phoneNumber;
 
 }

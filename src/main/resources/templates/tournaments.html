@@ -10,6 +10,11 @@
 <main layout:fragment="content">
     <section class="tournaments">
         <div class="main-section tournament-main">
+            <div class="back-link">
+                <a th:href="@{/home}" class="back-btn2">
+                    <span>←</span> Back to Home
+                </a>
+            </div>
             <div class="tournaments-title" data-aos="fade-down">
                 <h2>Tournaments</h2>
                 <div class="create-links" data-aos="fade-left">
@@ -104,13 +109,11 @@
                         <h3 th:text="${tournament.name}"></h3>
                         <span class="status-badge"
                               th:classappend="'status-' + ${tournament.status.name().toLowerCase()}"
-                              th:text="${tournament.status.name().substring(0,1).toUpperCase() + tournament.status.name().substring(1).toLowerCase()}"></span>
-
+                              th:text="${tournament.status.name().substring(0,1).toUpperCase() +
+                              tournament.status.name().substring(1).toLowerCase()}"></span>
                     </div>
-
                     <div class="tournament-body">
                         <p class="tournament-description" th:text="${tournament.description}"></p>
-
                         <div class="tournament-details">
                             <div class="detail-item">
                                 <i data-feather="calendar"></i>
@@ -118,24 +121,28 @@
                                 <span th:if="${tournament.endDate != null}"
                                       th:text="' - ' + ${#temporals.format(tournament.endDate, 'MMM dd, yyyy')}"></span>
                             </div>
-
                             <div class="detail-item" th:if="${tournament.location != null}">
                                 <i data-feather="map-pin"></i>
                                 <span th:text="${tournament.location}"></span>
                             </div>
-
-<!--                            <div class="detail-item">-->
-<!--                                <i data-feather="activity"></i>-->
-<!--                                <span th:text="${tournament.sport}"></span>-->
-<!--                            </div>-->
-
                             <div class="detail-item" th:if="${tournament.maxParticipants != null}">
                                 <i data-feather="users"></i>
-                                <span th:text="${tournament.currentParticipants != null ? tournament.currentParticipants : 0} + '/' + ${tournament.maxParticipants} + ' participants'"></span>
+                                <span th:text="${tournament.currentParticipants != null ? tournament.currentParticipants : 0}
+                                + '/' + ${tournament.maxParticipants} + ' participants'"></span>
                             </div>
                             <div class="detail-item">
+<<<<<<< HEAD
                                 <a th:href="@{/teams(tournamentId = ${tournament.id})}">Tournaments Details</a>
+=======
+                                <a th:href="@{/teams(tournamentId = ${tournament.id})}">Tournament Details</a>
+>>>>>>> origin/dev2
                             </div>
+                            <form th:action="@{|/tournaments/${tournament.id}/delete|}" method="post" class="delete-form">
+                                <button type="submit" class="btn-danger">
+                                    🗑️ Delete Tournament
+                                </button>
+                            </form>
+
                         </div>
                     </div>
                 </div>

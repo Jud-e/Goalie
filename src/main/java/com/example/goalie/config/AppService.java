@@ -1,38 +1,73 @@
 package com.example.goalie.config;
 
+import com.example.goalie.goalieEnum.DominantFoot;
+import com.example.goalie.goalieEnum.Position;
+import com.example.goalie.goalieEnum.SkillLevel;
 import com.example.goalie.model.*;
 import com.example.goalie.repository.*;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+<<<<<<< HEAD
 import org.thymeleaf.expression.Sets;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+=======
+import java.time.LocalDate;
+
+import java.time.LocalDateTime;
+>>>>>>> origin/dev2
 import java.util.*;
 
 @Service
-public class AppService {
+@Transactional(readOnly = true)
+public class AppService implements UserDetailsService {
     private final UserRepository userRepository;
     private final TournamentRepository tournamentRepository;
     private final TeamRepository teamRepository;
     private final PlayerTeamRepository playerTeamRepository;
     private final NotificationRepository notificationRepository;
-    private final MessagingRepository messagingRepository;
+    private final TeamMessageRepository teamMessageRepository;
     private final MatchRepository matchRepository;
     private final UserProfileRepository userProfileRepository;
+    private final PasswordResetTokenRepository tokenRepository;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     public AppService(UserRepository userRepository,
-                      TournamentRepository tournamentRepository,TeamRepository teamRepository,
-                      PlayerTeamRepository playerTeamRepository,NotificationRepository notificationRepository,
-                      MessagingRepository messagingRepository,
-                      MatchRepository matchRepository, UserProfileRepository userProfileRepository) {
+                      TournamentRepository tournamentRepository,
+                      TeamRepository teamRepository,
+                      PlayerTeamRepository playerTeamRepository,
+                      NotificationRepository notificationRepository, TeamMessageRepository teamMessageRepository,
+                      MatchRepository matchRepository,
+                      UserProfileRepository userProfileRepository,
+                      PasswordResetTokenRepository passwordResetTokenRepository) {
         this.userRepository = userRepository;
         this.tournamentRepository = tournamentRepository;
         this.teamRepository = teamRepository;
         this.playerTeamRepository = playerTeamRepository;
         this.notificationRepository = notificationRepository;
-        this.messagingRepository = messagingRepository;
+        this.teamMessageRepository = teamMessageRepository;
         this.matchRepository = matchRepository;
         this.userProfileRepository = userProfileRepository;
+        this.tokenRepository = passwordResetTokenRepository;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+
+        return org.springframework.security.core.userdetails.User.builder()
+                .username(user.getEmail())
+                .password(user.getPassword()) // hashed password
+                .roles("USER") // you can map roles from User if you have them
+                .build();
     }
 //For users
     public User createUser(User user){
@@ -78,6 +113,34 @@ public class AppService {
     public List<User> getAllUsers(){
         return userRepository.findAll();
     }
+
+    public String createPasswordResetToken(User user) {
+        tokenRepository.deleteByUserId(user.getId());
+
+        PasswordResetToken token = new PasswordResetToken();
+        token.setUser(user);
+        token.setToken(UUID.randomUUID().toString());
+        token.setExpiryDate(LocalDateTime.now().plusMinutes(30));
+        tokenRepository.save(token);
+        return token.getToken();
+    }
+
+    public boolean validatePasswordResetToken(String token) {
+        PasswordResetToken prt = tokenRepository.findByToken(token).orElse(null);
+        return prt != null && prt.getExpiryDate().isAfter(LocalDateTime.now());
+    }
+
+    public User getUserByPasswordResetToken(String token) {
+        PasswordResetToken prt = tokenRepository.findByToken(token).orElse(null);
+        return prt != null ? prt.getUser() : null;
+    }
+
+    public void updatePassword(User user, String newRawPassword) {
+        user.setPassword(passwordEncoder.encode(newRawPassword));
+        userRepository.save(user);
+        tokenRepository.deleteByUserId(user.getId());
+    }
+
 
     //For Tournaments
     public List<Tournament> getAllTournaments(){
@@ -150,6 +213,26 @@ public class AppService {
                 endDate
         );
     }
+
+    public void updateTournamentStatus(Tournament tournament) {
+        LocalDate today = LocalDate.now();
+
+        if (tournament.getEndDate() != null && tournament.getEndDate().isBefore(today)) {
+            // End date has passed → tournament is completed
+            tournament.setStatus(Tournament.TournamentStatus.COMPLETED);
+        } else if (tournament.getStartDate() != null && tournament.getStartDate().isAfter(today)) {
+            // Start date is in the future → upcoming
+            tournament.setStatus(Tournament.TournamentStatus.UPCOMING);
+        } else if (tournament.getStartDate() != null &&
+                !tournament.getStartDate().isAfter(today) &&
+                (tournament.getEndDate() == null || !tournament.getEndDate().isBefore(today))) {
+            // Tournament is ongoing → active
+            tournament.setStatus(Tournament.TournamentStatus.ACTIVE);
+        }
+        // Save changes
+        tournamentRepository.save(tournament);
+    }
+
     public Tournament saveTournament(Tournament tournament) {
         return tournamentRepository.save(tournament);
     }
@@ -161,6 +244,23 @@ public class AppService {
                 .sorted()
                 .toList();
     }
+    public void deleteTournament(Tournament tournament) {
+        List<Team> teams = teamRepository.findByTournament(tournament);
+        for (Team team : teams) {
+            playerTeamRepository.deleteAll(
+                    playerTeamRepository.findByTeam(team)
+            );
+        }
+        List<Match> matches = matchRepository.findByTournament(tournament);
+        if (!matches.isEmpty()) {
+            matchRepository.deleteAll(matches);
+        }
+        if (!teams.isEmpty()) {
+            teamRepository.deleteAll(teams);
+        }
+        tournamentRepository.delete(tournament);
+    }
+
 
     // ================= Team =================
     public List<Team> getAllTeams(){
@@ -173,6 +273,7 @@ public class AppService {
             loadTeamPlayers(team);
         }        return team;
     }
+    @Transactional
     public Team createTeam(Team team){
         // Ensure players list is initialized
         if (team.getPlayers() == null) {
@@ -220,6 +321,7 @@ public class AppService {
         return playerTeams.get(0).getTeam();
     }
     // Join a specific team (for premium users)
+    @Transactional
     public boolean joinTeam(User user, Team team) {
         if (user == null || team == null) return false;
 // Check if user is already in this team
@@ -267,6 +369,11 @@ public class AppService {
         return false; // Could not join any team
     }
 
+
+    public PlayerTeam addUserToTeam(PlayerTeam playerTeam) {
+        return playerTeamRepository.save(playerTeam);
+    }
+
     // ================= Notifications =================
     public List<Notification> getNotificationsByUser(User user){
         return notificationRepository.findByReceiver(user);
@@ -294,29 +401,19 @@ public class AppService {
     }
 
     // ================= Messaging =================
-    public List<Message> getMessagesForUser(User user){
-        return messagingRepository.findBySenderOrReceiver(user, user);
-    }
 
-    public List<Message> getConversation(User user1, User user2){
-        return messagingRepository.findConversation(user1, user2);
-    }
-    public Message getMessageById(Long id){
-        return messagingRepository.findById(id).orElse(null);
-    }
+        public void sendMessage(Team team, User sender, String content) {
+            TeamMessage msg = new TeamMessage();
+            msg.setTeam(team);
+            msg.setSender(sender);
+            msg.setContent(content);
+            teamMessageRepository.save(msg);
+        }
 
-    public Message sendMessage(User sender, User receiver, String content){
-        Message message = new Message();
-        message.setSender(sender);
-        message.setReceiver(receiver);
-        message.setContent(content);
-        message.setTimestamp(new Timestamp(System.currentTimeMillis()));
-        return messagingRepository.save(message);
-    }
+        public List<TeamMessage> getTeamMessages(Team team) {
+            return teamMessageRepository.findByTeamOrderByTimestampAsc(team);
+        }
 
-    public void deleteMessage(Long id){
-        messagingRepository.deleteById(id);
-    }
     // ================= Match =================
     public List<Match> getAllMatches(){
         return matchRepository.findAll();
@@ -344,18 +441,27 @@ public class AppService {
 
         for (int i = 0; i < teams.size(); i+=2) {
             if(i + 1 < teams.size()) {
+<<<<<<< HEAD
                 Match match = createMatches(tournament, teams.get(i), teams.get(i+1));
+=======
+                Match match = createMatch(tournament, teams.get(i), teams.get(i+1));
+>>>>>>> origin/dev2
                 matches.add(match);
             }
         }
 
         matchRepository.saveAll(matches);
+<<<<<<< HEAD
 
 //
     }
 
 
 
+=======
+    }
+
+>>>>>>> origin/dev2
     public List<Match> getMatchesByTournament(Tournament tournament){
 
         List<Match> matches = matchRepository.findMatchByTournament(tournament);
@@ -369,18 +475,26 @@ public class AppService {
             if (teamSizes.contains(numberOfTeams)) {
                 generateRandomMatches(tournament.getId());
                 matches = matchRepository.findMatchByTournament(tournament);
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/dev2
             }
         }
         return matches;
     }
 
+<<<<<<< HEAD
     private Match createMatches(Tournament tournament, Team team1, Team team2) {
+=======
+    private Match createMatch(Tournament tournament, Team team1, Team team2) {
+>>>>>>> origin/dev2
         Match match = new Match();
         match.setTournament(tournament);
         match.setTeam1(team1);
         match.setTeam2(team2);
 
+<<<<<<< HEAD
         if(tournament.getStartDate() != null) {
             match.setMatchDate(tournament.getStartDate().plusDays(new Random().nextInt(7)));
         } else {
@@ -388,6 +502,8 @@ public class AppService {
         }
 
 
+=======
+>>>>>>> origin/dev2
         return match;
     }
 
@@ -400,6 +516,7 @@ public class AppService {
     }
 
 
+<<<<<<< HEAD
 
 
 
@@ -407,7 +524,66 @@ public class AppService {
 
     // ================== User Profile ===============
 
+=======
+>>>>>>> origin/dev2
 
     // ================== User Profile ===============
+    public boolean hasPlayerProfile(User user) {
+        return userProfileRepository.findAll().stream()
+                .anyMatch(profile -> profile.getUser() != null && profile.getUser().getId().equals(user.getId()));
+    }
+
+    public UserProfile getPlayerProfile(User user) {
+        return userProfileRepository.findAll().stream()
+                .filter(profile -> profile.getUser() != null && profile.getUser().getId().equals(user.getId()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public UserProfile createOrUpdatePlayerProfile(User user, String playerNickname, Integer skillRating,
+                                                   String preferredPosition, String dominantFoot, String bio) {
+        UserProfile profile = getPlayerProfile(user);
+
+        if (profile == null) {
+            profile = new UserProfile();
+            profile.setUser(user);
+        }
+
+        profile.setPlayerNickname(playerNickname);
+        profile.setSkillRating(skillRating);
+
+        // Map skill rating to SkillLevel enum
+        if (skillRating != null) {
+            if (skillRating <= 2) {
+                profile.setSkillLevel(SkillLevel.BEGINNER);
+            } else if (skillRating <= 4) {
+                profile.setSkillLevel(SkillLevel.INTERMEDIATE);
+            } else {
+                profile.setSkillLevel(SkillLevel.ADVANCED);
+            }
+        }
+
+        if (preferredPosition != null && !preferredPosition.isEmpty()) {
+            try {
+                profile.setPreferredPosition(Position.valueOf(preferredPosition.toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                // Invalid position, ignore
+            }
+        }
+
+        if (dominantFoot != null && !dominantFoot.isEmpty()) {
+            try {
+                profile.setDominantFoot(DominantFoot.valueOf(dominantFoot.toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                // Invalid foot, ignore
+            }
+        }
+
+        if (bio != null) {
+            profile.setBio(bio);
+        }
+
+        return userProfileRepository.save(profile);
+    }
 
 }

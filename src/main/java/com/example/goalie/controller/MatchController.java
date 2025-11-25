@@ -8,9 +8,16 @@ import com.example.goalie.model.Tournament;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+<<<<<<< HEAD
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+=======
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+>>>>>>> origin/dev2
 
 import java.util.List;
 
@@ -31,6 +38,7 @@ public class MatchController {
         model.addAttribute("matches", matches);
         model.addAttribute("tournament", tournament);
         model.addAttribute("teams", teams);
+<<<<<<< HEAD
         model.addAttribute("allowedSizes", List.of(4,8,16,32));
 
         return "view_matches";
@@ -92,5 +100,11 @@ public class MatchController {
         }
 
     }
+=======
+
+        return "view_matches";
+    }
+
+>>>>>>> origin/dev2
 
 }
