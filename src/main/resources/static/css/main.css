@@ -1139,11 +1139,12 @@ nav {
 }
 
 .matches-form .match-btn {
-  width: 100%;
+    width: 100%;
     margin: 15px 15px 20px 10px;
+    display: flex;
+    justify-content: space-around;
 }
 .match-btn button {
-    width: 87%;
     background: #2563EB;
     color: #fff;
     font-weight: 700;
@@ -1156,6 +1157,13 @@ nav {
     transform: scale(1);
     margin: 0 8px;
     cursor: pointer;
+}
+.match-btn a {
+    padding: 0.75rem 2.2rem;
+    margin-right: 1rem;
+    background: #374151;
+    color: #fff;
+    border-radius: 20px;
 }
 .match-btn button:hover {
     background: transparent;

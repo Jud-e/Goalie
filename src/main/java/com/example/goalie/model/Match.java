@@ -49,7 +49,7 @@ public class Match {
     public String getScoreDisplay()
     {
         if (team1Score == null || team2Score == null) return "";
-        return team1Score + " - " + team2Score;
+        return team1Score + "   -   " + team2Score;
     }
 
     public enum MatchRound {

@@ -35,7 +35,7 @@
                             <h4 th:text="${match.getMatchDate()}"></h4>
                             <div class="match-info">
                                 <div class="team" th:text="${match.team1?.name ?: 'TBD'}"></div>
-                                <span th:text="${match.getScoreDisplay()}"></span>
+                                <span th:text="${match.getScoreDisplay}"></span>
                                 <div class="team" th:text="${match.team2?.name ?: 'TBD'}"></div>
 
                             </div>
