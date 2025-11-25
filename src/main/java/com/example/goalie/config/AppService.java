@@ -1,12 +1,18 @@
 package com.example.goalie.config;
 
+import com.example.goalie.goalieEnum.DominantFoot;
+import com.example.goalie.goalieEnum.Position;
+import com.example.goalie.goalieEnum.SkillLevel;
 import com.example.goalie.model.*;
 import com.example.goalie.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AppService {
@@ -317,6 +323,7 @@ public class AppService {
         messagingRepository.deleteById(id);
     }
     // ================= Match =================
+    // ================= Match =================
     public List<Match> getAllMatches(){
         return matchRepository.findAll();
     }
@@ -329,7 +336,127 @@ public class AppService {
         return matchRepository.save(match);
     }
 
+    // ------------ Random Match Making --------
+
+    public void generateRandomMatches(Long id){
+        Tournament tournament = tournamentRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Tournament not found."));
+
+        List<Team> teams = teamRepository.findByTournament(tournament);
+
+        Collections.shuffle(teams);
+
+        List<Match> matches = new ArrayList<>();
+
+        for (int i = 0; i < teams.size(); i+=2) {
+            if(i + 1 < teams.size()) {
+                Match match = createMatch(tournament, teams.get(i), teams.get(i+1));
+                matches.add(match);
+            }
+        }
+
+        matchRepository.saveAll(matches);
+
+//
+    }
+
+
+
+    public List<Match> getMatchesByTournament(Tournament tournament){
+
+        List<Match> matches = matchRepository.findMatchByTournament(tournament);
+
+        if (matches.isEmpty()) {
+            List<Team> teams = teamRepository.findByTournament(tournament);
+            int numberOfTeams = teams.size();
+
+            Set<Integer> teamSizes = Set.of(4,8,16,32);
+
+            if (teamSizes.contains(numberOfTeams)) {
+                generateRandomMatches(tournament.getId());
+                matches = matchRepository.findMatchByTournament(tournament);
+
+            }
+        }
+        return matches;
+    }
+
+    private Match createMatch(Tournament tournament, Team team1, Team team2) {
+        Match match = new Match();
+        match.setTournament(tournament);
+        match.setTeam1(team1);
+        match.setTeam2(team2);
+
+        return match;
+    }
+
+
+    public  void deleteMatch(Long id){
+        matchRepository.deleteById(id);
+    }
+    public void deleteAllMatches(Long id){
+        matchRepository.deleteMatchesByTournamentId(id);
+    }
+
+
 
     // ================== User Profile ===============
+    public boolean hasPlayerProfile(User user) {
+        return userProfileRepository.findAll().stream()
+                .anyMatch(profile -> profile.getUser() != null && profile.getUser().getId().equals(user.getId()));
+    }
+
+    public UserProfile getPlayerProfile(User user) {
+        return userProfileRepository.findAll().stream()
+                .filter(profile -> profile.getUser() != null && profile.getUser().getId().equals(user.getId()))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public UserProfile createOrUpdatePlayerProfile(User user, String playerNickname, Integer skillRating,
+                                                   String preferredPosition, String dominantFoot, String bio) {
+        UserProfile profile = getPlayerProfile(user);
+
+        if (profile == null) {
+            profile = new UserProfile();
+            profile.setUser(user);
+        }
+
+        profile.setPlayerNickname(playerNickname);
+        profile.setSkillRating(skillRating);
+
+        // Map skill rating to SkillLevel enum
+        if (skillRating != null) {
+            if (skillRating <= 2) {
+                profile.setSkillLevel(SkillLevel.BEGINNER);
+            } else if (skillRating <= 4) {
+                profile.setSkillLevel(SkillLevel.INTERMEDIATE);
+            } else {
+                profile.setSkillLevel(SkillLevel.ADVANCED);
+            }
+        }
+
+        if (preferredPosition != null && !preferredPosition.isEmpty()) {
+            try {
+                profile.setPreferredPosition(Position.valueOf(preferredPosition.toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                // Invalid position, ignore
+            }
+        }
+
+        if (dominantFoot != null && !dominantFoot.isEmpty()) {
+            try {
+                profile.setDominantFoot(DominantFoot.valueOf(dominantFoot.toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                // Invalid foot, ignore
+            }
+        }
+
+        if (bio != null) {
+            profile.setBio(bio);
+        }
+
+        return userProfileRepository.save(profile);
+    }
 
 }
