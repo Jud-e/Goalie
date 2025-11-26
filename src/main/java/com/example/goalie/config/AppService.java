@@ -416,7 +416,8 @@ public class AppService implements UserDetailsService {
         return matchRepository.findById(id).orElse(null);
     }
 
-    public Match createMatch(Match match){
+    @Transactional
+    public Match updateMatch(Match match){
         return matchRepository.save(match);
     }
 
@@ -460,11 +461,17 @@ public class AppService implements UserDetailsService {
         return matches;
     }
 
+
     private Match createMatch(Tournament tournament, Team team1, Team team2) {
         Match match = new Match();
         match.setTournament(tournament);
         match.setTeam1(team1);
         match.setTeam2(team2);
+        if (tournament.getStartDate() != null) {
+            match.setMatchDate(tournament.getStartDate().plusDays(new Random().nextInt(7)));
+        } else {
+            match.setMatchDate(LocalDate.now());
+        }
 
         return match;
     }

@@ -29,11 +29,10 @@
 
                 <div class="matches-fixtures" th:if="${allowedSizes.contains(teams.size())}" data-aos="flip-down">
                     <h3>Play Fixtures</h3>
-<<<<<<< HEAD
                     <div class="fixture-list" th:each="match: ${matches}">
-<!--                        th:href="@{/match/{id}(id=${tournament.id})}"-->
+                        <!--                        th:href="@{/match/{id}(id=${tournament.id})}"-->
                         <a  class="fixture"  th:href="@{/match/edit/{id}(id=${match.id})}">
-                            <h4 th:text="${match.getMatchDate()}"></h4>
+                            <h4 th:text="${match.getMatchDate}"></h4>
                             <div class="match-info">
                                 <div class="team" th:text="${match.team1?.name ?: 'TBD'}"></div>
                                 <span th:text="${match.getScoreDisplay}"></span>
@@ -41,19 +40,6 @@
 
                             </div>
                         </a>
-
-=======
-                    <div class="fixture-list">
-                        <div class="fixture" th:each="match: ${matches}">
-                            <h4>2012-05-12 9.30</h4>
-                            <div>
-                                <div class="team" th:text="${match.team1?.name ?: 'TBD'}"></div>
-                                <span th:text="${match.getScoreDisplay()}"></span>
-                                <div class="team" th:text="${match.team2?.name ?: 'TBD'}"></div>
-
-                            </div>
-                        </div>
->>>>>>> origin/dev2
 
 
 

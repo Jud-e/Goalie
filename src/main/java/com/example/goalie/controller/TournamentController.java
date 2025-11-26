@@ -70,7 +70,7 @@ public class TournamentController {
     public String createTournament(@ModelAttribute Tournament tournament,
                                    HttpSession session) {
         User organizer = (User) session.getAttribute("loggedInUser");
-//        if (organizer == null) return "redirect:/login";
+        if (organizer == null) return "redirect:/login";
 
         tournament.setStatus(Tournament.TournamentStatus.UPCOMING);
         service.createTournament(tournament, organizer);

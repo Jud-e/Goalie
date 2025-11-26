@@ -36,15 +36,15 @@
                         </div>
                         <div>
                             <label>Match Schedule Date</label>
-                            <input type="date" th:value="*{matchDate}" th:field="*{matchDate}" required>
+                            <input type="date" th:value="*{matchDate}" th:field="*{matchDate}">
                         </div>
+
+
 
 
                     </div>
                     <div class="match-btn">
                         <button type="submit">Update Match Info</button>
-                        <a th:href="@{/match/{id}(id=${match.tournament?.id})}"
-                           class="">Cancel</a>
                     </div>
 
 

@@ -81,7 +81,8 @@ public class MatchController {
         existingMatch.setTeam1Score(match.getTeam1Score());
         existingMatch.setTeam2Score(match.getTeam2Score());
         existingMatch.setMatchDate(match.getMatchDate());
-        service.createMatch(existingMatch);
+        service.updateMatch(existingMatch);
+
 
         ra.addAttribute("success", "Match scores successfully updated");
 
@@ -90,6 +91,7 @@ public class MatchController {
         } else {
             return "redirect:/tournaments";
         }
+//        return "redirect:/match/" + tid;
 
     }
 
