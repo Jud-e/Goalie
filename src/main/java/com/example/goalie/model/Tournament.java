@@ -11,7 +11,7 @@ import java.util.List;
 
 @Entity
 @Data
-@ToString(exclude =  {"matches"})
+@ToString(exclude =  {"matches", "teams"})
 public class Tournament {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

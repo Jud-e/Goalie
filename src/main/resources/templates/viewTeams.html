@@ -11,8 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teams - Goalie</title>
 </head>
-<body>
-<main layout:fragment="content">
+<body><main layout:fragment="content">
     <section class="teams-section">
         <div class="teams-container">
             <!-- Header -->
@@ -29,10 +28,10 @@
                             <span th:text="${tournament.name}">Tournament Name</span>
                         </p>
                     </div>
-                    <a th:href="@{/teams/create(tournamentId=${tournament.id})}" class="create-team-header-btn">
+                    <a th:if="${teams.size() < tournament.getNumOfTeams()}" th:href="@{/teams/create(tournamentId=${tournament.id})}" class="create-team-header-btn">
                         <span>+</span> Create Team
-                    </a>
 
+                    </a>
                 </div>
             </div>
 
@@ -46,40 +45,6 @@
                 <p th:text="${error}"></p>
             </div>
 
-            <!-- Join Random Team Button for Regular Users -->
-            <div th:if="${user != null and !user.subscription and !isUserInTeam}" style="margin: 20px 0;" data-aos="fade-up">
-                <form th:action="@{/teams/join-random}" method="post" style="display: inline;">
-                    <input type="hidden" name="tournamentId" th:value="${tournament.id}" />
-                    <button type="submit" class="create-team-header-btn">
-                        Join Random Team
-                    </button>
-                </form>
-                <p class="tournament-name">As a regular user, you will be randomly assigned to a team.</p>
-            </div>
-
-            <div class="tournament-container" data-aos="flip-left">
-                <div th:if="${#lists.isEmpty(teams)}">
-                    <h2 style="color: #0a0610">No teams created</h2>
-                </div>
-
-
-                <div class="tournament-schedule-link" th:if="${#lists.size(teams)>=4}">
-                    <a th:href="@{/match/{id}(id=${tournament.id})}">
-                        View Tournament Schedule
-                    </a>
-                </div>
-
-                <div class="tournament" th:each="t : ${teams}">
-
-                    <div class="tournament-content">
-                        <h1 th:text="${t.name}"></h1>
-                        <h3>Team Members: <span th:text="${t.players != null ? #lists.size(t.players) : 0}"></span></h3>
-                        <div th:if="${t.players != null and !#lists.isEmpty(t.players)}">
-                            <h4>Players:</h4>
-                            <ul>
-                                <li th:each="player : ${t.players}" th:text="${player.name}"></li>
-                            </ul>
-=======
             <!-- Teams Grid -->
             <div class="teams-grid" th:if="${!#lists.isEmpty(teams)}">
                 <div th:each="team : ${teams}" class="team-card">
@@ -97,17 +62,14 @@
                                 <span class="info-label">Tournament</span>
                                 <span class="info-value" th:text="${team.tournament.name}">Tournament Name</span>
                             </div>
->>>>>>> origin/dev2
                         </div>
 
                         <div class="team-members-section" th:if="${!#lists.isEmpty(team.players)}">
                             <h4>Team Members</h4>
                             <div class="members-list">
                                 <div th:each="player : ${team.players}" class="member-item">
-                                    <th:block th:if="${player != null}">
                                     <span class="member-avatar">👤</span>
                                     <span class="member-name" th:text="${player.name}">Player Name</span>
-                                    </th:block>
                                 </div>
                             </div>
                         </div>
@@ -116,23 +78,26 @@
                             <p>No players added yet</p>
                         </div>
                     </div>
-<!--   This is supposed to be the button that leads to the messaging. What I was implementing was a group chat text between team members-->
+
                     <a th:if="${team.players.contains(user)}"
                        th:href="@{/teams/chat/{id}(id=${team.id})}"
                        class="chat-icon"
                        title="View Team Chat">
                         <i class="fa fa-comments"></i>
                     </a>
-
                 </div>
             </div>
-            <div class="empty-state" th:if="!${#lists.isEmpty(teams)}">
+
+            <div class="empty-state" th:if="${allowedSizes.contains(teams.size())}">
                 <div class="empty-icon" >👥</div>
                 <h2>View matches</h2>
                 <p>View all the matches for this tournament!</p>
                 <a th:href="@{/match/{id}(id=${tournament.id})}" class="btn-primary">
                     View Matches
                 </a>
+            </div>
+            <div class="matches-fixtures" th:if="${!allowedSizes.contains(teams.size())}" data-aos="flip-down">
+                <p>Matches can not be generated unless Team create Are <strong>4, 8 , 16, <span>or</span> 32</strong> Teams</p>
             </div>
 
             <!-- Empty State -->
