@@ -53,6 +53,9 @@ public class HomeController {
     public String loginSubmit(@ModelAttribute("user")  User user, Model model, HttpSession session){
         User userExisting = service.getUserByEmail(user.getEmail());
         if (userExisting != null && userExisting.getPassword().equals(user.getPassword())){
+            if (userExisting.getEmail().equalsIgnoreCase("admin@admin")){
+                return "redirect:/admin";
+            }
             session.setAttribute("loggedInUser",userExisting);
             return "redirect:/home";
         }
@@ -60,6 +63,11 @@ public class HomeController {
             model.addAttribute("error", "Invalid username or password");
             return "login";
         }
+    }
+    @GetMapping("/admin")
+    public String showAdmin(Model model){
+        model.addAttribute("user", new User());
+        return "admin";
     }
 //homepage
     @GetMapping("/home")

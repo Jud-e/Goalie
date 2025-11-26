@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goalie Admin Dashboard</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body { background: #f4f5f7; }
+        .sidebar {
+            height: 100vh;
+            background: #1f1f2e;
+            padding-top: 20px;
+            color: #ccc;
+        }
+        .sidebar a {
+            display: block;
+            padding: 12px 20px;
+            color: #ccc;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background-color: #34344a;
+            color: #fff;
+        }
+        .card { border-radius: 12px; }
+        .status-active { color: green; font-weight: bold; }
+        .status-injured { color: red; font-weight: bold; }
+        .status-suspended { color: orange; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- Sidebar -->
+        <div class="col-2 sidebar">
+            <h4 class="text-center text-white mb-4">ADMIN PANEL</h4>
+            <a href="#">Dashboard</a>
+            <a href="#">User Management</a>
+            <a href="#">Tournament Management</a>
+            <a href="#">Teams & Players</a>
+            <a href="#">Advertisements</a>
+            <a href="#">System Logs</a>
+            <a href="#">Logout</a>
+        </div>
+
+        <!-- Main Section -->
+        <div class="col-10">
+
+            <!-- Header -->
+            <div class="p-3 bg-white shadow-sm mb-4">
+                <h3>Goalie Admin Dashboard</h3>
+            </div>
+
+            <!-- Summary Cards -->
+            <div class="row mb-4">
+                <div class="col-md-3">
+                    <div class="card p-3 shadow-sm">
+                        <h6>Total Users</h6>
+                        <h3>1,542</h3>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-3 shadow-sm">
+                        <h6>Active Tournaments</h6>
+                        <h3>27</h3>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-3 shadow-sm">
+                        <h6>Pending Reports</h6>
+                        <h3>5</h3>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card p-3 shadow-sm">
+                        <h6>System Status</h6>
+                        <h3 class="text-success">Online</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION BUTTONS -->
+            <div class="d-flex gap-3 mb-4">
+                <button id="btnUsers" class="btn btn-outline-dark" onclick="showSection('usersSection', 'btnUsers')">👤 Users</button>
+                <button id="btnTournaments" class="btn btn-outline-dark" onclick="showSection('tournamentsSection', 'btnTournaments')">🏆 Tournaments</button>
+                <button id="btnTeams" class="btn btn-outline-dark" onclick="showSection('teamsSection', 'btnTeams')">⚽ Teams & Players</button>
+                <button id="btnAds" class="btn btn-outline-dark" onclick="showSection('adsSection', 'btnAds')">📢 Advertisements</button>
+            </div>
+
+            <!-- USERS TABLE -->
+            <div id="usersSection">
+                <div class="card p-3 shadow-sm mb-4">
+                    <h5>User Accounts</h5>
+                    <table class="table table-hover mt-3">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>ID</th><th>Name</th><th>Email</th><th>Role</th><th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr><td>101</td><td>John Doe</td><td>john@example.com</td><td>Premium</td><td class="status-active">Active</td></tr>
+                        <tr><td>102</td><td>Michael Smith</td><td>mike@mail.com</td><td>Regular</td><td class="status-suspended">Suspended</td></tr>
+                        <tr><td>103</td><td>Sarah Parker</td><td>sarah@mail.com</td><td>Regular</td><td class="status-active">Active</td></tr>
+                        <tr><td>104</td><td>Emma Watson</td><td>emma@example.com</td><td>Premium</td><td class="status-active">Active</td></tr>
+                        <tr><td>105</td><td>David Green</td><td>david@mail.com</td><td>Regular</td><td class="status-injured">Inactive</td></tr>
+                        <tr><td>106</td><td>Linda Brown</td><td>linda@mail.com</td><td>Premium</td><td class="status-active">Active</td></tr>
+                        <tr><td>107</td><td>Robert Gray</td><td>robert@mail.com</td><td>Regular</td><td class="status-active">Active</td></tr>
+                        <tr><td>108</td><td>Olivia Hall</td><td>olivia@mail.com</td><td>Premium</td><td class="status-active">Active</td></tr>
+                        <tr><td>109</td><td>James King</td><td>james@mail.com</td><td>Regular</td><td class="status-suspended">Suspended</td></tr>
+                        <tr><td>110</td><td>Sophia Scott</td><td>sophia@mail.com</td><td>Premium</td><td class="status-active">Active</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TOURNAMENTS TABLE -->
+            <div id="tournamentsSection" style="display:none;">
+                <div class="card p-3 shadow-sm mb-4">
+                    <h5>Tournaments</h5>
+                    <table class="table table-hover mt-3">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>ID</th><th>Name</th><th>Created By</th><th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr><td>301</td><td>Sunday League Cup</td><td>Admin</td><td class="status-active">Ongoing</td></tr>
+                        <tr><td>302</td><td>East Coast 5v5</td><td>Premium User</td><td class="status-active">Ongoing</td></tr>
+                        <tr><td>303</td><td>City Cup</td><td>Admin</td><td class="status-active">Ongoing</td></tr>
+                        <tr><td>304</td><td>Summer Challenge</td><td>Premium User</td><td class="status-active">Pending</td></tr>
+                        <tr><td>305</td><td>Winter League</td><td>Admin</td><td class="status-active">Completed</td></tr>
+                        <tr><td>306</td><td>Spring Cup</td><td>Premium User</td><td class="status-active">Ongoing</td></tr>
+                        <tr><td>307</td><td>Autumn Tournament</td><td>Admin</td><td class="status-active">Ongoing</td></tr>
+                        <tr><td>308</td><td>Champions League</td><td>Premium User</td><td class="status-active">Ongoing</td></tr>
+                        <tr><td>309</td><td>Local Cup</td><td>Admin</td><td class="status-active">Ongoing</td></tr>
+                        <tr><td>310</td><td>National Trophy</td><td>Premium User</td><td class="status-active">Ongoing</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TEAMS TABLE -->
+            <div id="teamsSection" style="display:none;">
+                <div class="card p-3 shadow-sm mb-4">
+                    <h5>Teams & Players</h5>
+                    <table class="table table-hover mt-3">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>Team ID</th><th>Team Name</th><th>Player Name</th><th>Position</th><th>Goals</th><th>Matches</th><th>Status</th><th>Notes</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Red Falcons -->
+                        <tr><td rowspan="6">201</td><td rowspan="6">Red Falcons</td><td>John Smith</td><td>Forward</td><td>5</td><td>10</td><td class="status-active">Active</td><td>Captain</td></tr>
+                        <tr><td>Mike Johnson</td><td>Midfielder</td><td>3</td><td>10</td><td class="status-active">Active</td><td></td></tr>
+                        <tr><td>Chris Lee</td><td>Defender</td><td>1</td><td>10</td><td class="status-injured">Injured</td><td>Sprained ankle</td></tr>
+                        <tr><td>Tommy Brown</td><td>Goalkeeper</td><td>0</td><td>10</td><td class="status-active">Active</td><td></td></tr>
+                        <tr><td>Kevin White</td><td>Midfielder</td><td>2</td><td>9</td><td class="status-active">Active</td><td></td></tr>
+                        <tr><td>James Black</td><td>Forward</td><td>4</td><td>9</td><td class="status-suspended">Suspended</td><td>Disciplinary</td></tr>
+
+                        <!-- Blue Tigers -->
+                        <tr><td rowspan="6">202</td><td rowspan="6">Blue Tigers</td><td>David Brown</td><td>Forward</td><td>4</td><td>9</td><td class="status-active">Active</td><td></td></tr>
+                        <tr><td>Alex Wilson</td><td>Midfielder</td><td>2</td><td>9</td><td class="status-active">Active</td><td></td></tr>
+                        <tr><td>Sam Harris</td><td>Defender</td><td>0</td><td>9</td><td class="status-suspended">Suspended</td><td>Disciplinary</td></tr>
+                        <tr><td>Ryan Clark</td><td>Goalkeeper</td><td>0</td><td>9</td><td class="status-active">Active</td><td></td></tr>
+                        <tr><td>Luke Adams</td><td>Forward</td><td>3</td><td>9</td><td class="status-active">Active</td><td></td></tr>
+                        <tr><td>Matt Lewis</td><td>Midfielder</td><td>1</td><td>9</td><td class="status-injured">Injured</td><td>Hamstring</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ADS TABLE -->
+            <div id="adsSection" style="display:none;">
+                <div class="card p-3 shadow-sm mb-4">
+                    <h5>Advertisements</h5>
+                    <table class="table table-hover mt-3">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>Ad ID</th><th>Title</th><th>Status</th><th>Clicks</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr><td>401</td><td>Winter Promo</td><td class="status-active">Active</td><td>1,024</td></tr>
+                        <tr><td>402</td><td>Summer Sale</td><td class="status-injured">Inactive</td><td>876</td></tr>
+                        <tr><td>403</td><td>Spring Campaign</td><td class="status-active">Active</td><td>1,200</td></tr>
+                        <tr><td>404</td><td>Autumn Fest</td><td class="status-active">Active</td><td>950</td></tr>
+                        <tr><td>405</td><td>Black Friday</td><td class="status-active">Active</td><td>2,300</td></tr>
+                        <tr><td>406</td><td>Cyber Monday</td><td class="status-active">Active</td><td>1,800</td></tr>
+                        <tr><td>407</td><td>Holiday Deals</td><td class="status-active">Active</td><td>1,500</td></tr>
+                        <tr><td>408</td><td>Flash Sale</td><td class="status-active">Active</td><td>1,100</td></tr>
+                        <tr><td>409</td><td>New Year Promo</td><td class="status-active">Active</td><td>1,700</td></tr>
+                        <tr><td>410</td><td>Valentine Special</td><td class="status-active">Active</td><td>1,350</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- JAVASCRIPT -->
+<script>
+    function showSection(sectionId, buttonId) {
+        const sections = ['usersSection', 'tournamentsSection', 'teamsSection', 'adsSection'];
+        const buttons  = ['btnUsers', 'btnTournaments', 'btnTeams', 'btnAds'];
+
+        sections.forEach(id => {
+            document.getElementById(id).style.display = (id === sectionId) ? 'block' : 'none';
+        });
+
+        buttons.forEach(id => {
+            const btn = document.getElementById(id);
+            if (id === buttonId) {
+                btn.classList.remove('btn-outline-dark');
+                btn.classList.add('btn-dark');
+            } else {
+                btn.classList.remove('btn-dark');
+                btn.classList.add('btn-outline-dark');
+            }
+        });
+    }
+
+    showSection('usersSection', 'btnUsers');
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
