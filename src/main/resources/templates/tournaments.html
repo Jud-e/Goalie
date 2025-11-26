@@ -136,7 +136,7 @@
 
 
                             </div>
-                            <form th:action="@{|/tournaments/${tournament.id}/delete|}" method="post" class="delete-form">
+                            <form th:action="@{/tournaments/{id}/delete(id=${tournament.id})}" method="post" class="delete-form">
                                 <button type="submit" class="btn-danger">
                                     🗑️ Delete Tournament
                                 </button>

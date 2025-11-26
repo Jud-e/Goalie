@@ -6,6 +6,8 @@ import com.example.goalie.model.User;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -65,16 +67,22 @@ public class TournamentController {
         return "create_tournament"; // templates/create_tournament.html
     }
 
+    // TournamentController.java
+
+// ...
+
     // 3️⃣ Handle tournament creation
     @PostMapping("/create")
     public String createTournament(@ModelAttribute Tournament tournament,
-                                   HttpSession session) {
-        User organizer = (User) session.getAttribute("loggedInUser");
-        if (organizer == null) return "redirect:/login";
-
+                                   // 🚨 CHANGE METHOD SIGNATURE 🚨
+                                   @AuthenticationPrincipal UserDetails userDetails) {
+        String userEmail = userDetails.getUsername(); // Or whatever is used as the username
+        User organizer = service.getUserByEmail(userEmail);
+        if (organizer == null) {
+            return "redirect:/login";
+        }
         tournament.setStatus(Tournament.TournamentStatus.UPCOMING);
         service.createTournament(tournament, organizer);
-
         return "redirect:/tournaments"; // back to tournament list
     }
 

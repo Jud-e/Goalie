@@ -22,4 +22,7 @@ public interface PlayerTeamRepository extends JpaRepository<PlayerTeam, PlayerTe
     List<PlayerTeam> findByUserAndTournament(@Param("user") User user, @Param("tournament") Tournament tournament);
     // Get all players in a team
     List<PlayerTeam> findByTeam(Team team);
+    // This is the method needed for the deleteAll() operation in the service layer.
+    // It relies on the path: PlayerTeam.team.id
+    List<PlayerTeam> findByTeamId(Long teamId);
 }

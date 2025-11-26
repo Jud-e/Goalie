@@ -55,6 +55,8 @@ public class Tournament {
         return participants != null ? participants.size() : 0;
     }
 
+    @OneToMany(mappedBy = "tournament", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Team> teams = new ArrayList<>();
     @OneToMany(mappedBy = "tournament",cascade = CascadeType.ALL)
     private List<User> participants = new ArrayList<>();
 

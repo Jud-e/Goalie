@@ -237,21 +237,54 @@ public class AppService implements UserDetailsService {
                 .sorted()
                 .toList();
     }
+    @Transactional
     public void deleteTournament(Tournament tournament) {
-        List<Team> teams = teamRepository.findByTournament(tournament);
-        for (Team team : teams) {
-            playerTeamRepository.deleteAll(
-                    playerTeamRepository.findByTeam(team)
-            );
+        if (tournament == null) return;
+
+        // 1. --- Critical Cleanup: Handle User <-> Team Relationships ---
+        // We must break the two relationships tied to the Team before it's deleted:
+        List<Team> teamsToDelete = new ArrayList<>(tournament.getTeams());
+
+        for (Team team : teamsToDelete) {
+            List<PlayerTeam> playerTeams = playerTeamRepository.findByTeamId(team.getId());
+            playerTeamRepository.deleteAll(playerTeams);
+            // 1a. Delete all PlayerTeam entities (The explicit intermediate table)
+            // You need to load and delete these first, as they reference 'Team'.
+            // Assuming you have a One-to-Many relationship from Team to PlayerTeam:
+            if (team.getPlayerTeams() != null) {
+                playerTeamRepository.deleteAll(team.getPlayerTeams());
+                team.getPlayerTeams().clear(); // Clear the collection
+            }
+            // NOTE: If you don't have a PlayerTeam repository, you need to add one.
+
+            // 1b. Clean up the TEAM_USERS join table (The problematic @ManyToMany)
+            // This is the step that resolves your original exception.
+            if (team.getPlayers() != null) {
+                for (User player : team.getPlayers()) {
+                    // Break the link on the User's owning side
+                    player.getTeams().remove(team);
+                }
+                team.getPlayers().clear(); // Clear the collection on the inverse side
+            }
         }
-        List<Match> matches = matchRepository.findByTournament(tournament);
-        if (!matches.isEmpty()) {
-            matchRepository.deleteAll(matches);
+
+        // 2. --- Unlink Users from the Tournament (Participants) ---
+        // If the User is a shared resource, you must set the foreign key to null.
+        if (tournament.getParticipants() != null) {
+            for (User user : tournament.getParticipants()) {
+                user.setTournament(null);
+                // Assuming the User entity is saved later, or let the transaction handle it.
+            }
+            tournament.getParticipants().clear(); // Clear the list on the Tournament side
         }
-        if (!teams.isEmpty()) {
-            teamRepository.deleteAll(teams);
-        }
+
+        // 3. --- Final Deletion (Cascades handle the rest) ---
+        // This single call will now cascade and delete:
+        // a) All Teams (which no longer have dependencies from PlayerTeam or TEAM_USERS)
+        // b) All Matches
         tournamentRepository.delete(tournament);
+
+        // tournamentRepository.flush(); // Optional, but can force DB sync
     }
 
 
