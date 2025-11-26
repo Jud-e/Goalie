@@ -51,6 +51,7 @@ public class TeamController {
         model.addAttribute("teams", teams);
 //        model.addAttribute("teamMemberIds", teamMemberIds);
         model.addAttribute("isUserInTeam", isUserInTeam);
+        model.addAttribute("allowedSizes", List.of(4,8,16,32));
 
         if (success != null && !success.isEmpty()) {
             model.addAttribute("success", success);
@@ -138,6 +139,7 @@ public class TeamController {
         }
 
         model.addAttribute("team", team);
+        model.addAttribute("allowedSizes", List.of(4,8,16,32));
         return "viewTeams"; // Make sure you have view_team.html
     }
 }
