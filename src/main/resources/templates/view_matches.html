@@ -4,56 +4,71 @@
       layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
-    <!--    <link rel="stylesheet" th:href="@{/css/main.css}">-->
-    <!--    <title>Login</title>-->
+    <title>Matches - Goalie</title>
 </head>
 <body>
 <main layout:fragment="content">
-    <section class="matches">
-        <div class="main-section matches-main">
-            <div class="create-tournament-title" data-aos="fade-down">
-                <h1>Vancouver Youth Tournament</h1>
-                <div></div>
-            </div>
-
-            <div class="matches-view-area">
-                <div class="matches-team-section" data-aos="flip-left">
-                    <h3>Teams in The Tournament</h3>
-                    <div class="team-list" th:each="team : ${teams}">
-                        <div th:text="${team.name}">Team A</div>
-
-
+    <section class="teams-section">
+        <div class="teams-container">
+            <!-- Header -->
+            <div class="teams-header">
+                <div class="back-link">
+                    <a th:href="@{/teams}" class="back-btn">
+                        <span>←</span> Back to Teams
+                    </a>
+                </div>
+                <div class="header-content">
+                    <div>
+                        <h1>Vancouver Youth Tournament</h1>
+                        <p class="tournament-name">
+                            <span th:text="${tournament.name}">Tournament Name</span>
+                        </p>
                     </div>
                 </div>
-
-
-                <div class="matches-fixtures" th:if="${allowedSizes.contains(teams.size())}" data-aos="flip-down">
-                    <h3>Play Fixtures</h3>
-                    <div class="fixture-list" th:each="match: ${matches}">
-                        <!--                        th:href="@{/match/{id}(id=${tournament.id})}"-->
-                        <a  class="fixture"  th:href="@{/match/edit/{id}(id=${match.id})}">
-                            <h4 th:text="${match.getMatchDate}"></h4>
-                            <div class="match-info">
-                                <div class="team" th:text="${match.team1?.name ?: 'TBD'}"></div>
-                                <span th:text="${match.getScoreDisplay}"></span>
-                                <div class="team" th:text="${match.team2?.name ?: 'TBD'}"></div>
-
+            </div>
+            <div class="dashboard-layout">
+                <!-- Left: Teams -->
+                <div class="dashboard-column teams-column">
+                    <h3>Teams in the Tournament</h3>
+                    <div class="teams-list" th:each="team : ${teams}">
+                        <div class="team-card">
+                            <div class="team-card-header">
+                                <h3 th:text="${team.name}">Team A</h3>
+                                <span class="team-badge">
+                        <span th:text="${#lists.size(team.players)}">0</span> Players
+                    </span>
                             </div>
-                        </a>
-
-
-
+                        </div>
                     </div>
-
                 </div>
 
-                <div class="matches-fixtures" th:if="${!allowedSizes.contains(teams.size())}" data-aos="flip-down">
-                    <p>Matches can not be generated unless tournament contain <strong>4, 8 , 16, <span>or</span> 32</strong> Teams</p>
+                <!-- Right: Fixtures -->
+                <div class="dashboard-column fixtures-column">
+                    <h3>Fixtures</h3>
+                    <div class="fixture-list" th:each="match : ${matches}">
+                        <a th:href="@{/match/edit/{id}(id=${match.id})}">
+                        <div class="fixture-card">
+                            <h4 th:text="${match.getMatchDate}">Match Date</h4>
+                            <div class="match-info">
+                                <div class="team" th:text="${match.team1?.name ?: 'TBD'}">Team 1</div>
+                                <span class="score" th:text="${match.getScoreDisplay}">Score</span>
+                                <div class="team" th:text="${match.team2?.name ?: 'TBD'}">Team 2</div>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
                 </div>
-
-
             </div>
 
+            <!-- Empty State -->
+            <div class="empty-state" th:if="${#lists.isEmpty(teams)}">
+                <div class="empty-icon">👥</div>
+                <h2>No Teams Yet</h2>
+                <p>Be the first to create a team for this tournament!</p>
+                <a th:href="@{/teams/create(tournamentId=${tournament.id})}" class="btn-primary">
+                    <span>+</span> Create First Team
+                </a>
+            </div>
         </div>
     </section>
 </main>
