@@ -62,7 +62,7 @@ public class AppService implements UserDetailsService {
                 .roles("USER") // you can map roles from User if you have them
                 .build();
     }
-//For users
+    //For users
     public User createUser(User user){
         // Check if email already exists
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
@@ -395,17 +395,17 @@ public class AppService implements UserDetailsService {
 
     // ================= Messaging =================
 
-        public void sendMessage(Team team, User sender, String content) {
-            TeamMessage msg = new TeamMessage();
-            msg.setTeam(team);
-            msg.setSender(sender);
-            msg.setContent(content);
-            teamMessageRepository.save(msg);
-        }
+    public void sendMessage(Team team, User sender, String content) {
+        TeamMessage msg = new TeamMessage();
+        msg.setTeam(team);
+        msg.setSender(sender);
+        msg.setContent(content);
+        teamMessageRepository.save(msg);
+    }
 
-        public List<TeamMessage> getTeamMessages(Team team) {
-            return teamMessageRepository.findByTeamOrderByTimestampAsc(team);
-        }
+    public List<TeamMessage> getTeamMessages(Team team) {
+        return teamMessageRepository.findByTeamOrderByTimestampAsc(team);
+    }
 
     // ================= Match =================
     public List<Match> getAllMatches(){
@@ -416,7 +416,8 @@ public class AppService implements UserDetailsService {
         return matchRepository.findById(id).orElse(null);
     }
 
-    public Match createMatch(Match match){
+    @Transactional
+    public Match updateMatch(Match match){
         return matchRepository.save(match);
     }
 
@@ -460,11 +461,17 @@ public class AppService implements UserDetailsService {
         return matches;
     }
 
+
     private Match createMatch(Tournament tournament, Team team1, Team team2) {
         Match match = new Match();
         match.setTournament(tournament);
         match.setTeam1(team1);
         match.setTeam2(team2);
+        if (tournament.getStartDate() != null) {
+            match.setMatchDate(tournament.getStartDate().plusDays(new Random().nextInt(7)));
+        } else {
+            match.setMatchDate(LocalDate.now());
+        }
 
         return match;
     }

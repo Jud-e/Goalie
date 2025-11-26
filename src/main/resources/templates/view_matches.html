@@ -15,6 +15,7 @@
                 <h1>Vancouver Youth Tournament</h1>
                 <div></div>
             </div>
+
             <div class="matches-view-area">
                 <div class="matches-team-section" data-aos="flip-left">
                     <h3>Teams in The Tournament</h3>
@@ -25,24 +26,30 @@
                     </div>
                 </div>
 
-                <div class="matches-fixtures" data-aos="flip-down">
+
+                <div class="matches-fixtures" th:if="${allowedSizes.contains(teams.size())}" data-aos="flip-down">
                     <h3>Play Fixtures</h3>
-                    <div class="fixture-list">
-                        <div class="fixture" th:each="match: ${matches}">
-                            <h4>2012-05-12 9.30</h4>
-                            <div>
+                    <div class="fixture-list" th:each="match: ${matches}">
+                        <!--                        th:href="@{/match/{id}(id=${tournament.id})}"-->
+                        <a  class="fixture"  th:href="@{/match/edit/{id}(id=${match.id})}">
+                            <h4 th:text="${match.getMatchDate}"></h4>
+                            <div class="match-info">
                                 <div class="team" th:text="${match.team1?.name ?: 'TBD'}"></div>
-                                <span th:text="${match.getScoreDisplay()}"></span>
+                                <span th:text="${match.getScoreDisplay}"></span>
                                 <div class="team" th:text="${match.team2?.name ?: 'TBD'}"></div>
 
                             </div>
-                        </div>
+                        </a>
 
 
 
                     </div>
 
                 </div>
+                <div class="matches-fixtures" th:if="${!allowedSizes.contains(teams.size())}" data-aos="flip-down">
+                    <p>Matches can not be generated unless tournament contain <strong>4, 8 , 16, <span>or</span> 32</strong> Teams</p>
+                </div>
+
 
             </div>
 

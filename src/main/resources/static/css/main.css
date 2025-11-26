@@ -966,13 +966,13 @@ nav {
     /*min-height: 100vh;*/
     padding: 0 20px;
 }
-/*.profile-account .profile-section {*/
-/*    display: flex;*/
-/*    width: 650px;*/
-/*    margin-top:30px;*/
-/*    margin-bottom: 30px;*/
-/*    overflow: hidden;*/
-/*}*/
+.profile-account .profile-section {
+    display: flex;
+    width: 650px;
+    margin-top:30px;
+    margin-bottom: 30px;
+    overflow: hidden;
+}
 .profile-account .profile-container {
     border-radius: 30px;
     width: 100%;
@@ -1010,14 +1010,15 @@ nav {
     background-color: #ffffff
 }
 .profile-account .profile-content {
-    padding: 2rem;
+    padding: 2rem 0.5rem;
+    margin-right: 1.2rem;
 }
 .profile-content-form {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    padding: 0 30px;
+    padding: 0 20px;
     transition: .3s;
 }
 .profile-content-form .profile-input-form {
@@ -1231,11 +1232,12 @@ nav {
 }
 .create-links {
     position: absolute;
-    padding: 30px;
+    /*padding: 5px;*/
     border-radius: 15px;
-    background-color: var(--primary);
+    /*background-color: var(--primary);*/
     color: var(--text);
     right: 2%;
+    top: 4%;
     align-items: center;
     display: flex;
     justify-content: center;
@@ -1245,15 +1247,20 @@ nav {
 .create-links a {
     /*text-align: center;*/
     font-size: 16px;
+    padding: 10px 20px;
     /*margin-bottom: 15px;*/
     color: #f4f4f4;
     background-color: var(--primary);
+    border-radius: 15px;
+    text-align: center;
 
 }
 .create-links i{
     font-size: 12px;
     background-color: var(--primary);
     /*margin-top: 10px;*/
+    margin-top: 20px;
+    margin-left: 10px;
 }
 
 .tournament-container {
@@ -1262,6 +1269,30 @@ nav {
     row-gap: 1.5rem;
     margin-top: 150px;
 
+}
+/*    tournament schedule link */
+.tournament-schedule-link {
+    /*color: #374151;*/
+    /*background: #374151;*/
+    /*width: 300px;*/
+
+    padding: 8px;
+}
+.tournament-schedule-link a{
+    color:#f4f4f4;
+    padding: 12px 18px;
+    font-size: 1rem;
+    background: #374151;
+    border-radius: 30px;
+    transition: ease .3s;
+
+}
+
+.tournament-schedule-link a:hover {
+    /*box-shadow: 2px 2px 3px #374151;*/
+    border: 2px solid #06243e;
+    background: transparent;
+    color: #000;
 }
 .tournament {
     width: 100%;
@@ -2911,7 +2942,7 @@ nav {
 .matches-fixtures {
     border-left: 1px solid #ccc;
     padding-left: 40px;
-    flex-basis: 40%;
+    flex-basis: 50%;
 }
 .matches-fixtures h3 {
     text-align: center;
@@ -2919,16 +2950,23 @@ nav {
     text-decoration: underline;
     font-size: 1.9rem;
 }
+.matches-fixtures p {
+    font-size: 1.5rem;
+}
 .fixture {
     /*display: flex;*/
     width: 100%;
+    display: block;
     padding: 20px 30px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     /*border-radius: 4px;*/
     max-width: 700px;
     border-top: 1px solid #ccc;
     box-shadow: 1px 3px 3px rgba(0,0,0,0.7);
     border-radius: 30px;
+    text-decoration: none;
+    color: black;
+
 }
 .fixture h4 {
     margin-top: 0;
@@ -2941,7 +2979,7 @@ nav {
 
 
 }
-.fixture > div {
+.fixture  .match-info {
     display: flex; /* Makes the children (Team A, span, Team B) line up horizontally */
     justify-content: space-between; /* Pushes Team A and Team B to the edges */
     align-items: center;
@@ -2953,6 +2991,117 @@ nav {
     padding: 10px 30px;
     border: 1px solid rgba(0,0,0,0.4);
     border-radius: 20px;
+}
+/* ---------------------------Match Edit -----------------------*/
+.match-main{
+    display: flex;
+    width: 500px;
+    margin-bottom: 30px;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+}
+.matches-content {
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    /*justify-content: center;*/
+    /*width: 450px;*/
+    width: 100%;
+    /*display: flex;*/
+    /*background-color: #ffffff;*/
+    box-shadow: 1px 5px 10px rgba(0,0,0,0.2);
+    /*padding: 10px 20px;*/
+    overflow: hidden;
+    color: #06243e;
+    flex-direction: column;
+    gap: 10px;
+
+}
+.match-title {
+    width: 100%;
+    text-align: center;
+    font-size: 1.6rem;
+    margin: 8px 10px;
+
+}
+.matches-form {
+    width: 100%;
+    margin: 10px 20px 15px;
+    gap: 10px;
+}
+.match-detail {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+
+}
+.match-detail h2 {
+    font-size: 1rem;
+}
+
+.match-input {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1.5rem;
+    width: 100%;
+    margin:5px 15px 5px;
+
+}
+.match-input div {
+    margin: 15px 0 0;
+}
+.match-input label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    color: #374151;
+
+}
+.match-input input {
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border-width: 1px;
+    border-color: #D1D5DB;
+    width: 80%;
+    overflow: hidden;
+}
+
+.matches-form .match-btn {
+    width: 100%;
+    margin: 15px 15px 20px 10px;
+    display: flex;
+    justify-content: space-around;
+}
+.match-btn button {
+    background: #2563EB;
+    color: #fff;
+    font-weight: 700;
+    padding: 0.75rem 1rem;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    transform: scale(1);
+    margin: 0 8px;
+    cursor: pointer;
+}
+.match-btn a {
+    padding: 0.75rem 2.2rem;
+    margin-right: 1rem;
+    background: #374151;
+    color: #fff;
+    border-radius: 20px;
+}
+.match-btn button:hover {
+    background: transparent;
+    border: 1px solid #06243e;
+    color: #06243e;
 }
 /*---------------------------Footer -----------------------------*/
 

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Goalie - Tournaments</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <section class="tournaments">
+        <div class="main-section match-main">
+            <div class="matches-content">
+                <div th:if="${success}" style="background-color: #d4edda; color: #155724; padding: 10px; margin: 10px 0; border-radius: 5px;"><p th:text="${success}"></p> </div>
+                <div th:if="${error}" style="background-color: #f8d7da; color: #721c24; padding: 10px; margin: 10px 0; border-radius: 5px;">  <p th:text="${error}"></p></div>
+
+                <h1 class="match-title"> Make Match Updates</h1>
+
+                <form class="matches-form" th:action="@{/match/edit/{id}(id=${match.id})}"
+                                            th:object="${match}"
+                                            method="post">
+
+                    <div class="match-detail">
+                        <h2 th:text="*{team1.name}"></h2>
+                        <span>Vs</span>
+                        <h2 th:text="*{team2.name}"></h2>
+                    </div>
+                    <div class="match-input">
+                        <div>
+                            <label>Team One Score</label>
+                            <input type="text" th:value="*{team1Score}" th:field="*{team1Score}" required>
+                        </div>
+                        <div>
+                            <label>Team Two Score</label>
+                            <input type="text" th:value="*{team2Score}" th:field="*{team2Score}" required>
+                        </div>
+                        <div>
+                            <label>Match Schedule Date</label>
+                            <input type="date" th:value="*{matchDate}" th:field="*{matchDate}">
+                        </div>
+
+
+
+
+                    </div>
+                    <div class="match-btn">
+                        <button type="submit">Update Match Info</button>
+                    </div>
+
+
+                </form>
+            </div>
+
+
+
+
+
+        </div>
+    </section>
+</main>
+</body>
+</html>
