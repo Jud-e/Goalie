@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <title>Login - Goalie</title>
+</head>
+<body>
+<main>
+    <div class="formParent">
+        <div class="splashImg">
+            <div class="splashContent">
+                <h1>Welcome Back</h1>
+                <p>Log in to continue your journey with Goalie and manage your tournaments and teams.</p>
+                <div class="splashFeatures">
+                    <div class="feature">
+                        <span class="featureIcon">🏆</span>
+                        <span>Track Your Progress</span>
+                    </div>
+                    <div class="feature">
+                        <span class="featureIcon">⚡</span>
+                        <span>Quick Access</span>
+                    </div>
+                    <div class="feature">
+                        <span class="featureIcon">🔒</span>
+                        <span>Secure Platform</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="formSection">
+            <div class="formContainer">
+                <div class="formHeader">
+                    <h2>Login</h2>
+                    <p>Enter your credentials to continue</p>
+                </div>
+                <form method="post" th:action="@{/login}" class="loginForm" th:object="${user}">
+                    <div class="formGroup">
+                        <label th:for="username">Email Address</label>
+                        <input th:type="email" th:id="username" th:field="*{email}" placeholder="Enter your email" required>
+                    </div>
+
+                    <div class="formGroup">
+                        <label th:for="password">Password</label>
+                        <input th:type="password" th:id="password" th:field="*{password}" placeholder="Enter your password" required>
+                    </div>
+
+                    <div th:if="${success}" class="success-message global-success">
+                        <p th:text="${success}"></p>
+                    </div>
+
+                    <div th:if="${error}" class="error-message global-error">
+                        <p th:text="${error}"></p>
+                    </div>
+
+                    <button type="submit" class="submitBtn">
+                        <span>Login</span>
+                    </button>
+
+                    <div class="formFooter">
+                        <p>Don't have an account? <a th:href="@{/signup}" class="link">Sign up here</a></p>
+                    </div>
+                    <div class="formFooter">
+                        <p>
+                            <a th:href="@{/auth/forgot-password}" class="link">Forgot Password?</a>
+                        </p>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+</body>
+</html>

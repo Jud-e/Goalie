@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teams - Goalie</title>
+</head>
+<body><main layout:fragment="content">
+    <section class="teams-section">
+        <div class="teams-container">
+            <!-- Header -->
+            <div class="teams-header">
+                <div class="back-link">
+                    <a th:href="@{/tournaments}" class="back-btn">
+                        <span>←</span> Back to Tournaments
+                    </a>
+                </div>
+                <div class="header-content">
+                    <div>
+                        <h1>Tournament Teams</h1>
+                        <p class="tournament-name">
+                            <span th:text="${tournament.name}">Tournament Name</span>
+                        </p>
+                    </div>
+                    <a th:if="${teams.size() < tournament.getNumOfTeams()}" th:href="@{/teams/create(tournamentId=${tournament.id})}" class="create-team-header-btn">
+                        <span>+</span> Create Team
+
+                    </a>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <div th:if="${success}" class="success-message global-success">
+                <p th:text="${success}"></p>
+            </div>
+
+            <!-- Error Message -->
+            <div th:if="${error}" class="error-message global-error">
+                <p th:text="${error}"></p>
+            </div>
+
+            <!-- Teams Grid -->
+            <div class="teams-grid" th:if="${!#lists.isEmpty(teams)}">
+                <div th:each="team : ${teams}" class="team-card">
+                    <div class="team-card-header">
+                        <h3 th:text="${team.name}">Team Name</h3>
+                        <span class="team-badge">
+                            <span th:text="${#lists.size(team.players)}">0</span> Players
+                        </span>
+                    </div>
+
+                    <div class="team-card-body">
+                        <div class="team-info-item">
+                            <span class="info-icon">🏆</span>
+                            <div class="info-content">
+                                <span class="info-label">Tournament</span>
+                                <span class="info-value" th:text="${team.tournament.name}">Tournament Name</span>
+                            </div>
+                        </div>
+
+                        <div class="team-members-section" th:if="${!#lists.isEmpty(team.players)}">
+                            <h4>Team Members</h4>
+                            <div class="members-list">
+                                <div th:each="player : ${team.players}" class="member-item">
+                                    <span class="member-avatar">👤</span>
+                                    <span class="member-name" th:text="${player.name}">Player Name</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="empty-members" th:if="${#lists.isEmpty(team.players)}">
+                            <p>No players added yet</p>
+                        </div>
+                    </div>
+
+                    <a th:if="${team.players.contains(user)}"
+                       th:href="@{/teams/chat/{id}(id=${team.id})}"
+                       class="chat-icon"
+                       title="View Team Chat">
+                        <i class="fa fa-comments"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="empty-state" th:if="${allowedSizes.contains(teams.size())}">
+                <div class="empty-icon" >👥</div>
+                <h2>View matches</h2>
+                <p>View all the matches for this tournament!</p>
+                <a th:href="@{/match/{id}(id=${tournament.id})}" class="btn-primary">
+                    View Matches
+                </a>
+            </div>
+            <div class="matches-fixtures" th:if="${!allowedSizes.contains(teams.size())}" data-aos="flip-down">
+                <p>Matches can not be generated unless Team create Are <strong>4, 8 , 16, <span>or</span> 32</strong> Teams</p>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" th:if="${#lists.isEmpty(teams)}">
+                <div class="empty-icon">👥</div>
+                <h2>No Teams Yet</h2>
+                <p>Be the first to create a team for this tournament!</p>
+                <a th:href="@{/teams/create(tournamentId=${tournament.id})}" class="btn-primary">
+                    <span>+</span> Create First Team
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

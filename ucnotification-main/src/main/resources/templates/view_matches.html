@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <!--    <link rel="stylesheet" th:href="@{/css/main.css}">-->
+    <!--    <title>Login</title>-->
+</head>
+<body>
+<main layout:fragment="content">
+    <section class="matches">
+        <div class="main-section matches-main">
+            <div class="create-tournament-title" data-aos="fade-down">
+                <h1>Vancouver Youth Tournament</h1>
+                <div></div>
+            </div>
+
+            <div class="matches-view-area">
+                <div class="matches-team-section" data-aos="flip-left">
+                    <h3>Teams in The Tournament</h3>
+                    <div class="team-list" th:each="team : ${teams}">
+                        <div th:text="${team.name}">Team A</div>
+
+
+                    </div>
+                </div>
+
+
+                <div class="matches-fixtures" th:if="${allowedSizes.contains(teams.size())}" data-aos="flip-down">
+                    <h3>Play Fixtures</h3>
+                    <div class="fixture-list" th:each="match: ${matches}">
+                        <!--                        th:href="@{/match/{id}(id=${tournament.id})}"-->
+                        <a  class="fixture"  th:href="@{/match/edit/{id}(id=${match.id})}">
+                            <h4 th:text="${match.getMatchDate}"></h4>
+                            <div class="match-info">
+                                <div class="team" th:text="${match.team1?.name ?: 'TBD'}"></div>
+                                <span th:text="${match.getScoreDisplay}"></span>
+                                <div class="team" th:text="${match.team2?.name ?: 'TBD'}"></div>
+
+                            </div>
+                        </a>
+
+
+
+                    </div>
+
+                </div>
+
+                <div class="matches-fixtures" th:if="${!allowedSizes.contains(teams.size())}" data-aos="flip-down">
+                    <p>Matches can not be generated unless tournament contain <strong>4, 8 , 16, <span>or</span> 32</strong> Teams</p>
+                </div>
+
+
+            </div>
+
+        </div>
+    </section>
+</main>
+</body>
+</html>
