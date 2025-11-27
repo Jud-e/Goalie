@@ -51,17 +51,33 @@ public class AppService implements UserDetailsService {
         this.tokenRepository = passwordResetTokenRepository;
     }
 
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        // Admin hardcoded login
+        if ("admin@admin".equals(email)) {
+            // This is the BCrypt-hashed password for "admin"
+            String encryptedPassword = "$2a$10$Dow1w1Jl8pi0QXfF0qCOOuhwqEw8qUuOAZI2f8aVfaPmXw0D9pFQe";
+            return org.springframework.security.core.userdetails.User.builder()
+                    .username("admin@admin")
+                    .password(encryptedPassword)
+                    .roles("ADMIN")
+                    .build();
+        }
+
+        // Regular user login
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getEmail())
-                .password(user.getPassword()) // hashed password
-                .roles("USER") // you can map roles from User if you have them
+                .password(user.getPassword()) // encrypted in DB
+                .roles("USER")
                 .build();
     }
+
+
+
     //For users
     public User createUser(User user){
         // Check if email already exists
@@ -572,5 +588,43 @@ public class AppService implements UserDetailsService {
 
         return userProfileRepository.save(profile);
     }
+    // ================= Admin Helpers =================
+
+    public long countTotalUsers() {
+        return userRepository.count();
+    }
+
+    public long countActiveTournaments() {
+        return tournamentRepository.findAll().stream()
+                .filter(t -> t.getStatus() == Tournament.TournamentStatus.ACTIVE)
+                .count();
+    }
+
+    public long countPendingReports() {
+        // If reports are stored somewhere, count them; for now, assume 0
+        return 0;
+    }
+
+    public List<Team> getAllTeamsWithPlayers() {
+        List<Team> teams = teamRepository.findAll();
+        for (Team team : teams) {
+            loadTeamPlayers(team);
+        }
+        return teams;
+    }
+
+    public List<Message> getAllMessages() {
+        return messageRepository.findAll();
+    }
+
+    public List<Notification> getAllNotifications() {
+        return notificationRepository.findAll();
+    }
+
+    public List<Object> getAllAds() {
+        // If you have an Ad entity, return repository.findAll()
+        return new ArrayList<>(); // placeholder
+    }
+
 
 }
