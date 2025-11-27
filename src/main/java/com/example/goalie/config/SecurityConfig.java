@@ -28,7 +28,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         // Public URLs
-                        .requestMatchers("/", "/signup", "/login", "/css/**", "/js/**", "/h2-console/**").permitAll()
+                        .requestMatchers("/", "/signup","/auth/forgot-password/**", "/login", "/css/**", "/js/**", "/h2-console/**").permitAll()
                         // Any other URL requires login
                         .anyRequest().authenticated()
                 )
