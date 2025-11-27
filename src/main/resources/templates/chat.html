@@ -1,55 +1,155 @@
 <!DOCTYPE html>
-<html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
+
 <head>
+    <meta charset="UTF-8">
     <title>Team Chat</title>
+
+    <style>
+        /* Main wrapper matching Goalie theme */
+        .chat-wrapper {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .chat-header h1 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #222;
+            margin: 0;
+        }
+
+        .back-btn {
+            background: #24292e;
+            padding: 8px 14px;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: 0.2s ease;
+        }
+
+        .back-btn:hover {
+            background: #4b5563;
+        }
+
+        .chat-box {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px 10px;
+            background: #f7f7f7;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            max-width: 75%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 15px;
+            line-height: 1.4;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .my-message {
+            background: #007bff;
+            color: #fff;
+            margin-left: auto;
+            border-bottom-right-radius: 0;
+        }
+
+        .other-message {
+            background: #ffffff;
+            border: 1px solid #ddd;
+            margin-right: auto;
+            border-bottom-left-radius: 0;
+        }
+
+        .sender-name {
+            font-size: 12px;
+            font-weight: 600;
+            opacity: 0.7;
+            margin-bottom: 4px;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 15px;
+        }
+
+        .chat-input button {
+            padding: 12px 20px;
+            font-size: 15px;
+            background: #24292e;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .chat-input button:hover {
+            background: #4b5563;
+        }
+    </style>
 </head>
 
 <body>
 <main layout:fragment="content">
-<!--    <h2 th:text="'Team Chat — ' + ${team.name}"></h2>-->
 
-<!--    <div class="chat-box">-->
-<!--        <div th:each="msg : ${messages}"-->
-<!--             th:class="'chat-message ' + (${msg.sender.id} == ${#authentication.principal.id} ? 'sent' : 'received')">-->
+    <div class="chat-wrapper">
 
-<!--            <p><strong th:text="${msg.sender.username}"></strong></p>-->
-<!--            <p th:text="${msg.content}"></p>-->
-<!--            <small th:text="${#temporals.format(msg.timestamp, 'MMM d, HH:mm')}"></small>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    <form class="chat-input" th:action="@{/teams/chat/send}" method="post">-->
-<!--        <input type="hidden" name="teamId" th:value="${team.id}">-->
-<!--        <input type="text" name="content" placeholder="Type your message..." required>-->
-<!--        <button type="submit">Send</button>-->
-<!--    </form>-->
-
-    <h2>Chat – <span th:text="${team.name}"></span></h2>
-
-    <!-- Chat Messages -->
-    <div class="chat-box">
-        <div th:each="m : ${messages}" class="message">
-            <div class="sender" th:text="${m.sender.username}">User</div>
-            <div th:text="${m.content}">Message body</div>
-            <div class="timestamp" th:text="${m.timestamp}">time</div>
+        <!-- Back Button + Header -->
+        <div class="chat-header">
+            <a th:href="@{/teams(tournamentId=${team.tournament.id})}" class="back-btn">← Back</a>
+            <h1 th:text="'Chat – ' + ${team.name}">Team Chat</h1>
         </div>
+
+        <!-- Chat Messages -->
+        <div class="chat-box">
+            <div th:each="msg : ${messages}">
+                <div class="message"
+                     th:classappend="${msg.sender.id == currentUser.id} ? ' my-message' : ' other-message'">
+                    <div class="sender-name" th:text="${msg.sender.name}"></div>
+                    <div th:text="${msg.content}"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Message Input -->
+        <form th:action="@{/chat/send}" method="post" class="chat-input">
+            <input type="hidden" name="teamId" th:value="${team.id}">
+            <input type="text" name="content" placeholder="Type a message..." required>
+            <button type="submit">Send</button>
+        </form>
     </div>
-
-    <!-- Send Message -->
-    <form th:action="@{/chat/send(teamId=${team.id})}"
-          method="post"
-          th:object="${messageForm}">
-        <input type="text"
-               th:field="*{content}"
-               placeholder="Type a message..."
-               style="width: 75%; padding: 8px;"
-               required />
-
-        <button type="submit" style="padding: 8px 14px;">Send</button>
-    </form>
 
 </main>
 </body>

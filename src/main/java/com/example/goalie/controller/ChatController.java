@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.servlet.http.HttpSession;
+
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -21,41 +23,47 @@ public class ChatController {
     private final AppService service;
 
     @GetMapping("/{teamId}")
-    public String viewChat(@PathVariable Long teamId, Model model, HttpSession session) {
+    public String viewChat(@PathVariable Long teamId,
+                           Model model,
+                           Principal principal) {
 
         Team team = service.getTeamById(teamId);
-        if (team == null) {
-            return "redirect:/teams";
-        }
+        if (team == null) return "redirect:/teams";
+
+        // Get logged in user from Spring Security
+        User currentUser = service.getUserByEmail(principal.getName());
+        // or getUserByUsername(), depending on your login setup
 
         List<Message> messages = service.getMessagesByTeam(team);
 
         model.addAttribute("team", team);
         model.addAttribute("messages", messages);
+        model.addAttribute("currentUser", currentUser); // IMPORTANT
         model.addAttribute("messageForm", new Message());
 
         return "chat";
     }
 
-
     @PostMapping("/send")
     public String sendMessage(@ModelAttribute("messageForm") Message message,
                               @RequestParam Long teamId,
-                              HttpSession session) {
+                              Principal principal) {
 
-        User sender = (User) session.getAttribute("user");
+        User sender = service.getUserByEmail(principal.getName());
         Team team = service.getTeamById(teamId);
 
-        if (sender == null || team == null) {
+        if (sender == null || team == null)
             return "redirect:/chat/" + teamId;
-        }
 
         message.setSender(sender);
         message.setTeam(team);
         message.setTimestamp(LocalDateTime.now());
+
         service.saveMessage(message);
 
-        return "redirect:/chat/" + teamId; // FIXED
+        return "redirect:/chat/" + teamId;
     }
+
+
 
 }
