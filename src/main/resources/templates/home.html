@@ -19,8 +19,12 @@
             </div>
             <div class="nav_list" data-aos="zoom-in">
                 <a th:href="@{/tournaments}">Tournaments</a>
-                <a th:href="@{/faq}">FAQ</a>
-                <a href="#footer">Contact Us</a>
+                <a href="#" onclick="document.getElementById('logoutForm').submit(); return false;">
+                    Logout
+                </a>
+                <form id="logoutForm" th:action="@{/logout}" method="post" style="display:none;">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                </form>
                 <a class="profile-pic" th:href="@{/profile_account}">
                     <div>
                         <img th:src="@{/images/profile.jpg}">

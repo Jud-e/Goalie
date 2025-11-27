@@ -53,29 +53,3 @@ public class AdminController {
         return "admin";
     }
 }
-//<div class="row mb-4">
-//                <div class="col-md-3">
-//                    <div class="card p-3 shadow-sm">
-//<h6>Total Users</h6>
-//                        <h3 th:text="${totalUsers}">0</h3>
-//                    </div>
-//                </div>
-//                <div class="col-md-3">
-//                    <div class="card p-3 shadow-sm">
-//<h6>Active Tournaments</h6>
-//                        <h3 th:text="${activeTournaments}">0</h3>
-//                    </div>
-//                </div>
-//                <div class="col-md-3">
-//                    <div class="card p-3 shadow-sm">
-//<h6>Pending Reports</h6>
-//                        <h3 th:text="${pendingReports}">0</h3>
-//                    </div>
-//                </div>
-//                <div class="col-md-3">
-//                    <div class="card p-3 shadow-sm">
-//<h6>System Status</h6>
-//                        <h3 th:text="${systemStatus}" class="text-success">Online</h3>
-//                    </div>
-//                </div>
-//            </div>

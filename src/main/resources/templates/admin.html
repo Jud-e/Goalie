@@ -40,6 +40,16 @@
             background-color: #34344a;
             color: #fff;
         }
+        .sidebar form button {
+            display: block;
+            padding: 12px 20px;
+            color: #ccc;
+            text-decoration: none;
+        }
+        .sidebar form button:hover {
+            background-color: #34344a;
+            color: #fff;
+        }
 
         /* Main content */
         .main-content {
@@ -119,7 +129,11 @@
         <a href="#" onclick="showSection('usersSection','btnUsers')">User Management</a>
         <a href="#" onclick="showSection('tournamentsSection','btnTournaments')">Tournament Management</a>
         <a href="#" onclick="showSection('teamsSection','btnTeams')">Teams & Players</a>
-        <a th:href="@{/logout}">Logout</a>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">
+                Logout
+            </button>
+        </form>
     </div>
 
     <!-- Main content -->

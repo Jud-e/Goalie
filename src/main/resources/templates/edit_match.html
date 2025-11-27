@@ -4,59 +4,236 @@
       layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
-    <title>Goalie - Tournaments</title>
+    <title>Edit Match - Goalie</title>
+
+    <style>
+        /* --- MATCH EDIT PAGE STYLING (same style as Create Tournament) --- */
+
+        .edit-match-section {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--background) 0%, var(--primary) 100%);
+            padding: 3rem 2rem;
+        }
+
+        .edit-match-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .edit-match-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .edit-match-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--text) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .match-subtitle {
+            font-size: 1.1rem;
+            color: rgba(233, 227, 245, 0.8);
+        }
+
+        /* CARD */
+        .form-card {
+            background: rgba(255, 255, 255, 0.07);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* TEAM VS TITLE */
+        .match-detail {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .match-detail h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .match-detail span {
+            font-size: 1.4rem;
+            color: var(--accent);
+        }
+
+        /* FORM GRID */
+        .match-input {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .match-input div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            color: var(--text);
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            color: var(--text);
+            font-size: 1rem;
+        }
+
+        /* BUTTON */
+        .match-btn {
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .match-btn button {
+            background: linear-gradient(135deg, var(--accent) 0%, var(--secondary) 100%);
+            padding: 0.9rem 2.2rem;
+            border: none;
+            color: black;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .match-btn button:hover {
+            box-shadow: 0 8px 25px rgba(150, 234, 155, 0.5);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--secondary) 100%);
+            transform: translateY(-3px);
+        }
+
+        /* SUCCESS & ERROR MESSAGE */
+        .success-message, .error-message {
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* BACK BUTTON */
+        .back-link {
+            margin-bottom: 1rem;
+        }
+
+        .back-btn {
+            color: var(--text);
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .back-btn:hover {
+            text-decoration: underline;
+        }
+        .label{
+            color: var(--text) !important;
+        }
+
+    </style>
 </head>
+
 <body>
 <main layout:fragment="content">
-    <section class="tournaments">
-        <div class="main-section match-main">
-            <div class="matches-content">
-                <div th:if="${success}" style="background-color: #d4edda; color: #155724; padding: 10px; margin: 10px 0; border-radius: 5px;"><p th:text="${success}"></p> </div>
-                <div th:if="${error}" style="background-color: #f8d7da; color: #721c24; padding: 10px; margin: 10px 0; border-radius: 5px;">  <p th:text="${error}"></p></div>
 
-                <h1 class="match-title"> Make Match Updates</h1>
+    <section class="edit-match-section">
+        <div class="edit-match-container">
 
-                <form class="matches-form" th:action="@{/match/edit/{id}(id=${match.id})}"
-                                            th:object="${match}"
-                                            method="post">
+            <!-- BACK -->
+            <div class="back-link">
+                <a th:href="@{/tournaments}" class="back-btn">
+                    ← Back to Tournaments
+                </a>
+            </div>
 
+            <!-- HEADER -->
+            <div class="edit-match-header">
+                <h1>Edit Match</h1>
+                <p class="match-subtitle">
+                    Update match score, date, and other details
+                </p>
+            </div>
+
+            <!-- SUCCESS / ERROR -->
+            <div th:if="${success}" class="success-message">
+                <p th:text="${success}"></p>
+            </div>
+            <div th:if="${error}" class="error-message">
+                <p th:text="${error}"></p>
+            </div>
+
+            <!-- FORM CARD -->
+            <div class="form-card">
+                <form class="matches-form"
+                      th:action="@{/match/edit/{id}(id=${match.id})}"
+                      th:object="${match}"
+                      method="post">
+
+                    <!-- TEAM VS HEADER -->
                     <div class="match-detail">
                         <h2 th:text="*{team1.name}"></h2>
-                        <span>Vs</span>
+                        <span>VS</span>
                         <h2 th:text="*{team2.name}"></h2>
                     </div>
+
+                    <!-- INPUT FIELDS -->
                     <div class="match-input">
                         <div>
-                            <label>Team One Score</label>
-                            <input type="text" th:value="*{team1Score}" th:field="*{team1Score}" required>
+                            <label class="label">Team One Score</label>
+                            <input type="text" th:field="*{team1Score}" required>
                         </div>
                         <div>
-                            <label>Team Two Score</label>
-                            <input type="text" th:value="*{team2Score}" th:field="*{team2Score}" required>
+                            <label class="label">Team Two Score</label>
+                            <input type="text" th:field="*{team2Score}" required>
                         </div>
                         <div>
-                            <label>Match Schedule Date</label>
-                            <input type="date" th:value="*{matchDate}" th:field="*{matchDate}">
+                            <label class="label">Match Date</label>
+                            <input type="date" th:field="*{matchDate}">
                         </div>
-
-
-
-
                     </div>
+
+                    <!-- SUBMIT BUTTON -->
                     <div class="match-btn">
                         <button type="submit">Update Match Info</button>
                     </div>
 
-
                 </form>
             </div>
 
-
-
-
-
         </div>
     </section>
+
 </main>
 </body>
 </html>
