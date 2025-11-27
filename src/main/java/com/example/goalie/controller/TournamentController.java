@@ -22,7 +22,6 @@ public class TournamentController {
 
     private final AppService service;
 
-    // 1️⃣ List all tournaments
     @GetMapping
     public String listTournaments(@RequestParam(required = false) String search,
                                   @RequestParam(required = false) String status,
@@ -45,7 +44,6 @@ public class TournamentController {
             tournaments = service.getAllTournaments();
         }
 
-        // ✅ Update status for each tournament
         tournaments.forEach(service::updateTournamentStatus);
 
         model.addAttribute("tournaments", tournaments);
@@ -60,18 +58,12 @@ public class TournamentController {
         return "tournaments"; // templates/tournaments.html
     }
 
-    // 2️⃣ Show create tournament form
     @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("tournament", new Tournament());
         return "create_tournament"; // templates/create_tournament.html
     }
 
-    // TournamentController.java
-
-// ...
-
-    // 3️⃣ Handle tournament creation
     @PostMapping("/create")
     public String createTournament(@ModelAttribute Tournament tournament,
                                    // 🚨 CHANGE METHOD SIGNATURE 🚨
@@ -86,7 +78,6 @@ public class TournamentController {
         return "redirect:/tournaments"; // back to tournament list
     }
 
-    // 4️⃣ View tournament details
     @GetMapping("/{id}")
     public String viewTournament(@PathVariable Long id, Model model) {
         Tournament tournament = service.getTournamentById(id);
@@ -98,7 +89,6 @@ public class TournamentController {
         return "view_tournament"; // templates/view_tournament.html
     }
 
-    // 5️⃣ Delete tournament
     @PostMapping("/{id}/delete")
     public String deleteTournament(@PathVariable Long id) {
         Tournament tournament = service.getTournamentById(id);
