@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Goalie</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <section class="tournaments">
+        <div class="main-section tournament-main">
+            <div class="tournaments-title" data-aos="fade-down">
+                <h2>Teams for <span th:text="${tournament.name}"></span></h2>
+                <div></div>
+            </div>
+            <div class="create-links" data-aos="fade-left">
+                <a th:href="@{/teams/create(tournamentId=${tournament.id})}">Create Team<i data-feather="plus" class="mr-2"></i></a>
+
+            </div>
+            <div class="tournament-container" data-aos="flip-left">
+                <div th:if="${#lists.isEmpty(teams)}">
+                    <h2 style="color: #0a0610">No teams created</h2>
+                </div>
+                <div class="tournament" th:each="t : ${teams}">
+                    <div class="tournament-content">
+                        <h1 th:text="${t.name}"></h1>
+                        <h3>Start Date: <span th:text="${t.startDate}"></span></h3>
+                        <h3>End Date: <span th:text="${t.endDate}"></span></h3>
+                        <h3>Status: <span th:text="${t.status}"></span></h3>
+                        <h3>Location: <span th:text="${t.location}"></span></h3>
+                    </div>
+                    <div class="tournament-link">
+                        <a th:href="@{/view_matches}">tournaments Detail</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>
