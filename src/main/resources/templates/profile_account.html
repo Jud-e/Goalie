@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <title>Goalie</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <section class="profile-account">
+        <div class="profile-section">
+            <div class="profile-container">
+                <!--    Header Title      -->
+                <div class="profile-title-section">
+                    <h1>
+                        <i data-feather="user"></i>
+                        User Profile
+                    </h1>
+                    <span>Account Settings</span>
+                </div>
+
+                <!--     Main Content        -->
+                <div class="profile-content">
+                    <form th:action="@{/edit_profile}" method="post">
+                        <div>
+                            <label>Name</label>
+                            <input type="text" name="name" th:value="${user.name}" required>
+                        </div>
+                        <div>
+                            <label>Email</label>
+                            <input type="email" name="email" th:value="${user.email}" required>
+                        </div>
+                        <div>
+                            <label>Player Nickname</label>
+                            <input type="text" name="playerNickname" th:value="${userProfile.playerNickname}">
+                        </div>
+                        <div>
+                            <label>Skill Rating</label>
+                            <input type="number" name="skillRating" th:value="${userProfile.skillRating}" min="1" max="5">
+                        </div>
+                        <div>
+                            <label>Preferred Position</label>
+                            <select name="preferredPosition">
+                                <option th:each="pos : ${T(com.example.goalie.goalieEnum.Position).values()}"
+                                        th:value="${pos}" th:text="${pos}"
+                                        th:selected="${userProfile.preferredPosition == pos}"></option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Secondary Position</label>
+                            <select name="secondaryPosition">
+                                <option th:each="pos : ${T(com.example.goalie.goalieEnum.Position).values()}"
+                                        th:value="${pos}" th:text="${pos}"
+                                        th:selected="${userProfile.secondaryPosition == pos}"></option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>Dominant Foot</label>
+                            <select name="dominantFoot">
+                                <option th:each="foot : ${T(com.example.goalie.goalieEnum.DominantFoot).values()}"
+                                        th:value="${foot}" th:text="${foot}"
+                                        th:selected="${userProfile.dominantFoot == foot}"></option>
+                            </select>
+                        </div>
+                        <div>
+                            <button type="submit">Save Profile</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+
+</html>

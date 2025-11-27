@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Matches - Goalie</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <section class="teams-section">
+        <div class="teams-container">
+            <!-- Header -->
+            <div class="teams-header">
+                <div class="back-link">
+                    <a th:href="@{/tournaments}" class="back-btn">
+                        <span>←</span> Back to Teams
+                    </a>
+                </div>
+                <div class="header-content">
+                    <div>
+                        <h1>Vancouver Youth Tournament</h1>
+                        <p class="tournament-name">
+                            <span th:text="${tournament.name}">Tournament Name</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-layout">
+                <!-- Left: Teams -->
+                <div class="dashboard-column teams-column">
+                    <h3>Teams in the Tournament</h3>
+                    <div class="teams-list" th:each="team : ${teams}">
+                        <div class="team-card">
+                            <div class="team-card-header">
+                                <h3 th:text="${team.name}">Team A</h3>
+                                <span class="team-badge">
+                        <span th:text="${#lists.size(team.players)}">0</span> Players
+                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Fixtures -->
+                <div class="dashboard-column fixtures-column">
+                    <h3>Fixtures</h3>
+                    <div class="fixture-list" th:each="match : ${matches}">
+                        <a th:href="@{/match/edit/{id}(id=${match.id})}">
+                        <div class="fixture-card">
+                            <h4 th:text="${match.getMatchDate}">Match Date</h4>
+                            <div class="match-info">
+                                <div class="team" th:text="${match.team1?.name ?: 'TBD'}">Team 1</div>
+                                <span class="score" th:text="${match.getScoreDisplay?:'VS'}">Score</span>
+                                <div class="team" th:text="${match.team2?.name ?: 'TBD'}">Team 2</div>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" th:if="${#lists.isEmpty(teams)}">
+                <div class="empty-icon">👥</div>
+                <h2>No Teams Yet</h2>
+                <p>Be the first to create a team for this tournament!</p>
+                <a th:href="@{/teams/create(tournamentId=${tournament.id})}" class="btn-primary">
+                    <span>+</span> Create First Team
+                </a>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>
