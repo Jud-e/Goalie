@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
+    <title>Goalie</title>
+</head>
+
+<body>
+<main layout:fragment="content">
+    <section class="profile-account">
+        <div class="profile-section">
+            <div class="profile-container">
+                <!--    Header Title      -->
+                <div class="profile-title-section">
+                    <h1>
+                        <i data-feather="user"></i>
+                        User Profile
+                    </h1>
+                    <span>Account Settings</span>
+                </div>
+
+                <!--     Main Content        -->
+                <div class="profile-content">
+                    <form class="profile-content-form" th:object="${user}">
+                        <div class="profile-input-form">
+                            <div> <label>Email address: </label> <input type="email" readonly th:value="*{email}">
+                            </div>
+                            <div> <label>Name: </label> <input type="text" th:placeholder="*{name}" th:field="*{name}">
+                            </div>
+
+
+                            <div> <label>Preferred Position: </label> <select>
+                                <option>Goalkeeper</option>
+                                <option>Defender</option>
+                                <option>Midfielder</option>
+                                <option>Forward</option>
+                            </select> </div>
+                            <div> <label>Secondary Position: </label> <select>
+                                <option>Goalkeeper</option>
+                                <option>Defender</option>
+                                <option>Midfielder</option>
+                                <option>Forward</option>
+                            </select> </div>
+                            <div> <label>Skill Level: </label> <select>
+                                <option>Beginner</option>
+                                <option>Intermediate</option>
+                                <option>Advanced</option>
+                            </select> </div>
+                            <div> <label>Dominant Foot: </label> <select>
+                                <option>Left</option>
+                                <option>Right</option>
+                                <option>Both</option>
+                            </select> </div>
+                            <div> <label>Profile Picture: </label>
+                                <div class="file">
+                                    <div class="input-file"> <input type="file"> </div>
+                                    <div class="input-file-content">
+                                        <div> <i data-feather="user"></i> </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!--           Premium  Toggle-->
+                        <div class="premium-toggle">
+                            <div>
+                                <label for="premiumToggle">Get Premium Account</label>
+                                <input type="checkbox" id="premiumToggle" name="premiumToggle" class="h-5 w-5 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+
+                            </div>
+                        </div>
+                        <div class="billing-section" id="billingSection">
+
+                            <h2 class="billing-title">
+                                <i data-feather="credit-card" class="mr-2"></i> Billing Information
+                            </h2>
+                            <div class="card-info">
+                                <div>
+                                    <label for="cardNumber" >Card Number</label>
+                                    <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456">
+                                </div>
+                                <div>
+                                    <label for="expiryDate" >Expiry Date</label>
+                                    <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" >
+                                </div>
+                                <div>
+                                    <label for="cvv">CVV</label>
+                                    <input type="text" id="cvv" name="cvv" placeholder="123" >
+                                </div>
+                                <div >
+                                    <label for="billingAddress">Billing Address</label>
+                                    <input type="text" id="billingAddress" name="billingAddress" >
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="button">
+                            <button>
+                                Save Profile
+                            </button>
+                        </div>
+
+
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+
+</html>

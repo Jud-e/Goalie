@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Team - Goalie</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <section class="create-team-section">
+        <div class="create-team-container">
+            <!-- Header -->
+            <div class="create-team-header">
+                <div class="back-link">
+                    <a th:href="@{/teams(tournamentId=${tournament.id})}" class="back-btn">
+                        <span>←</span> Back to Teams
+                    </a>
+                </div>
+                <h1>Create New Team</h1>
+                <p class="tournament-info">
+                    Tournament: <span th:text="${tournament.name}">Tournament Name</span>
+                </p>
+            </div>
+
+            <!-- Error Message -->
+            <div th:if="${error}" class="error-message global-error">
+                <p th:text="${error}"></p>
+            </div>
+
+            <!-- Form Card -->
+            <div class="form-card">
+                <form method="post"
+                      th:action="@{/teams/create}"
+                      th:object="${team}"
+                      class="team-form">
+
+                    <!-- Hidden field to pass tournamentId -->
+                    <input type="hidden" name="tournamentId" th:value="${tournament.id}" />
+
+                    <!-- Team Name -->
+                    <div class="form-group">
+                        <label for="teamName">Team Name *</label>
+                        <input type="text"
+                               id="teamName"
+                               th:field="*{name}"
+                               placeholder="Enter your team name"
+                               required
+                               class="form-input">
+                        <small class="form-hint">Choose a unique and memorable name for your team</small>
+                    </div>
+
+
+                    <!-- Team Info Section -->
+                    <div class="team-info-section">
+                        <h3>Team Information</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Tournament:</span>
+                                <span class="info-value" th:text="${tournament.name}">Tournament Name</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Team Captain:</span>
+                                <span class="info-value" th:text="${user.name}">Your Name</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Status:</span>
+                                <span class="info-value">New Team</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">
+                            <span>Create Team</span>
+                        </button>
+                        <a th:href="@{/teams(tournamentId=${tournament.id})}" class="btn-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Help Section -->
+            <div class="help-section">
+                <h3>💡 Tips for Creating a Great Team</h3>
+                <ul>
+                    <li>Choose a name that represents your team's identity</li>
+                    <li>You'll be automatically added as the team captain</li>
+                    <li>You'll be able to invite players after creating the team</li>
+                    <li>Make sure your team name is unique within the tournament</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

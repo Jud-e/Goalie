@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Tournament - Goalie</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <section class="create-tournament-section">
+        <div class="create-tournament-container">
+            <!-- Header -->
+            <div class="create-tournament-header">
+                <div class="back-link">
+                    <a th:href="@{/tournaments}" class="back-btn">
+                        <span>←</span> Back to Tournaments
+                    </a>
+                </div>
+                <h1>Create New Tournament</h1>
+                <p class="tournament-subtitle">
+                    Organize and schedule your tournament event
+                </p>
+            </div>
+
+            <!-- Error Message -->
+            <div th:if="${error}" class="error-message global-error">
+                <p th:text="${error}"></p>
+            </div>
+
+            <!-- Success Message -->
+            <div th:if="${success}" class="success-message global-success">
+                <p th:text="${success}"></p>
+            </div>
+
+            <!-- Form Card -->
+            <div class="form-card">
+                <form method="post"
+                      th:action="@{/tournaments/create}"
+                      th:object="${tournament}"
+                      class="tournament-form">
+
+                    <!-- Tournament Name -->
+                    <div class="form-group">
+                        <label for="tournamentName">Tournament Name *</label>
+                        <input type="text"
+                               id="tournamentName"
+                               th:field="*{name}"
+                               placeholder="Enter tournament name"
+                               required
+                               class="form-input">
+                        <small class="form-hint">Choose a memorable name for your tournament</small>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-group">
+                        <label for="description">Description *</label>
+                        <textarea id="description"
+                                  th:field="*{description}"
+                                  placeholder="Describe your tournament..."
+                                  required
+                                  rows="4"
+                                  class="form-input"></textarea>
+                        <small class="form-hint">Provide details about the tournament format, rules, and prizes</small>
+                    </div>
+
+                    <!-- Date Range -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="startDate">Start Date *</label>
+                            <input type="date"
+                                   id="startDate"
+                                   th:field="*{startDate}"
+                                   required
+                                   class="form-input">
+                            <small class="form-hint">When does the tournament begin?</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="endDate">End Date *</label>
+                            <input type="date"
+                                   id="endDate"
+                                   th:field="*{endDate}"
+                                   required
+                                   class="form-input">
+                            <small class="form-hint">When does the tournament end?</small>
+                        </div>
+                    </div>
+
+                    <!-- Tournament Size and Location -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="numOfTeams">Tournament Size *</label>
+                            <select id="numOfTeams"
+                                    th:field="*{numOfTeams}"
+                                    required
+                                    class="form-input">
+                                <option value="">Select size</option>
+                                <option value="4">4 Teams</option>
+                                <option value="8">8 Teams</option>
+                                <option value="16">16 Teams</option>
+                            </select>
+                            <small class="form-hint">Number of teams that can participate</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location *</label>
+                            <input type="text"
+                                   id="location"
+                                   th:field="*{location}"
+                                   placeholder="Enter location"
+                                   required
+                                   class="form-input">
+                            <small class="form-hint">Where will the tournament be held?</small>
+                        </div>
+                    </div>
+
+                    <!-- Tournament Info Section -->
+                    <div class="tournament-info-section">
+                        <h3>Tournament Information</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="info-label">Organizer:</span>
+                                <span class="info-value" th:text="${user != null ? user.name : 'You'}">Your Name</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Status:</span>
+                                <span class="info-value">Upcoming</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Type:</span>
+                                <span class="info-value">Team Tournament</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">
+                            <span>Create Tournament</span>
+                        </button>
+                        <a th:href="@{/tournaments}" class="btn-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Help Section -->
+            <div class="help-section">
+                <h3>💡 Tips for Creating a Great Tournament</h3>
+                <ul>
+                    <li>Choose a clear and descriptive name that reflects the tournament's purpose</li>
+                    <li>Set realistic dates that give teams enough time to prepare</li>
+                    <li>Select an appropriate tournament size based on expected participation</li>
+                    <li>Provide a detailed description to attract the right participants</li>
+                    <li>Ensure the location is accessible and suitable for the event</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

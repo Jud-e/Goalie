@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Goalie - Tournaments</title>
+</head>
+<body>
+<main layout:fragment="content">
+    <section class="tournaments">
+        <div class="main-section tournament-main">
+            <div class="back-link">
+                <a th:href="@{/home}" class="back-btn2">
+                    <span>←</span> Back to Home
+                </a>
+            </div>
+            <div class="tournaments-title" data-aos="fade-down">
+                <h2>Tournaments</h2>
+                <div class="create-links" data-aos="fade-left">
+                    <a th:href="@{/tournaments/create}">Create Tournament</a>
+                    <i data-feather="plus" class="mr-2"></i>
+                </div>
+                <div></div>
+            </div>
+            <!-- Search and Filter Section -->
+            <div class="search-filter-container" data-aos="fade-up">
+                <form id="searchFilterForm" method="get" action="/tournaments">
+                    <div class="search-bar">
+                        <input
+                                type="text"
+                                id="searchInput"
+                                name="search"
+                                placeholder="Search tournaments by name, description, location..."
+                                th:value="${currentSearch}"
+                                class="search-input"
+                        >
+                        <button type="submit" class="search-button">
+                            <i data-feather="search"></i>
+                        </button>
+                    </div>
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <label for="statusFilter">Status:</label>
+                            <select id="statusFilter" name="status" class="filter-select">
+                                <option value="">All Statuses</option>
+                                <option
+                                        th:each="status : ${statuses}"
+                                        th:value="${status.name()}"
+                                        th:text="${status.name().substring(0,1).toUpperCase() + status.name().substring(1).toLowerCase()}"
+                                        th:selected="${currentStatus == status.name()}"
+                                ></option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="locationFilter">Location:</label>
+                            <select id="locationFilter" name="location" class="filter-select">
+                                <option value="">All Locations</option>
+                                <option
+                                        th:each="loc : ${locations}"
+                                        th:value="${loc}"
+                                        th:text="${loc}"
+                                        th:selected="${currentLocation == loc}"
+                                ></option>
+                            </select>
+                        </div>
+
+                        <div class="filter-group">
+                            <label for="startDateFilter">Start Date:</label>
+                            <input
+                                    type="date"
+                                    id="startDateFilter"
+                                    name="startDate"
+                                    class="filter-date"
+                                    th:value="${currentStartDate}"
+                            >
+                        </div>
+                        <div class="filter-group">
+                            <label for="endDateFilter">End Date:</label>
+                            <input
+                                    type="date"
+                                    id="endDateFilter"
+                                    name="endDate"
+                                    class="filter-date"
+                                    th:value="${currentEndDate}"
+                            >
+                        </div>
+                        <div class="filter-actions">
+                            <button type="submit" class="filter-button">Apply Filters</button>
+                            <button type="button" class="clear-button" onclick="clearFilters()">Clear All</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Results Count -->
+            <div class="results-info" data-aos="fade-up">
+                <p th:text="'Found ' + ${#lists.size(tournaments)} + ' tournament(s)'"></p>
+            </div>
+
+            <!-- Tournaments Grid -->
+            <div class="tournaments-grid" data-aos="fade-up">
+                <div th:if="${#lists.isEmpty(tournaments)}" class="no-results">
+                    <p>No tournaments found. Try adjusting your search or filters.</p>
+                </div>
+
+                <div th:each="tournament : ${tournaments}" class="tournament-card">
+                    <div class="tournament-header">
+                        <h3 th:text="${tournament.name}"></h3>
+                        <span class="status-badge"
+                              th:classappend="'status-' + ${tournament.status.name().toLowerCase()}"
+                              th:text="${tournament.status.name().substring(0,1).toUpperCase() +
+                              tournament.status.name().substring(1).toLowerCase()}"></span>
+                    </div>
+                    <div class="tournament-body">
+                        <p class="tournament-description" th:text="${tournament.description}"></p>
+                        <div class="tournament-details">
+                            <div class="detail-item">
+                                <i data-feather="calendar"></i>
+                                <span th:text="${#temporals.format(tournament.startDate, 'MMM dd, yyyy')}"></span>
+                                <span th:if="${tournament.endDate != null}"
+                                      th:text="' - ' + ${#temporals.format(tournament.endDate, 'MMM dd, yyyy')}"></span>
+                            </div>
+                            <div class="detail-item" th:if="${tournament.location != null}">
+                                <i data-feather="map-pin"></i>
+                                <span th:text="${tournament.location}"></span>
+                            </div>
+                            <div class="detail-item" th:if="${tournament.maxParticipants != null}">
+                                <i data-feather="users"></i>
+                                <span th:text="${tournament.currentParticipants != null ? tournament.currentParticipants : 0}
+                                + '/' + ${tournament.maxParticipants} + ' participants'"></span>
+                            </div>
+                            <div class="detail-item">
+
+                                <a th:href="@{/teams(tournamentId = ${tournament.id})}">Tournaments Details</a>
+
+
+                            </div>
+                            <form th:action="@{|/tournaments/${tournament.id}/delete|}" method="post" class="delete-form">
+                                <button type="submit" class="btn-danger">
+                                    🗑️ Delete Tournament
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+<!--            <div class="tournament-container" data-aos="flip-left">-->
+<!--                <div th:if="${#lists.isEmpty(tournaments)}">-->
+<!--                    <h2 style="color: #0a0610">No tournaments available</h2>-->
+<!--                </div>-->
+
+<!--                <div class="tournament" th:each="t : ${tournaments}">-->
+<!--                    <div class="tournament-content">-->
+<!--                        <h1 th:text="${t.name}">Tournament Name</h1>-->
+<!--                        <h3>Start Date: <span th:text="${t.startDate}">Start Date</span></h3>-->
+<!--                        <h3>End Date: <span th:text="${t.endDate}">End Date</span></h3>-->
+<!--                        <h3>Status: <span th:text="${t.status}">Status</span></h3>-->
+<!--                        <h3>Location: <span th:text="${t.location}">Location</span></h3>-->
+<!--                    </div>-->
+
+<!--                    <div class="tournament-links">-->
+<!--                        <a th:href="@{/view_matches(tournamentId=${t.id})}">Tournament Detail</a>-->
+<!--                        <br/>-->
+<!--                        <a th:href="@{/teams(tournamentId=${t.id})}">Team Details</a>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+    </section>
+</main>
+</body>
+</html>
