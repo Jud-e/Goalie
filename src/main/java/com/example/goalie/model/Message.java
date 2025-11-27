@@ -6,20 +6,19 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-public class TeamMessage {
+public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Team team;
+    private String content;
+
+    private LocalDateTime timestamp;
 
     @ManyToOne
     private User sender;
 
-    @Column(nullable = false)
-    private String content;
-
-    private LocalDateTime timestamp = LocalDateTime.now();
+    @ManyToOne
+    private Team team;
 }

@@ -78,9 +78,9 @@
                             <p>No players added yet</p>
                         </div>
                     </div>
-
-                    <a th:if="${team.players.contains(user)}"
-                       th:href="@{/teams/chat/{id}(id=${team.id})}"
+<!--                    th:if="${team.players.contains(user)}-->
+                    <a
+                            th:href="@{/chat/{id}(id=${team.id})}"
                        class="chat-icon"
                        title="View Team Chat">
                         <i class="fa fa-comments"></i>

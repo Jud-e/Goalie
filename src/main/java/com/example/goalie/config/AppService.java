@@ -25,7 +25,7 @@ public class AppService implements UserDetailsService {
     private final TeamRepository teamRepository;
     private final PlayerTeamRepository playerTeamRepository;
     private final NotificationRepository notificationRepository;
-    private final TeamMessageRepository teamMessageRepository;
+    private final MessageRepository messageRepository;
     private final MatchRepository matchRepository;
     private final UserProfileRepository userProfileRepository;
     private final PasswordResetTokenRepository tokenRepository;
@@ -36,7 +36,7 @@ public class AppService implements UserDetailsService {
                       TournamentRepository tournamentRepository,
                       TeamRepository teamRepository,
                       PlayerTeamRepository playerTeamRepository,
-                      NotificationRepository notificationRepository, TeamMessageRepository teamMessageRepository,
+                      NotificationRepository notificationRepository,MessageRepository messageRepository,
                       MatchRepository matchRepository,
                       UserProfileRepository userProfileRepository,
                       PasswordResetTokenRepository passwordResetTokenRepository) {
@@ -45,7 +45,7 @@ public class AppService implements UserDetailsService {
         this.teamRepository = teamRepository;
         this.playerTeamRepository = playerTeamRepository;
         this.notificationRepository = notificationRepository;
-        this.teamMessageRepository = teamMessageRepository;
+        this.messageRepository = messageRepository;
         this.matchRepository = matchRepository;
         this.userProfileRepository = userProfileRepository;
         this.tokenRepository = passwordResetTokenRepository;
@@ -427,17 +427,12 @@ public class AppService implements UserDetailsService {
     }
 
     // ================= Messaging =================
-
-    public void sendMessage(Team team, User sender, String content) {
-        TeamMessage msg = new TeamMessage();
-        msg.setTeam(team);
-        msg.setSender(sender);
-        msg.setContent(content);
-        teamMessageRepository.save(msg);
+    public List<Message> getMessagesByTeam(Team team) {
+        return messageRepository.findByTeamOrderByTimestampAsc(team);
     }
 
-    public List<TeamMessage> getTeamMessages(Team team) {
-        return teamMessageRepository.findByTeamOrderByTimestampAsc(team);
+    public void saveMessage(Message message) {
+        messageRepository.save(message);
     }
 
     // ================= Match =================
