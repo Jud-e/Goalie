@@ -18,12 +18,14 @@ public class AppService {
     private final MessagingRepository messagingRepository;
     private final MatchRepository matchRepository;
     private final UserProfileRepository userProfileRepository;
+    private final AdvertisementRepository advertisementRepository;
 
     public AppService(UserRepository userRepository,
                       TournamentRepository tournamentRepository,TeamRepository teamRepository,
                       PlayerTeamRepository playerTeamRepository,NotificationRepository notificationRepository,
                       MessagingRepository messagingRepository,
-                      MatchRepository matchRepository, UserProfileRepository userProfileRepository) {
+                      MatchRepository matchRepository, UserProfileRepository userProfileRepository,
+                      AdvertisementRepository advertisementRepository) {
         this.userRepository = userRepository;
         this.tournamentRepository = tournamentRepository;
         this.teamRepository = teamRepository;
@@ -32,6 +34,7 @@ public class AppService {
         this.messagingRepository = messagingRepository;
         this.matchRepository = matchRepository;
         this.userProfileRepository = userProfileRepository;
+        this.advertisementRepository = advertisementRepository;
     }
 //For users
     public User createUser(User user){
@@ -155,6 +158,20 @@ public class AppService {
         return teamRepository.findByTournament(tournament);
     }
 
+    // ================= PlayerTeam (Players) =================
+    public List<PlayerTeam> getAllPlayers() {
+        return playerTeamRepository.findAll();
+    }
+
+    public List<PlayerTeam> getPlayersByTeam(Team team) {
+        // We'll assume PlayerTeam has a 'team' field
+        return playerTeamRepository.findByTeam(team);
+    }
+
+    public PlayerTeam getPlayerTeamById(PlayerTeamId id) {
+        return playerTeamRepository.findById(id).orElse(null);
+    }
+
     // ================= Notifications =================
     public List<Notification> getNotificationsByUser(User user){
         return notificationRepository.findByReceiver(user);
@@ -184,6 +201,24 @@ public class AppService {
         message.setContent(content);
         message.setTimestamp(new Timestamp(System.currentTimeMillis()));
         return messagingRepository.save(message);
+    }
+
+    // ================= Advertisements =================
+    public List<Advertisement> getAllAdvertisements() {
+        return advertisementRepository.findAll();
+    }
+
+    public Advertisement getAdvertisementById(Long id) {
+        return advertisementRepository.findById(id).orElse(null);
+    }
+
+    public Advertisement createAdvertisement(Advertisement ad) {
+        return advertisementRepository.save(ad);
+    }
+
+    // ================= Users =================
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     // ================= Match =================

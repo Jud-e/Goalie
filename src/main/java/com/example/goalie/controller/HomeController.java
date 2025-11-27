@@ -64,11 +64,7 @@ public class HomeController {
             return "login";
         }
     }
-    @GetMapping("/admin")
-    public String showAdmin(Model model){
-        model.addAttribute("user", new User());
-        return "admin";
-    }
+
 //homepage
     @GetMapping("/home")
     public String home(HttpSession session, Model model) {
