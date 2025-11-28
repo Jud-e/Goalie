@@ -124,6 +124,7 @@ public class TeamController {
         PlayerTeam playerTeam = new PlayerTeam();
         playerTeam.setTeam(savedTeam);
         playerTeam.setUser(user);
+        service.createTeamAndJoin(user, savedTeam);
         service.addUserToTeam(playerTeam); // Only this is necessary
         return "redirect:/teams?tournamentId=" + tournamentId + "&success=Team created successfully";
     }
