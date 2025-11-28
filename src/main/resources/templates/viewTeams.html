@@ -47,9 +47,9 @@
                 <div th:each="team : ${teams}" class="team-card">
                     <div class="team-card-header">
                         <h3 th:text="${team.name}">Team Name</h3>
-                        <span class="team-badge">
-                            <span th:text="${#lists.size(team.players)}">0</span> Players
-                        </span>
+<!--                        <span class="team-badge">-->
+<!--                            <span th:text="${#lists.size(team.players)}">0</span> Players-->
+<!--                        </span>-->
                     </div>
 
                     <div class="team-card-body">
@@ -64,10 +64,10 @@
                         <div class="team-members-section" th:if="${!#lists.isEmpty(team.players)}">
                             <h4>Team Members</h4>
                             <div class="members-list">
-                                <div th:each="player : ${team.players}" class="member-item">
-                                    <span class="member-avatar">👤</span>
-                                    <span class="member-name" th:text="${player.name}">Player Name</span>
-                                </div>
+<!--                                <div th:each="player : ${team.players}" class="member-item">-->
+<!--                                    <span class="member-avatar">👤</span>-->
+<!--                                    <span class="member-name" th:text="${player.name}">Player Name</span>-->
+<!--                                </div>-->
                             </div>
                         </div>
 
