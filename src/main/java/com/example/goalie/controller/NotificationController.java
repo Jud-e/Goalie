@@ -3,13 +3,13 @@ package com.example.goalie.controller;
 import com.example.goalie.config.AppService;
 import com.example.goalie.model.Notification;
 import com.example.goalie.model.User;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -21,8 +21,14 @@ public class NotificationController {
 
     // List notifications for logged-in user
     @GetMapping
-    public String viewNotifications(HttpSession session, Model model) {
-        User user = (User) session.getAttribute("loggedInUser");
+    public String viewNotifications(Principal principal, Model model) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        String email = principal.getName();
+        User user = service.getUserByEmail(email);
+
         if (user == null) {
             return "redirect:/login";
         }
@@ -36,9 +42,15 @@ public class NotificationController {
     // Delete a notification
     @PostMapping("/delete/{id}")
     public String deleteNotification(@PathVariable Long id,
-                                     HttpSession session,
+                                     Principal principal,
                                      RedirectAttributes redirectAttributes) {
-        User user = (User) session.getAttribute("loggedInUser");
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        String email = principal.getName();
+        User user = service.getUserByEmail(email);
+
         if (user == null) {
             return "redirect:/login";
         }
@@ -62,9 +74,15 @@ public class NotificationController {
 
     // Delete all notifications for user
     @PostMapping("/delete-all")
-    public String deleteAllNotifications(HttpSession session,
+    public String deleteAllNotifications(Principal principal,
                                          RedirectAttributes redirectAttributes) {
-        User user = (User) session.getAttribute("loggedInUser");
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        String email = principal.getName();
+        User user = service.getUserByEmail(email);
+
         if (user == null) {
             return "redirect:/login";
         }

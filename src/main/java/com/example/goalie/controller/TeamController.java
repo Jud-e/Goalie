@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.*;
@@ -33,18 +34,9 @@ public class TeamController {
 
         List<Team> teams = service.getTeamsByTournament(tournament);
         User loggedInUser = service.getUserByEmail(principal.getName());
-
-//        // Map team ID -> set of player IDs
-//        Map<Long, Set<Long>> teamMemberIds = new HashMap<>();
-//        for (Team team : teams) {
-//            Set<Long> ids = team.getPlayers().stream()
-//                    .map(User::getId)
-//                    .collect(Collectors.toSet());
-//            teamMemberIds.put(team.getId(), ids);
-//        }
         boolean isUserInTeam = teams.stream()
-                .anyMatch(team -> team.getPlayers().contains(loggedInUser));
-
+                .flatMap(team -> team.getPlayerTeams().stream())
+                .anyMatch(pt -> pt.getUser().equals(loggedInUser));
         model.addAttribute("user", loggedInUser);
 //        model.addAttribute("userId", loggedInUser.getId()); // so template can use it
         model.addAttribute("tournament", tournament);
@@ -124,6 +116,7 @@ public class TeamController {
         PlayerTeam playerTeam = new PlayerTeam();
         playerTeam.setTeam(savedTeam);
         playerTeam.setUser(user);
+        service.createTeamAndJoin(user, savedTeam);
         service.addUserToTeam(playerTeam); // Only this is necessary
         return "redirect:/teams?tournamentId=" + tournamentId + "&success=Team created successfully";
     }
@@ -131,7 +124,7 @@ public class TeamController {
 
 
     // View team details
-    @GetMapping("/{id}")
+    @GetMapping("/view/{id}")
     public String viewTeam(@PathVariable Long id, Model model) {
         Team team = service.getTeamById(id);
         if (team == null) {
@@ -142,4 +135,50 @@ public class TeamController {
         model.addAttribute("allowedSizes", List.of(4,8,16,32));
         return "viewTeams"; // Make sure you have view_team.html
     }
+
+    @PostMapping("/join-random")
+    public String joinRandomTeam(@RequestParam Long tournamentId,
+                                 Principal principal,
+                                 RedirectAttributes redirectAttributes) {
+
+        if (principal == null) {
+            redirectAttributes.addFlashAttribute("error", "Please login to join a team");
+            return "redirect:/login";
+        }
+
+        User user = service.getUserByEmail(principal.getName());
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("error", "User not found");
+            return "redirect:/login";
+        }
+
+        Tournament tournament = service.getTournamentById(tournamentId);
+        if (tournament == null) {
+            redirectAttributes.addFlashAttribute("error", "Tournament not found");
+            return "redirect:/tournaments";
+        }
+
+        // Check if user is premium
+        if (service.isPremiumUser(user)) {
+            redirectAttributes.addFlashAttribute("error",
+                    "Premium users can select teams. Please choose a team to join.");
+            return "redirect:/teams?tournamentId=" + tournamentId;
+        }
+
+        // Try to join a random team
+        boolean joined = service.joinRandomTeam(user, tournament);
+
+        if (joined) {
+            Team userTeam = service.getUserTeamForTournament(user, tournament);
+            redirectAttributes.addFlashAttribute("success",
+                    "Successfully joined team: " + (userTeam != null ? userTeam.getName() : "a team"));
+        } else {
+            redirectAttributes.addFlashAttribute("error",
+                    "Could not join a team. You may already be in a team or no teams are available.");
+        }
+
+        return "redirect:/teams?tournamentId=" + tournamentId;
+    }
+
+
 }

@@ -25,10 +25,18 @@
                             <span th:text="${tournament.name}">Tournament Name</span>
                         </p>
                     </div>
-                    <a th:if="${teams.size() < tournament.getNumOfTeams()}" th:href="@{/teams/create(tournamentId=${tournament.id})}" class="create-team-header-btn">
+                    <a th:if="${teams.size() < tournament.getNumOfTeams() && !isUserInTeam}"
+                       th:href="@{/teams/create(tournamentId=${tournament.id})}"
+                       class="create-team-header-btn">
                         <span>+</span> Create Team
-
                     </a>
+                    <form th:if="${teams.size() > 0 && !isUserInTeam}"
+                          th:action="@{/teams/join-random}" method="post" style="display:inline">
+                        <input type="hidden" name="tournamentId" th:value="${tournament.id}" />
+                        <button type="submit" class="create-team-header-btn">
+                            <span>+</span> Join a Team
+                        </button>
+                    </form>
                 </div>
             </div>
 
@@ -76,8 +84,7 @@
                         </div>
                     </div>
 <!--                    th:if="${team.players.contains(user)}-->
-                    <a
-                            th:href="@{/chat/{id}(id=${team.id})}"
+                    <a th:href="@{/chat/{id}(id=${team.id})}"
                        class="chat-icon"
                        title="View Team Chat">
                         <i class="fa fa-comments"></i>

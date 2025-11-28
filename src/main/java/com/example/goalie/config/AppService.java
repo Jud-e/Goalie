@@ -323,6 +323,16 @@ public class AppService implements UserDetailsService {
         }
         return teamRepository.save(team);
     }
+
+    @Transactional
+    public Team createTeamAndJoin(User user, Team team) {
+        // Save the team first
+        Team savedTeam = createTeam(team);
+        joinTeam(user, savedTeam);
+        return savedTeam;
+    }
+
+
     public List<Team> getTeamsByTournament(Tournament tournament){
         List<Team> teams = teamRepository.findByTournament(tournament);
         // Load players for each team from PlayerTeam
@@ -362,47 +372,48 @@ public class AppService implements UserDetailsService {
         if (playerTeams.isEmpty()) return null;
         return playerTeams.get(0).getTeam();
     }
+
     // Join a specific team (for premium users)
     @Transactional
     public boolean joinTeam(User user, Team team) {
         if (user == null || team == null) return false;
-// Check if user is already in this team
-        if (playerTeamRepository.findByUserAndTeam(user, team).isPresent()) {
-            return false; // Already in team
-        }
-        // Check if user is already in another team for the same tournament
+        // Check if user is already in a team for this tournament
         if (team.getTournament() != null && isUserInTeamForTournament(user, team.getTournament())) {
-            return false; // Already in a team for this tournament
+            return false;
         }
-        // Create PlayerTeam relationship
-        PlayerTeam playerTeam = new PlayerTeam();
-        playerTeam.setUser(user);
-        playerTeam.setTeam(team);
-        playerTeamRepository.save(playerTeam);
-        // Also add to Team's players list if using ManyToMany
+        // Check if user is already in this team
+        if (playerTeamRepository.findByUserAndTeam(user, team).isPresent()) {
+            return false;
+        }
+        // Create the relationship
+        PlayerTeam pt = new PlayerTeam();
+        pt.setUser(user);
+        pt.setTeam(team);
+        playerTeamRepository.save(pt);
+        // Ensure ManyToMany remains consistent
         if (team.getPlayers() == null) {
-            team.setPlayers(new java.util.ArrayList<>());
+            team.setPlayers(new ArrayList<>());
         }
         if (!team.getPlayers().contains(user)) {
             team.getPlayers().add(user);
-            teamRepository.save(team);
         }
-        return true;    }
+        return true;
+    }
+
     // Join a random team (for regular users)
+    @Transactional
     public boolean joinRandomTeam(User user, Tournament tournament) {
         if (user == null || tournament == null) return false;
         // Check if user is already in a team for this tournament
         if (isUserInTeamForTournament(user, tournament)) {
             return false; // Already in a team
         }
-        // Get all teams for the tournament
         List<Team> teams = getTeamsByTournament(tournament);
         if (teams.isEmpty()) {
             return false; // No teams available
         }
-        // Filter teams that user is not already in and shuffle
-        java.util.Collections.shuffle(teams);
-        // Try to join the first available team
+        // Shuffle teams to pick a random one
+        Collections.shuffle(teams);
         for (Team team : teams) {
             if (joinTeam(user, team)) {
                 return true; // Successfully joined
@@ -410,7 +421,6 @@ public class AppService implements UserDetailsService {
         }
         return false; // Could not join any team
     }
-
 
     public PlayerTeam addUserToTeam(PlayerTeam playerTeam) {
         return playerTeamRepository.save(playerTeam);
