@@ -417,6 +417,7 @@ public class AppService implements UserDetailsService {
     }
 
     // ================= Notifications =================
+    // ================= Notifications =================
     public List<Notification> getNotificationsByUser(User user){
         return notificationRepository.findByReceiver(user);
     }
