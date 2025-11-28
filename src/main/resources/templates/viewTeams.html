@@ -25,10 +25,18 @@
                             <span th:text="${tournament.name}">Tournament Name</span>
                         </p>
                     </div>
-                    <a th:if="${teams.size() < tournament.getNumOfTeams()}" th:href="@{/teams/create(tournamentId=${tournament.id})}" class="create-team-header-btn">
+                    <a th:if="${teams.size() < tournament.getNumOfTeams() && !isUserInTeam}"
+                       th:href="@{/teams/create(tournamentId=${tournament.id})}"
+                       class="create-team-header-btn">
                         <span>+</span> Create Team
-
                     </a>
+                    <form th:if="${teams.size() > 0 && !isUserInTeam}"
+                          th:action="@{/teams/join-random}" method="post" style="display:inline">
+                        <input type="hidden" name="tournamentId" th:value="${tournament.id}" />
+                        <button type="submit" class="create-team-header-btn">
+                            <span>+</span> Join a Team
+                        </button>
+                    </form>
                 </div>
             </div>
 
@@ -47,9 +55,9 @@
                 <div th:each="team : ${teams}" class="team-card">
                     <div class="team-card-header">
                         <h3 th:text="${team.name}">Team Name</h3>
-<!--                        <span class="team-badge">-->
-<!--                            <span th:text="${#lists.size(team.players)}">0</span> Players-->
-<!--                        </span>-->
+                        <span class="team-badge">
+                            <span th:text="${#lists.size(team.players)}">0</span> Players
+                        </span>
                     </div>
 
                     <div class="team-card-body">
@@ -64,10 +72,10 @@
                         <div class="team-members-section" th:if="${!#lists.isEmpty(team.players)}">
                             <h4>Team Members</h4>
                             <div class="members-list">
-<!--                                <div th:each="player : ${team.players}" class="member-item">-->
-<!--                                    <span class="member-avatar">👤</span>-->
-<!--                                    <span class="member-name" th:text="${player.name}">Player Name</span>-->
-<!--                                </div>-->
+                                <div th:each="player : ${team.players}" class="member-item">
+                                    <span class="member-avatar">👤</span>
+                                    <span class="member-name" th:text="${player.name}">Player Name</span>
+                                </div>
                             </div>
                         </div>
 
@@ -76,8 +84,7 @@
                         </div>
                     </div>
 <!--                    th:if="${team.players.contains(user)}-->
-                    <a
-                            th:href="@{/chat/{id}(id=${team.id})}"
+                    <a th:href="@{/chat/{id}(id=${team.id})}"
                        class="chat-icon"
                        title="View Team Chat">
                         <i class="fa fa-comments"></i>

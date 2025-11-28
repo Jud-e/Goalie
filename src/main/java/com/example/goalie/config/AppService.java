@@ -400,23 +400,20 @@ public class AppService implements UserDetailsService {
         return true;
     }
 
-
-
     // Join a random team (for regular users)
+    @Transactional
     public boolean joinRandomTeam(User user, Tournament tournament) {
         if (user == null || tournament == null) return false;
         // Check if user is already in a team for this tournament
         if (isUserInTeamForTournament(user, tournament)) {
             return false; // Already in a team
         }
-        // Get all teams for the tournament
         List<Team> teams = getTeamsByTournament(tournament);
         if (teams.isEmpty()) {
             return false; // No teams available
         }
-        // Filter teams that user is not already in and shuffle
-        java.util.Collections.shuffle(teams);
-        // Try to join the first available team
+        // Shuffle teams to pick a random one
+        Collections.shuffle(teams);
         for (Team team : teams) {
             if (joinTeam(user, team)) {
                 return true; // Successfully joined
